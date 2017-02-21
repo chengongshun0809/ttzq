@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp" >
+     <TextView 
+         android:id="@+id/danhao"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="单号DO161120204545065"
+         android:layout_marginLeft="10dp"
+         android:layout_marginTop="15dp"
+         
+         />  
+          <TextView 
+              android:id="@+id/date"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="2016-11-20 20:45:46"
+         android:layout_marginLeft="10dp"
+         android:layout_alignParentBottom="true"
+         android:layout_marginTop="5dp"
+         android:textSize="13sp"
+         android:textColor="#666666"
+         android:layout_marginBottom="15dp"
+         />  
+          <TextView 
+              android:id="@+id/jiu_moneny"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="658.00"
+         android:textColor="#FF0033"
+         android:layout_marginLeft="10dp"
+         android:layout_alignParentRight="true"
+         android:layout_marginTop="15dp"
+         android:layout_marginRight="10dp"
+         />   
+          <TextView 
+              android:id="@+id/msg"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="卖出成交返酒币"
+         android:textColor="#999999"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentRight="true"
+         android:layout_marginTop="5dp"
+         android:layout_marginBottom="15dp"
+         android:layout_marginRight="10dp"
+         />   
+        
+    </RelativeLayout>
+
+</LinearLayout>

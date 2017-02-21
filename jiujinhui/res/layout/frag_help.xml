@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_base_title" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="酒金会原浆价值增长曲线" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/igray" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/qu_help" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="6dp"
+                android:background="@color/igray" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="目前原浆消费市场指导价" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/igray" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="五年"
+                   android:textColor="#ff0000"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="原浆2011"
+                     android:textColor="#999999"
+                  android:layout_marginBottom="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+                
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#cccccc" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="298元/瓶"
+                  
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="茅台品质"
+                     android:textColor="#999999"
+                  android:layout_marginBottom="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+            </LinearLayout>
+<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="六年"
+                   android:textColor="#ff0000"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="原浆2010"
+                  android:layout_marginBottom="10dp"
+                    android:textColor="#999999"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+                
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#cccccc" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="325元/瓶"
+                  
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="投资"
+                  android:layout_marginBottom="10dp"
+                    android:textColor="#999999"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="九年"
+                   android:textColor="#ff0000"
+                   
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="原浆2007"
+                     android:textColor="#999999"
+                  android:layout_marginBottom="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+                
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#cccccc" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent" >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="675元/瓶"
+                  
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textSize="22sp"
+                    />
+                 <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="老酒勾调"
+                     android:textColor="#999999"
+                  android:layout_marginBottom="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                    />
+                
+                </RelativeLayout>
+            </LinearLayout>
+<View
+                android:layout_width="fill_parent"
+                android:layout_height="6dp"
+                android:background="@color/igray" />
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="交易规则" />
+            </RelativeLayout>
+            
+<View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                      android:lineSpacingExtra="4dp"
+                    android:text="1、上线产品分为发行、认购、交易三个阶段" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                      android:lineSpacingExtra="4dp"
+                    android:text="2、产品发行后进入认购期，认购期结束后进入交易期，认购价格按收储服务费形成。" />
+            </RelativeLayout>
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                        android:lineSpacingExtra="4dp"
+                    android:text="3、交易期间根据当前交易指导价，可买入、卖出、提货、转让。" />
+            </RelativeLayout>
+  <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="60dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                        android:lineSpacingExtra="4dp"
+                    android:text="4、交易系统采用撮合交易，按照价格时间优先原则，买入价高于等于卖出价、撮合成交，形成交易指导价。" />
+            </RelativeLayout>            
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                        android:lineSpacingExtra="4dp"
+                    android:text="5、买入5日内未成交，系统自动退款，卖出15分钟内未成交，点击个人资产，自行撤单." />
+            </RelativeLayout>
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                       android:lineSpacingExtra="4dp"
+                    android:text="6、转让价格(元)=298元+298x5.5%x持有天数/365天。" />
+            </RelativeLayout>            
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="90dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                       android:lineSpacingExtra="3dp"
+                    android:text="7、交易平台统一使用酒币交易(1酒币=1元)，点击个人中心的充值按钮，充值到酒币账户。卖出撮合成功后酒币即时返现到酒币账户，点击提现按钮，可提现至微信零钱。" />
+            </RelativeLayout>
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="70dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                       android:lineSpacingExtra="4dp"
+                    android:text="8、交易时间为每周一至周五的上午:09:00-11:30、下午:13:30-15:00、晚上:20:30-22:00。周六日的晚上:20:30-22:00。" />
+            </RelativeLayout>
+
+<RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                      android:textColor="#999999"
+                       android:lineSpacingExtra="4dp"
+                    android:text="9、随时随地提货，喝酒金会原浆，享健康、快乐、财富。" />
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="50dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                     android:textColor="#999999"
+                    android:text="版权信息" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                     android:textColor="#999999"
+                    android:text="Copyright©2011-2017" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                     android:textColor="#999999"
+                    android:text="特普(北京)电子商务有限公司" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+       android:background="#ffffff"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提示"
+            android:textSize="16sp" />
+    </RelativeLayout>
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="非交易时间无法提现"
+            android:textColor="#666666"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <RelativeLayout
+    android:id="@+id/haode"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_shape_corners"
+        android:layout_marginTop="10dp"
+         >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="好的"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</LinearLayout>

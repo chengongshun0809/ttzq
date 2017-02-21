@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_base_title" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:minHeight="50.0dip"
+        android:paddingLeft="14.0dip"
+        android:paddingRight="12.0dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="头像"
+            android:textSize="18sp" />
+
+
+            <zz.itcast.jiujinhui.view.CircleImageView
+                android:id="@+id/circleImabeView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:border_color="@color/light"
+                app:border_width="2dp" />
+        
+    </RelativeLayout>
+
+    <View style="@style/PersonalLine" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:minHeight="50.0dip"
+        android:paddingLeft="14.0dip"
+        android:paddingRight="12.0dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="昵称"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/et_register_username_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:paddingLeft="15dip"
+            android:text="紫格"
+            android:textColor="#808080"
+            android:textSize="17sp" />
+    </RelativeLayout>
+     <View style="@style/PersonalLine" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:minHeight="50.0dip"
+        android:paddingLeft="14.0dip"
+        android:paddingRight="12.0dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="手机号"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/et_phonenumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:paddingLeft="15dip"
+            android:text="18238265015"
+            android:textColor="#808080"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+            
+
+            
+       
+    <RelativeLayout
+        android:id="@+id/tuichu"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_person_shape_corners" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="退出"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+</LinearLayout>

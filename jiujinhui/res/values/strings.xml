@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">年轮酒窖</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="trade">天天涨钱</string>
+    <string name="personal">个人中心</string>
+    <string name="help">帮助中心</string>
+    <string name="income">收入明细</string>
+    <string name="zhichu">支出明细</string>
+     
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    
+    <string name="loading">加载中...</string>
+    <string name="out">退出中...</string>
+ <!-- 平台名称 -->   
+    
+    
+    
+    
+</resources>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/Rl_jindu"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="正在加载，请等候..." />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+  
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="卖出价 (元):"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/product_ordsubmit_price"
+            android:layout_width="130dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="44dp"
+            android:background="@drawable/service_shape_corners"
+            android:hint="   点击输入"
+            android:numeric="decimal"
+            android:textColor="#ff323232"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="卖出量(瓶):"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/product_ordsubmit_count_sub"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_reduce" />
+
+        <TextView
+            android:id="@+id/product_ordsubmit_count"
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:inputType="number"
+            android:text="1"
+            android:textColor="#ff323232"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/product_ordsubmit_count_add"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text=" 1、交易指导价"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/zhi_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:text="327.00"
+            android:textColor="#ff3030"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text=" 2、十五分钟后，可进个人资产撤单"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:text="取消"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/igray" />
+
+        <Button
+            android:id="@+id/dialog_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:text="确定"
+            android:textColor="#ff3030"
+            android:textSize="18sp" />
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

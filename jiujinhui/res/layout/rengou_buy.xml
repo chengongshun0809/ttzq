@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="39dp"
+       
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:text="认购量(瓶):"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/jian"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_reduce" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:inputType="number"
+            android:text="1"
+            android:textColor="#ff323232"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+       
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="总金额 (元):"
+            android:textColor="#ff323232"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="130dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="80dp"
+            android:text="    0.00"
+            android:textColor="#ff323232"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        
+        android:layout_marginTop="5dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:text="取消"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/igray" />
+
+        <Button
+            android:id="@+id/dialog_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:text="确定"
+            android:textColor="#ff3030"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>

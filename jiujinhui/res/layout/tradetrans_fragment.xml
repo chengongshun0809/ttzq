@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/Rl_jindu_trans"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/probar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="正在加载，请等候..." />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/colistview_trans"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/listviewdivider"
+        android:dividerHeight="1px"
+        android:scrollbars="none" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/tv_null_trans"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+         >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无数据"
+             />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- 分时图颜色 -->
+    <color name="minute_grayLine">#2D3945</color>
+    <color name="minute_blue">#00D0FC</color>
+    <color name="minute_yellow">#E7B448</color>
+    <color name="minute_black">#101419</color>
+    <color name="minute_jizhun">#7F9976</color>
+    <color name="minute_zhoutv">#858D93</color>
+    <color name="tab_checked_bg">#BFBFBF</color>
+    <color name="transparent">#BFBFBF</color>
+    <color name="tab_checked_color">#3366CC</color>
+    <color name="tab_unchecked_color">#404040</color>
+    <color name="text_white">#ffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="background_tab_pressed">#00000000</color>
+    <color name="green_txt">#3366cc</color>
+    <color name="igray">#ffF2F2F2</color>
+    <color name="listviewdivider">#cccccc</color>
+    <color name="red">#ff0000</color>
+    <color name="white_btn_ren">#FFFFFF</color>
+    <color name="half_transparent">#88000000</color>
+    <color name="marker_bg">#1C232E</color>
+    <!-- 用于页面背景 -->
+
+    <color name="dark">#FF222222</color>
+    <color name="light">#FFEEEEEE</color>
+
+</resources>
