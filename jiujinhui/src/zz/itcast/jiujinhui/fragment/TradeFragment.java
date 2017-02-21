@@ -210,6 +210,7 @@ public class TradeFragment extends BaseFragment {
 	private String opentime;
 	boolean stopThread = false;
 	private String maindgid;
+	private TextView tv_rate2;
 	@Override
 	public void initData() {
 		// 跑马灯
@@ -309,7 +310,12 @@ public class TradeFragment extends BaseFragment {
 			maindealcode = jsonObject2.getString("dealcode");
 
 			mainstock = jsonObject2.getString("stock");
-			mainrate = jsonObject2.getString("rate");
+			
+			
+			double mainrateint = jsonObject2.getDouble("rate");
+			DecimalFormat df = new DecimalFormat("#0.0");
+			mainrate=df.format(mainrateint);
+			
 			maingoodstate = jsonObject2.getString("state");
 
 			maindealterm = jsonObject2.getString("dealterm");
@@ -536,10 +542,11 @@ public class TradeFragment extends BaseFragment {
 			tv_deaTextView = (TextView) view1
 					.findViewById(R.id.realprice_chengjiao);
 			tv_day = (TextView) view1.findViewById(R.id.term_day);
+			tv_rate2 = (TextView) view1.findViewById(R.id.rate);
 			litmit = (LinearLayout) view1.findViewById(R.id.limit);
 			litmit.setVisibility(View.GONE);
 			trading = (RelativeLayout) view1.findViewById(R.id.jiaoyizhong);
-			trading.setVisibility(View.VISIBLE);
+			trading.setVisibility(View.GONE);
 
 			lijin = (TextView) view1.findViewById(R.id.li);
 			lijin.setText("进入交易大厅>>");
@@ -558,6 +565,12 @@ public class TradeFragment extends BaseFragment {
 				final String dealgoodname = jsonObject3.getString("name");
 				Log.e("vr", dealgoodname);
 				String goodsdealcode = jsonObject3.getString("dealcode");
+				double rate=jsonObject3.getDouble("rate");
+				
+				DecimalFormat df = new DecimalFormat("#0.0");
+				String nor_rate=df.format(rate);
+				tv_rate2.setText(nor_rate);
+				
 				final String dgid = jsonObject3.getString("dgid");
                sp.edit().putString("dgid", dgid).commit();
 				Log.e("GD", dgid);

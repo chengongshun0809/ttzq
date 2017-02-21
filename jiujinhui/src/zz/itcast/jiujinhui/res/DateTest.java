@@ -34,8 +34,8 @@ public class DateTest {
 		String start3 = nyr + "20:30";
 		String timeEnd3 = nyr + "22:00";
 
-		String start4 = nyr + "20:30";
-		String timeEnd4 = nyr + "22:00";
+		String start4 = nyr + "22:02";
+		String timeEnd4 = nyr + "23:00";
 		try {
 			long start11 = sdf.parse(start1).getTime();
 			long timeEnd11 = sdf.parse(timeEnd1).getTime();
@@ -67,7 +67,7 @@ public class DateTest {
 			} else {
 				if (start11 <= nowtime && nowtime <= timeEnd11
 						|| start22 <= nowtime && nowtime <= timeEnd22
-						|| start33 <= nowtime && nowtime <= timeEnd33) {
+						|| start44 <= nowtime && nowtime <= timeEnd44) {
                     
 					// showBuyDialog();
 					flag=true;
