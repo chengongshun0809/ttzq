@@ -15,8 +15,11 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -109,25 +112,25 @@ public class MyTiXianActivity extends BaseActivity {
 			if (!TextUtils.isEmpty(namString)
 					&& !TextUtils.isEmpty(countsString)) {
 				ticount = Double.parseDouble(countsString);
-				
+
 				if (ticount <= jiubi_total && ticount >= 2) {
 					woyaotixian.setVisibility(View.VISIBLE);
 					woyaotixian_hui.setVisibility(View.GONE);
-				} else if (ticount>jiubi_total) {
+				} else if (ticount > jiubi_total) {
 					Toast.makeText(getApplicationContext(), "输入的数量超过提现金额", 0)
-					.show();
+							.show();
 					woyaotixian.setVisibility(View.GONE);
 					woyaotixian_hui.setVisibility(View.VISIBLE);
-					
-				}else if (ticount<jiubi_total) {
+
+				} else if (ticount < jiubi_total) {
 					Toast.makeText(getApplicationContext(), "提现数量不能小于2", 0)
-					.show();
+							.show();
 					woyaotixian.setVisibility(View.GONE);
 					woyaotixian_hui.setVisibility(View.VISIBLE);
 				}
 
 			} else {
-				
+
 				woyaotixian.setVisibility(View.GONE);
 				woyaotixian_hui.setVisibility(View.VISIBLE);
 			}
@@ -147,6 +150,27 @@ public class MyTiXianActivity extends BaseActivity {
 
 		}
 	};
+	boolean isaliv = true;
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		// 判断当前页面是否联网
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (info != null && info.isAvailable()) {
+			isaliv = true;
+
+		} else {
+			isaliv = false;
+
+		}
+
+	}
+
 	private double countincome;
 	private String countString;
 	private String namString;
@@ -172,59 +196,77 @@ public class MyTiXianActivity extends BaseActivity {
 		case R.id.woyaotixian:
 			// 提现
 			Log.e("dianji", "haha");
-			woyaotixian.setEnabled(false);
+			// 判断当前页面是否联网
+			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-			new Thread(new Runnable() {
+			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+			if (info != null && info.isAvailable()) {
+				isaliv = true;
 
-				private InputStream is;
+			} else {
+				isaliv = false;
 
-				@Override
-				public void run() {
+			}
+			if (isaliv == true) {
 
-					try {
-						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/withdraw?unionid="
-								+ unionString
-								+ "&fee="
-								+ countsString
+				woyaotixian.setEnabled(false);
 
-								+ "&name="
-								+ namString
-								+ "&mobile="
-								+ mobileString;
-						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
-								urlpath, "GET");
-						// 若连接服务器成功，返回数据
-						int code = conn.getResponseCode();
-						if (code == 200) {
-							is = conn.getInputStream();
-							String json = NetUtils.readString(is);
-							//Log.e("服务器信息", json);
-							// 解析json
-							 parsonJson(json);
-							// Thread.sleep(30000);
-							
+				new Thread(new Runnable() {
 
-							// Thread.sleep(30000);
+					private InputStream is;
 
-							is.close();
-						}
+					@Override
+					public void run() {
 
-					} catch (Exception e) {
-						// TODO: handle exception
-					} finally {
-						if (is != null) {
-							try {
+						try {
+							String urlpath = "https://www.4001149114.com/NLJJ/ddapp/withdraw?unionid="
+									+ unionString
+									+ "&fee="
+									+ countsString
+
+									+ "&name="
+									+ namString
+									+ "&mobile="
+									+ mobileString;
+							HttpsURLConnection conn = NetUtils.httpsconnNoparm(
+									urlpath, "GET");
+							// 若连接服务器成功，返回数据
+							int code = conn.getResponseCode();
+							if (code == 200) {
+								is = conn.getInputStream();
+								String json = NetUtils.readString(is);
+								// Log.e("服务器信息", json);
+								// 解析json
+								parsonJson(json);
+								// Thread.sleep(30000);
+
+								// Thread.sleep(30000);
+
 								is.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+							}
+
+						} catch (Exception e) {
+							// TODO: handle exception
+						} finally {
+							if (is != null) {
+								try {
+									is.close();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
+
 					}
 
-				}
+				}).start();
 
-			}).start();
+			} else {
+
+				Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
+
+			}
 			woyaotixian.setEnabled(true);
 			break;
 		default:
@@ -235,18 +277,17 @@ public class MyTiXianActivity extends BaseActivity {
 	protected void parsonJson(String json) {
 		// TODO Auto-generated method stub
 		try {
-			JSONObject jsonObject=new JSONObject(json);
-			String stateString=jsonObject.getString("state");
+			JSONObject jsonObject = new JSONObject(json);
+			String stateString = jsonObject.getString("state");
 			if ("success".equals(stateString)) {
 				handler.sendEmptyMessage(1);
 			}
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
 
 	Handler handler = new Handler() {
@@ -259,7 +300,7 @@ public class MyTiXianActivity extends BaseActivity {
 				Bundle bundle = new Bundle();
 				// bundle.putString("money", incomeString);
 				bundle.putString("count", countsString);
-				bundle.putString("shouxufei", df.format(ticount*0.006));
+				bundle.putString("shouxufei", df.format(ticount * 0.006));
 				intent.putExtras(bundle);
 				startActivity(intent);
 
@@ -296,11 +337,12 @@ public class MyTiXianActivity extends BaseActivity {
 		total_tixian.setOnClickListener(this);
 		woyaotixian.setOnClickListener(this);
 	}
-      @Override
-    protected void onDestroy() {
-    	// TODO Auto-generated method stub
-    	super.onDestroy();
-    	handler.removeMessages(1);
-    	
-    }
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		handler.removeMessages(1);
+
+	}
 }

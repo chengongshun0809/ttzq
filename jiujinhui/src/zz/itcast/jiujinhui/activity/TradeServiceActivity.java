@@ -1271,7 +1271,9 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-
+                    
+				
+				
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
