@@ -960,7 +960,7 @@ public class TradeServiceActivity extends BaseActivity {
 		builder2.setView(tihuoView);
 		builder2.setCancelable(false);
 		dialog0 = builder2.show();
-
+		tihuo_count=1;
 		tihuoAdd.setOnClickListener(new OnClickListener() {
 
 			@Override

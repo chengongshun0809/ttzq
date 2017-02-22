@@ -100,6 +100,10 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			finish();
 			break;
 		case R.id.tihuo:
+			
+			
+			
+			
 			addressString = et_address.getText().toString().trim();
 			if (!TextUtils.isEmpty(addressString)) {
 				
