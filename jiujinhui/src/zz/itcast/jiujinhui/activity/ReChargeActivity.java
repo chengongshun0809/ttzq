@@ -4,7 +4,10 @@ import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.Util;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -126,7 +129,7 @@ public class ReChargeActivity extends BaseActivity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				touch_flag++;
-				if (touch_flag%2==0) {
+				if (touch_flag % 2 == 0) {
 					iv_drink_checked_wubai.setVisibility(v.GONE);
 					iv_drink_checked_yiqian.setVisibility(v.GONE);
 					iv_drink_checked_liangqian.setVisibility(v.GONE);
@@ -138,7 +141,7 @@ public class ReChargeActivity extends BaseActivity {
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);
 					other_moneny.requestFocus();
-					//total = null;
+					// total = null;
 					touch_flag = 0;
 				}
 
@@ -178,7 +181,31 @@ public class ReChargeActivity extends BaseActivity {
 	private String unionidString;
 
 	private double totaldouble;
-
+	
+	  boolean isaliv=true;
+      @Override
+    public void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+   
+    	
+		//判断当前页面是否联网
+		ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+		if(info!=null&&info.isAvailable()){
+			isaliv=true;
+			
+			
+		}else{
+			isaliv=false;
+			
+			
+		}
+			
+      
+      
+      }
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -254,114 +281,143 @@ public class ReChargeActivity extends BaseActivity {
 			break;
 
 		case R.id.chongzhi:// 微信充值
+			
+			// 判断当前页面是否联网
+			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-			if (!TextUtils.isEmpty(total)) {
-				totaldouble = Double.parseDouble(total);
-				if (totaldouble < 2) {
-					Toast.makeText(getApplicationContext(), "充值金额不能小于2", 0)
-							.show();
-					chongzhi.setEnabled(true);
-				} else {
-					other_moneny.setFocusable(false);
-					other_moneny.setFocusableInTouchMode(false);
-					Toast.makeText(ReChargeActivity.this, "请稍等，正在跳转微信支付...",
-							Toast.LENGTH_SHORT).show();
-					chongzhi.setEnabled(false);
-					new Thread(new Runnable() {
+			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+			if (info != null && info.isAvailable()) {
+				isaliv = true;
 
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							String url = "https://www.4001149114.com/NLJJ/ddapp/dealwinebuy?wxopenid="
-									+ openidString
-									+ "&unionid="
-									+ unionidString
-									+ "&total="
-									+ total
-									+ "&num=1";
-							// String
-							// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
-							/*
-							 * Toast.makeText(ReChargeActivity.this, "获取订单中...",
-							 * Toast.LENGTH_SHORT).show();
-							 */
-							try {
-								byte[] buf = Util.httpGet(url);
-								if (buf != null && buf.length > 0) {
-									String content = new String(buf);
-									//Log.e("get server pay params:", content);
-									JSONObject json = new JSONObject(content);
-									if (null != json && !json.has("retcode")) {
-										PayReq req = new PayReq();
-										// req.appId = "wxf8b4f85f3a794e77"; //
-										// 测试用appId
+			} else {
+				isaliv = false;
+				
 
-										/*
-										 * req.appId = json.getString("appid");
-										 * req.partnerId =
-										 * json.getString("partnerid");
-										 * req.prepayId =
-										 * json.getString("prepayid");
-										 * req.nonceStr =
-										 * json.getString("noncestr");
-										 * req.timeStamp =
-										 * json.getString("timestamp");
-										 * req.packageValue =
-										 * json.getString("package"); req.sign =
-										 * json.getString("sign"); req.extData =
-										 * "app data"; // optional
-										 */
-										req.appId = json.getString("appid");
-										req.partnerId = json
-												.getString("partnerid");
-										req.prepayId = json
-												.getString("prepayid");
-										req.nonceStr = json
-												.getString("noncestr");
-										req.timeStamp = json
-												.getString("timestamp");
-										req.packageValue = json
-												.getString("package");
-										req.sign = json.getString("sign");
-										req.extData = "app data"; // optional
+			}
+			if (isaliv == true) {
 
-										// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+				if (!TextUtils.isEmpty(total)) {
+					totaldouble = Double.parseDouble(total);
+					if (totaldouble < 2) {
+						Toast.makeText(getApplicationContext(), "充值金额不能小于2", 0)
+								.show();
+						chongzhi.setEnabled(true);
+					} else {
+						other_moneny.setFocusable(false);
+						other_moneny.setFocusableInTouchMode(false);
+						Toast.makeText(ReChargeActivity.this,
+								"请稍等，正在跳转微信支付...", Toast.LENGTH_SHORT).show();
+						chongzhi.setEnabled(false);
+						new Thread(new Runnable() {
 
-										api.sendReq(req);
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								String url = "https://www.4001149114.com/NLJJ/ddapp/dealwinebuy?wxopenid="
+										+ openidString
+										+ "&unionid="
+										+ unionidString
+										+ "&total="
+										+ total
+										+ "&num=1";
+								// String
+								// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+								/*
+								 * Toast.makeText(ReChargeActivity.this,
+								 * "获取订单中...", Toast.LENGTH_SHORT).show();
+								 */
+								try {
+									byte[] buf = Util.httpGet(url);
+									if (buf != null && buf.length > 0) {
+										String content = new String(buf);
+										// Log.e("get server pay params:",
+										// content);
+										JSONObject json = new JSONObject(
+												content);
+										if (null != json
+												&& !json.has("retcode")) {
+											PayReq req = new PayReq();
+											// req.appId = "wxf8b4f85f3a794e77";
+											// //
+											// 测试用appId
+
+											/*
+											 * req.appId =
+											 * json.getString("appid");
+											 * req.partnerId =
+											 * json.getString("partnerid");
+											 * req.prepayId =
+											 * json.getString("prepayid");
+											 * req.nonceStr =
+											 * json.getString("noncestr");
+											 * req.timeStamp =
+											 * json.getString("timestamp");
+											 * req.packageValue =
+											 * json.getString("package");
+											 * req.sign =
+											 * json.getString("sign");
+											 * req.extData = "app data"; //
+											 * optional
+											 */
+											req.appId = json.getString("appid");
+											req.partnerId = json
+													.getString("partnerid");
+											req.prepayId = json
+													.getString("prepayid");
+											req.nonceStr = json
+													.getString("noncestr");
+											req.timeStamp = json
+													.getString("timestamp");
+											req.packageValue = json
+													.getString("package");
+											req.sign = json.getString("sign");
+											req.extData = "app data"; // optional
+
+											// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+
+											api.sendReq(req);
+										} else {
+											Log.d("PAY_GET",
+													"返回错误"
+															+ json.getString("retmsg"));
+											/*
+											 * Toast.makeText(ReChargeActivity.this
+											 * , "返回错误" +
+											 * json.getString("retmsg"),
+											 * Toast.LENGTH_SHORT).show();
+											 */
+										}
 									} else {
-										Log.d("PAY_GET",
-												"返回错误"
-														+ json.getString("retmsg"));
+										Log.d("PAY_GET", "服务器请求错误");
 										/*
 										 * Toast.makeText(ReChargeActivity.this,
-										 * "返回错误" + json.getString("retmsg"),
+										 * "服务器请求错误",
 										 * Toast.LENGTH_SHORT).show();
 										 */
 									}
-								} else {
-									Log.d("PAY_GET", "服务器请求错误");
+								} catch (Exception e) {
+									Log.e("PAY_GET", "异常：" + e.getMessage());
 									/*
 									 * Toast.makeText(ReChargeActivity.this,
-									 * "服务器请求错误", Toast.LENGTH_SHORT).show();
+									 * "异常：" + e.getMessage(),
+									 * Toast.LENGTH_SHORT) .show();
 									 */
 								}
-							} catch (Exception e) {
-								Log.e("PAY_GET", "异常：" + e.getMessage());
-								/*
-								 * Toast.makeText(ReChargeActivity.this, "异常：" +
-								 * e.getMessage(), Toast.LENGTH_SHORT) .show();
-								 */
+
 							}
+						}).start();
 
-						}
-					}).start();
-
+					}
+				} else {
+					Toast.makeText(getApplicationContext(), "请输入充值金额", 0)
+							.show();
+					chongzhi.setEnabled(true);
 				}
 			} else {
-				Toast.makeText(getApplicationContext(), "请输入充值金额", 0).show();
-				chongzhi.setEnabled(true);
-			}
 
+				Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
+
+			}
 			chongzhi.setEnabled(true);
 
 			break;
