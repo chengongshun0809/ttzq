@@ -22,6 +22,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -74,6 +77,29 @@ public class TradeFragment extends BaseFragment {
 
 	}
 
+	boolean isaliv = true;
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		// 判断当前页面是否联网
+		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (info != null && info.isAvailable()) {
+			isaliv = true;
+
+		} else {
+			isaliv = false;
+			Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+
+		}
+
+	}
+
 	private RelativeLayout btn_public;
 	private TextView tv_jin;
 	private TextView tv_deaTextView;
@@ -106,6 +132,7 @@ public class TradeFragment extends BaseFragment {
 	private LinearLayout ll_viewpager_home_frags;
 	@ViewInject(R.id.vp_home_fragment)
 	private ViewPager vp_home_fragment;
+
 	// 跑马灯
 	// @ViewInject(R.id.TextViewNotice)
 	// private zz.itcast.jiujinhui.view.AutoScrollTextView autoScrollTextView;
@@ -211,6 +238,7 @@ public class TradeFragment extends BaseFragment {
 	boolean stopThread = false;
 	private String maindgid;
 	private TextView tv_rate2;
+
 	@Override
 	public void initData() {
 		// 跑马灯
@@ -240,24 +268,23 @@ public class TradeFragment extends BaseFragment {
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
-							stopThread=true;
+							stopThread = true;
 							is.close();
 						}
 
 					} catch (Exception e) {
 						// TODO: handle exception
-					} finally{
-						if (is!=null) {
+					} finally {
+						if (is != null) {
 							try {
 								is.close();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}	
+							}
 						}
 					}
-				
-				
+
 				}
 			}
 		}).start();
@@ -295,27 +322,28 @@ public class TradeFragment extends BaseFragment {
 			// System.err.println(jsonObject.toString());
 			// 判断json是否传输成功
 			String success = jsonObject.getString("message");
-			//Log.e("sss", "是否成功:" + success);
+			// Log.e("sss", "是否成功:" + success);
 			// 置顶的酒金窖
 			String maindealgood = jsonObject.getString("maindealgood");
 			jsonObject2 = new JSONObject(maindealgood);
-			//Log.e("v", jsonObject2.getString("dgid"));
-          /* String dgid= jsonObject2.getString("dgid");
-           sp.edit().putString("dgid", dgid).commit();*/
+			// Log.e("v", jsonObject2.getString("dgid"));
+			/*
+			 * String dgid= jsonObject2.getString("dgid");
+			 * sp.edit().putString("dgid", dgid).commit();
+			 */
 			mainname = jsonObject2.getString("name");
 			opentime = jsonObject2.getString("subscribetime");
-			//maindgid = jsonObject2.getString("dgid");
-			//Log.e("vv", jsonObject2.getString("name"));
+			// maindgid = jsonObject2.getString("dgid");
+			// Log.e("vv", jsonObject2.getString("name"));
 			maingooddealprice = jsonObject2.getDouble("realprice");
 			maindealcode = jsonObject2.getString("dealcode");
 
 			mainstock = jsonObject2.getString("stock");
-			
-			
+
 			double mainrateint = jsonObject2.getDouble("rate");
 			DecimalFormat df = new DecimalFormat("#0.0");
-			mainrate=df.format(mainrateint);
-			
+			mainrate = df.format(mainrateint);
+
 			maingoodstate = jsonObject2.getString("state");
 
 			maindealterm = jsonObject2.getString("dealterm");
@@ -349,32 +377,37 @@ public class TradeFragment extends BaseFragment {
 			tv_name.setText(mainname);
 			tv_dealcode.setText(maindealcode);
 			tv_stock.setText(mainstock);
-            btn_public.setOnClickListener(new OnClickListener() {
-				
+			btn_public.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					LayoutInflater inflater = LayoutInflater.from(getActivity());
-					View openview = (View) inflater.inflate(R.layout.open_trade, null);
-					
-					
-					final AlertDialog builder = new AlertDialog.Builder(getActivity()).create();
+
+					LayoutInflater inflater = LayoutInflater
+							.from(getActivity());
+					View openview = (View) inflater.inflate(
+							R.layout.open_trade, null);
+
+					final AlertDialog builder = new AlertDialog.Builder(
+							getActivity()).create();
 					builder.setView(openview, 0, 0, 0, 0);
 					builder.setCancelable(false);
 					builder.show();
-					
-					RelativeLayout okLayout=(RelativeLayout) openview.findViewById(R.id.dialog_ok);
-					TextView opentimeview=(TextView) openview.findViewById(R.id.opentime);
+
+					RelativeLayout okLayout = (RelativeLayout) openview
+							.findViewById(R.id.dialog_ok);
+					TextView opentimeview = (TextView) openview
+							.findViewById(R.id.opentime);
 					opentimeview.setText(opentime);
 					okLayout.setOnClickListener(new OnClickListener() {
-						
+
 						@Override
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							builder.dismiss();
 						}
 					});
-					
+
 				}
 			});
 			btn_name.setText("我要认购");
@@ -425,7 +458,7 @@ public class TradeFragment extends BaseFragment {
 
 			btn_public.setVisibility(View.VISIBLE);
 			btn_public.setOnClickListener(new OnClickListener() {
-				
+
 				private String maingoodname;
 				private String dgid;
 
@@ -443,8 +476,9 @@ public class TradeFragment extends BaseFragment {
 					// TODO Auto-generated method stub
 					Boolean isLogined = sp.getBoolean("isLogined", false);
 					if (isLogined) {
-						Intent intent1 = new Intent(getActivity(),WoyaorengouActivity.class);
-						Bundle bundle=new Bundle();
+						Intent intent1 = new Intent(getActivity(),
+								WoyaorengouActivity.class);
+						Bundle bundle = new Bundle();
 						bundle.putString("name", maingoodname);
 						bundle.putString("dgid", dgid);
 						bundle.putString("maindealterm", maindealterm);
@@ -504,33 +538,41 @@ public class TradeFragment extends BaseFragment {
 
 				@Override
 				public void onClick(View v) {
+					if (isaliv == true) {
 
-					try {
-						dgid = jsonObject2.getString("dgid");
-						maingoodname = jsonObject2.getString("name");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						try {
+							dgid = jsonObject2.getString("dgid");
+							maingoodname = jsonObject2.getString("name");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
-					// TODO Auto-generated method stub
-					Boolean isLogined = sp.getBoolean("isLogined", false);
-					if (isLogined) {
-						Intent intent = new Intent(getActivity(),
-								TradeServiceActivity.class);
-						intent.putExtra("name", maingoodname);
-						intent.putExtra("dealdgid", dgid);
+						// TODO Auto-generated method stub
+						Boolean isLogined = sp.getBoolean("isLogined", false);
+						if (isLogined) {
+							Intent intent = new Intent(getActivity(),
+									TradeServiceActivity.class);
+							intent.putExtra("name", maingoodname);
+							intent.putExtra("dealdgid", dgid);
+
+							startActivity(intent);
+						} else {
+							Intent intent = new Intent(getActivity(),
+									LoginActivity.class);
+							startActivity(intent);
+						}
+
+					}else{
 						
-						startActivity(intent);
-					} else {
-						Intent intent = new Intent(getActivity(),
-								LoginActivity.class);
-						startActivity(intent);
+						Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
+						
 					}
 
 				}
 
 			});
+
 		}
 
 		for (int i = 0; i < length; i++) {
@@ -565,14 +607,14 @@ public class TradeFragment extends BaseFragment {
 				final String dealgoodname = jsonObject3.getString("name");
 				Log.e("vr", dealgoodname);
 				String goodsdealcode = jsonObject3.getString("dealcode");
-				double rate=jsonObject3.getDouble("rate");
-				
+				double rate = jsonObject3.getDouble("rate");
+
 				DecimalFormat df = new DecimalFormat("#0.0");
-				String nor_rate=df.format(rate);
+				String nor_rate = df.format(rate);
 				tv_rate2.setText(nor_rate);
-				
+
 				final String dgid = jsonObject3.getString("dgid");
-               sp.edit().putString("dgid", dgid).commit();
+				sp.edit().putString("dgid", dgid).commit();
 				Log.e("GD", dgid);
 				tv_name2.setText(dealgoodname);
 				dealcode.setText(goodsdealcode);
@@ -583,6 +625,11 @@ public class TradeFragment extends BaseFragment {
 					public void onClick(View v) {
 
 						// TODO Auto-generated method stub
+                             if(isaliv==true){
+                            	 
+                            	 
+                            
+						
 						Boolean isLogined = sp.getBoolean("isLogined", false);
 						if (isLogined) {
 							Intent intent = new Intent(getActivity(),
@@ -596,6 +643,12 @@ public class TradeFragment extends BaseFragment {
 							startActivity(intent);
 						}
 
+					}else{
+						
+						Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
+						
+					}
+                             
 					}
 
 				});
@@ -611,8 +664,6 @@ public class TradeFragment extends BaseFragment {
 
 	}
 
-	
-
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
@@ -625,20 +676,20 @@ public class TradeFragment extends BaseFragment {
 		return R.layout.frag_trade;
 
 	}
-   
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		super.onClick(v);
 	}
+
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread=false;
+		stopThread = false;
 		handler.removeMessages(0);
-        handler.removeMessages(1);
+		handler.removeMessages(1);
 	}
 
 }

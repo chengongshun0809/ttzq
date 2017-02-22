@@ -17,9 +17,9 @@ public class DateTest {
 	private static long nowtime;
         
 	@SuppressLint("SimpleDateFormat") 
-	public  boolean isNowDate(Date  date,Calendar cal ) {
+	public  boolean isNowDate(Date date,Calendar cal ) {
 		boolean flag=false;
-		//Date date = new Date();
+		
 		nowtime = date.getTime();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String now_time = sdf.format(date);
@@ -84,5 +84,6 @@ public class DateTest {
 
 		return flag;
 	}
+
 
 }

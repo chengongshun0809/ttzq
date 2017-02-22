@@ -28,9 +28,12 @@ import zz.itcast.jiujinhui.res.NetUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -165,6 +168,33 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
+	  boolean isaliv=true;
+      @Override
+    public void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+   
+    	
+		//判断当前页面是否联网
+		ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+		if(info!=null&&info.isAvailable()){
+			isaliv=true;
+			
+			
+		}else{
+			isaliv=false;
+			Toast.makeText(this,"无网络连接",Toast.LENGTH_SHORT).show();
+			
+		}
+			
+      
+      
+      }
+	
+      
+      
 	// 定义一个Handler对象
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -552,75 +582,124 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取系统当前时间
-
-			Date date = new Date();
-			Calendar cal = Calendar.getInstance();
-			Log.e("ssss", cal.get(Calendar.DAY_OF_WEEK) - 1+"");
-			DateTest dateTest = new DateTest();
-			boolean flag = dateTest.isNowDate(date,cal);
-			if (flag == true) {
-				// 符合交易时间
-				showBuyDialog();
-
-			} else {
-				LayoutInflater inflater = LayoutInflater.from(this);
-				View view = (View) inflater.inflate(R.layout.timeout_service,
-						null);
-				final AlertDialog.Builder builder = new AlertDialog.Builder(
-						this);
-				builder.setView(view);
-				builder.setCancelable(false);
-				dialog_NO = builder.show();
-
-				RelativeLayout haode = (RelativeLayout) view
-						.findViewById(R.id.haode);
-				haode.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) { // TODO Auto-generated
-						dialog_NO.dismiss();
-					}
-				});
-
+              ConnectivityManager connectivityManager=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+			if(info!=null&&info.isAvailable()){
+				isaliv=true;
+				
+				
+			}else{
+				isaliv=false;
+				
+				
 			}
+			if(isaliv==true){
+				
+				Date date = new Date();
+				Calendar cal = Calendar.getInstance();
+				
+				DateTest dateTest = new DateTest();
+				boolean flag = dateTest.isNowDate(date,cal);
+				if (flag == true) {
+					// 符合交易时间
+					showBuyDialog();
+
+				} else {
+					LayoutInflater inflater = LayoutInflater.from(this);
+					View view = (View) inflater.inflate(R.layout.timeout_service,
+							null);
+					final AlertDialog.Builder builder = new AlertDialog.Builder(
+							this);
+					builder.setView(view);
+					builder.setCancelable(false);
+					dialog_NO = builder.show();
+
+					RelativeLayout haode = (RelativeLayout) view
+							.findViewById(R.id.haode);
+					haode.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) { // TODO Auto-generated
+							dialog_NO.dismiss();
+						}
+					});
+
+				}
+				
+				
+			}else{
+				
+				Toast.makeText(this, "无网络连接", 0).show();
+				
+				
+			}
+			
+			
+			
 
 			break;
 		case R.id.rb_sale_service:
 
-			DateTest dateT = new DateTest();
-			Date date2 = new Date();
-			Calendar cal1 = Calendar.getInstance();
-			boolean flag1 = dateT.isNowDate(date2,cal1);
-			if (flag1 == true) {
-				// 符合交易时间
-				if (leftgoodassets > 0) {
-					showSaleDialog();
-				} else {
-					Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0", 0)
-							.show();
+			  ConnectivityManager connectivityManager_sale=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				
+				NetworkInfo info_sale=connectivityManager_sale.getActiveNetworkInfo();
+				if(info_sale!=null&&info_sale.isAvailable()){
+					isaliv=true;
+					
+					
+				}else{
+					isaliv=false;
+					
+					
 				}
-
-			} else {
-				LayoutInflater inflater = LayoutInflater.from(this);
-				View view = (View) inflater.inflate(R.layout.timeout_service,
-						null);
-				final AlertDialog builder = new AlertDialog.Builder(this)
-						.create();
-				builder.setView(view, 0, 0, 0, 0);
-				builder.setCancelable(false);
-				builder.show();
-
-				RelativeLayout haode = (RelativeLayout) view
-						.findViewById(R.id.haode);
-				haode.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) { // TODO Auto-generated
-						builder.dismiss();
+			if(isaliv==true){
+				DateTest dateT = new DateTest();
+				Date date2 = new Date();
+				Calendar cal1 = Calendar.getInstance();
+				
+			
+				boolean flag1 = dateT.isNowDate(date2,cal1);
+				if (flag1 == true) {
+					// 符合交易时间
+					if (leftgoodassets > 0) {
+						showSaleDialog();
+					} else {
+						Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0", 0)
+								.show();
 					}
-				});
 
+				} else {
+					LayoutInflater inflater = LayoutInflater.from(this);
+					View view = (View) inflater.inflate(R.layout.timeout_service,
+							null);
+					final AlertDialog builder = new AlertDialog.Builder(this)
+							.create();
+					builder.setView(view, 0, 0, 0, 0);
+					builder.setCancelable(false);
+					builder.show();
+
+					RelativeLayout haode = (RelativeLayout) view
+							.findViewById(R.id.haode);
+					haode.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) { // TODO Auto-generated
+							builder.dismiss();
+						}
+					});
+
+				}
+				
+				
+			}else{
+				
+				Toast.makeText(this, "无网络连接", 0).show();
+				
+				
 			}
+			
+			
 
 			break;
 
@@ -635,40 +714,64 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
-			DateTest datet = new DateTest();
-			Date date3 = new Date();
-			Calendar cal2 = Calendar.getInstance();
-			boolean flag2 = datet.isNowDate(date3,cal2);
-			if (flag2 == true) {
-				// 符合交易时间
-				if (leftgoodassets > 0) {
-					shouTransDialog();
-				} else {
-					Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0", 0)
-							.show();
+			  ConnectivityManager connectivityManager_trans=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				
+				NetworkInfo info_trans=connectivityManager_trans.getActiveNetworkInfo();
+				if(info_trans!=null&&info_trans.isAvailable()){
+					isaliv=true;
+					
+					
+				}else{
+					isaliv=false;
+					
+					
 				}
-
-			} else {
-				LayoutInflater inflater = LayoutInflater.from(this);
-				View view = (View) inflater.inflate(R.layout.timeout_service,
-						null);
-				final AlertDialog builder = new AlertDialog.Builder(this)
-						.create();
-				builder.setView(view, 0, 0, 0, 0);
-				builder.setCancelable(false);
-				builder.show();
-
-				RelativeLayout haode = (RelativeLayout) view
-						.findViewById(R.id.haode);
-				haode.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) { // TODO Auto-generated
-						builder.dismiss();
+			if(isaliv==true){
+				
+				DateTest datet = new DateTest();
+				Date date3 = new Date();
+				Calendar cal2 = Calendar.getInstance();
+				
+				
+				boolean flag2 = datet.isNowDate(date3,cal2);
+				if (flag2 == true) {
+					// 符合交易时间
+					if (leftgoodassets > 0) {
+						shouTransDialog();
+					} else {
+						Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0", 0)
+								.show();
 					}
-				});
 
+				} else {
+					LayoutInflater inflater = LayoutInflater.from(this);
+					View view = (View) inflater.inflate(R.layout.timeout_service,
+							null);
+					final AlertDialog builder = new AlertDialog.Builder(this)
+							.create();
+					builder.setView(view, 0, 0, 0, 0);
+					builder.setCancelable(false);
+					builder.show();
+
+					RelativeLayout haode = (RelativeLayout) view
+							.findViewById(R.id.haode);
+					haode.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) { // TODO Auto-generated
+							builder.dismiss();
+						}
+					});
+
+				}
+				
+			}else{
+				Toast.makeText(this, "无网络连接", 0).show();
+				
+				
 			}
+			
+			
 
 			break;
 		// 个人资产

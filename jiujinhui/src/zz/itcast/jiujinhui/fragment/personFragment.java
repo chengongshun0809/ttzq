@@ -16,23 +16,20 @@ import zz.itcast.jiujinhui.activity.DrinkRecordActivity;
 import zz.itcast.jiujinhui.activity.MyTiXianActivity;
 import zz.itcast.jiujinhui.activity.PerInfoActivity;
 import zz.itcast.jiujinhui.activity.ReChargeActivity;
-import zz.itcast.jiujinhui.activity.SmsNumberActivity;
 import zz.itcast.jiujinhui.activity.TiXianRecordActivity;
 import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -185,10 +182,10 @@ boolean stopThread = false;
 			e.printStackTrace();
 		}
 	}
-
+   
 	@Override
 	public void initData() {
-		
+	
 		
 		
 	}
@@ -196,6 +193,8 @@ boolean stopThread = false;
 
 	
 
+
+	
 
 	@Override
 	public int getLayoutResID() {
@@ -215,7 +214,33 @@ boolean stopThread = false;
 		
 
 	}
-
+	     boolean isaliv=true;
+              @Override
+            public void onResume() {
+            	// TODO Auto-generated method stub
+            	super.onResume();
+           
+            	
+				//判断当前页面是否联网
+				ConnectivityManager connectivityManager=(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+				
+				NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+				if(info!=null&&info.isAvailable()){
+					isaliv=true;
+					
+					
+				}else{
+					isaliv=false;
+					Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
+					
+				}
+					
+              
+              
+              }
+              
+              
+              
 	
 
 	@Override
@@ -261,41 +286,56 @@ boolean stopThread = false;
 						MyTiXianActivity.class);
 				startActivity(intent4);
 			}*/
-			DateTest date = new DateTest();
-			Date date2=new Date();
-			Calendar cal = Calendar.getInstance();
-			boolean flag2 = date.isNowDate(date2,cal);
-			if (flag2 == true) {
-				// 符合交易时间
-				Intent intent4 = new Intent(getActivity(),
-						MyTiXianActivity.class);
-				Bundle bundle=new Bundle();
-				bundle.putString("mobile", phonenum);
-				bundle.putString("money", df.format(income/100));
-				intent4.putExtras(bundle);
-				startActivity(intent4);
-
-			} else {
-				/*LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View view = (View) inflater.inflate(R.layout.timeout_tixian_person,
-						null);
-				final AlertDialog builder = new AlertDialog.Builder(getActivity())
-						.create();
-				builder.setView(view, 0, 0, 0, 0);
-				builder.setCancelable(false);
-				builder.show();
-				RelativeLayout haode =    (RelativeLayout) view
-						.findViewById(R.id.haode);
-				haode.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) { // TODO Auto-generated
-						builder.dismiss();
-					}
-				});*/
-				Toast.makeText(getActivity(), "非交易时间无法提现", 0).show();
-
+			ConnectivityManager connectivityManager=(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			NetworkInfo info=connectivityManager.getActiveNetworkInfo();
+			if(info!=null&&info.isAvailable()){
+				isaliv=true;
+				
+				
+			}else{
+				isaliv=false;
+				
+				
 			}
+				
+			
+			
+			
+			if(isaliv==true){
+				DateTest datet = new DateTest();
+				Date date3 = new Date();
+				Calendar cal2 = Calendar.getInstance();
+				
+				
+				boolean flag2 = datet.isNowDate(date3,cal2);
+				if (flag2 == true) {
+					// 符合交易时间
+					Intent intent4 = new Intent(getActivity(),
+							MyTiXianActivity.class);
+					Bundle bundle=new Bundle();
+					bundle.putString("mobile", phonenum);
+					bundle.putString("money", df.format(income/100));
+					intent4.putExtras(bundle);
+					startActivity(intent4);
+
+				} else {
+					
+					Toast.makeText(getActivity(), "非交易时间无法提现", 0).show();
+
+				}
+				
+				
+				
+			}else{
+				
+				Toast.makeText(getActivity(), "无网络连接", 0).show();
+				
+			}
+			
+			
+			
+		
 			
 			
 			
@@ -345,4 +385,14 @@ boolean stopThread = false;
 		stopThread=false;
 		handler.removeMessages(1);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
