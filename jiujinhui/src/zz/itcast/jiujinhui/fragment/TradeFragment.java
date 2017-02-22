@@ -538,6 +538,20 @@ public class TradeFragment extends BaseFragment {
 
 				@Override
 				public void onClick(View v) {
+					ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+							.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+					NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+					if (info != null && info.isAvailable()) {
+						isaliv = true;
+
+					} else {
+						isaliv = false;
+						Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+
+					}
+					
+					
 					if (isaliv == true) {
 
 						try {
@@ -625,7 +639,20 @@ public class TradeFragment extends BaseFragment {
 					public void onClick(View v) {
 
 						// TODO Auto-generated method stub
-                             if(isaliv==true){
+                        
+						ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+								.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+						NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+						if (info != null && info.isAvailable()) {
+							isaliv = true;
+
+						} else {
+							isaliv = false;
+							Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+
+						}
+						if(isaliv==true){
                             	 
                             	 
                             
