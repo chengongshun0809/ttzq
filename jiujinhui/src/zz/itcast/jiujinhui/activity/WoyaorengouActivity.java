@@ -382,6 +382,7 @@ public class WoyaorengouActivity extends BaseActivity {
 				}else {
 					Toast.makeText(getApplicationContext(), "最大认购量不能超过100", 0).show();
 					buy_count=100;
+					counTextView.setText(buy_count + "");
 				}
 				
 

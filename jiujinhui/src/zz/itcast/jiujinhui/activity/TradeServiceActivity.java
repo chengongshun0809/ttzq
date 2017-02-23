@@ -2,16 +2,12 @@ package zz.itcast.jiujinhui.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.security.auth.PrivateCredentialPermission;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,15 +17,14 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BuyChartFragment;
 import zz.itcast.jiujinhui.fragment.EveryDayTradeRecordFragment;
 import zz.itcast.jiujinhui.fragment.NowTradeRecoedFragment;
+import zz.itcast.jiujinhui.fragment.NowTradeStopRecoedFragment;
 import zz.itcast.jiujinhui.fragment.SaleChartFragment;
 import zz.itcast.jiujinhui.res.Arith;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -53,12 +48,10 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -341,12 +334,29 @@ public class TradeServiceActivity extends BaseActivity {
 		 * Log.e("nowtime", nowtmString);
 		 */
 		// TODO Auto-generated method stub
+		//判断当前页面是否联网
+			
+					
 		fragmentsList1 = new ArrayList<Fragment>();
-		fragmentsList1.add(new NowTradeRecoedFragment());
-		fragmentsList1.add(new EveryDayTradeRecordFragment());
+		
+		
+		
 		fragmentsList2 = new ArrayList<Fragment>();
 		fragmentsList2.add(new SaleChartFragment());
 		fragmentsList2.add(new BuyChartFragment());
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		
+		DateTest dateTest = new DateTest();
+		boolean flag = dateTest.isNowDate_nowtrade(date,cal);
+		if (flag == true) {
+			fragmentsList1.add(new NowTradeRecoedFragment());
+			
+		}else {
+			fragmentsList1.add(new NowTradeStopRecoedFragment());
+		}
+		
+		fragmentsList1.add(new EveryDayTradeRecordFragment());
 		trade_pager.setAdapter(new MypagerAdapter(getSupportFragmentManager(),
 				fragmentsList1));
 		buy_sale_pager.setAdapter(new MyBuySalepagerAdapter(
@@ -1371,9 +1381,13 @@ public class TradeServiceActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 
 				count_buy++;
-				product_ordsubmit_count.addTextChangedListener(textWatcher);
-				product_ordsubmit_count.setText(count_buy + "");
+			
+					product_ordsubmit_count.addTextChangedListener(textWatcher);
+					product_ordsubmit_count.setText(count_buy + "");
 
+				
+				
+				
 			}
 
 		});
