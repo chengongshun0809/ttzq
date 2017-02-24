@@ -161,33 +161,28 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
-	  boolean isaliv=true;
-      @Override
-    public void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-   
-    	
-		//判断当前页面是否联网
-		ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		NetworkInfo info=connectivityManager.getActiveNetworkInfo();
-		if(info!=null&&info.isAvailable()){
-			isaliv=true;
-			
-			
-		}else{
-			isaliv=false;
-			Toast.makeText(this,"无网络连接",Toast.LENGTH_SHORT).show();
-			
+	boolean isaliv = true;
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		// 判断当前页面是否联网
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (info != null && info.isAvailable()) {
+			isaliv = true;
+
+		} else {
+			isaliv = false;
+			Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
+
 		}
-			
-      
-      
-      }
-	
-      
-      
+
+	}
+
 	// 定义一个Handler对象
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -334,28 +329,16 @@ public class TradeServiceActivity extends BaseActivity {
 		 * Log.e("nowtime", nowtmString);
 		 */
 		// TODO Auto-generated method stub
-		//判断当前页面是否联网
-			
-					
+		// 判断当前页面是否联网
+
 		fragmentsList1 = new ArrayList<Fragment>();
-		
-		
-		
+
 		fragmentsList2 = new ArrayList<Fragment>();
 		fragmentsList2.add(new SaleChartFragment());
 		fragmentsList2.add(new BuyChartFragment());
-		Date date = new Date();
-		Calendar cal = Calendar.getInstance();
-		
-		DateTest dateTest = new DateTest();
-		boolean flag = dateTest.isNowDate_nowtrade(date,cal);
-		if (flag == true) {
-			fragmentsList1.add(new NowTradeRecoedFragment());
-			
-		}else {
-			fragmentsList1.add(new NowTradeStopRecoedFragment());
-		}
-		
+
+		fragmentsList1.add(new NowTradeRecoedFragment());
+
 		fragmentsList1.add(new EveryDayTradeRecordFragment());
 		trade_pager.setAdapter(new MypagerAdapter(getSupportFragmentManager(),
 				fragmentsList1));
@@ -447,7 +430,7 @@ public class TradeServiceActivity extends BaseActivity {
 			downaward = jsonObject2.getDouble("downaward");
 			// 今日涨跌
 
-			jsonArraylist = jsonObject.getJSONArray("todaydeal");
+			jsonArraylist = jsonObject.getJSONArray("dealprice");
 
 			Message message = new Message();
 			message.what = 1;
@@ -487,10 +470,20 @@ public class TradeServiceActivity extends BaseActivity {
 						+ totaloutmoney - totalbuy) / 100));
 		// 今日涨跌
 		try {
-			JSONObject object = (JSONObject) jsonArraylist.get(0);
-			double firstprice = object.getInt("price");
-			double today_zd = tradeprice - firstprice;
+
+			JSONObject object = (JSONObject) jsonArraylist.get(jsonArraylist
+					.length() - 1);
+			// 最后一个指导价
+			double lasttradeprice = object.getInt("realprice");
+
+			JSONObject object1 = (JSONObject) jsonArraylist.get(jsonArraylist
+					.length() - 2);
+			// 前一天的指导价
+			double endsecondtradeprice = object1.getInt("realprice");
+
+			double today_zd = lasttradeprice - endsecondtradeprice;
 			total_zd.setText(df.format(today_zd / 100));
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -592,33 +585,31 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取系统当前时间
-              ConnectivityManager connectivityManager=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			
-			NetworkInfo info=connectivityManager.getActiveNetworkInfo();
-			if(info!=null&&info.isAvailable()){
-				isaliv=true;
-				
-				
-			}else{
-				isaliv=false;
-				
-				
+			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+			if (info != null && info.isAvailable()) {
+				isaliv = true;
+
+			} else {
+				isaliv = false;
+
 			}
-			if(isaliv==true){
-				
+			if (isaliv == true) {
+
 				Date date = new Date();
 				Calendar cal = Calendar.getInstance();
-				
+
 				DateTest dateTest = new DateTest();
-				boolean flag = dateTest.isNowDate(date,cal);
+				boolean flag = dateTest.isNowDate(date, cal);
 				if (flag == true) {
 					// 符合交易时间
 					showBuyDialog();
 
 				} else {
 					LayoutInflater inflater = LayoutInflater.from(this);
-					View view = (View) inflater.inflate(R.layout.timeout_service,
-							null);
+					View view = (View) inflater.inflate(
+							R.layout.timeout_service, null);
 					final AlertDialog.Builder builder = new AlertDialog.Builder(
 							this);
 					builder.setView(view);
@@ -636,53 +627,46 @@ public class TradeServiceActivity extends BaseActivity {
 					});
 
 				}
-				
-				
-			}else{
-				
+
+			} else {
+
 				Toast.makeText(this, "无网络连接", 0).show();
-				
-				
+
 			}
-			
-			
-			
 
 			break;
 		case R.id.rb_sale_service:
 
-			  ConnectivityManager connectivityManager_sale=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				
-				NetworkInfo info_sale=connectivityManager_sale.getActiveNetworkInfo();
-				if(info_sale!=null&&info_sale.isAvailable()){
-					isaliv=true;
-					
-					
-				}else{
-					isaliv=false;
-					
-					
-				}
-			if(isaliv==true){
+			ConnectivityManager connectivityManager_sale = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			NetworkInfo info_sale = connectivityManager_sale
+					.getActiveNetworkInfo();
+			if (info_sale != null && info_sale.isAvailable()) {
+				isaliv = true;
+
+			} else {
+				isaliv = false;
+
+			}
+			if (isaliv == true) {
 				DateTest dateT = new DateTest();
 				Date date2 = new Date();
 				Calendar cal1 = Calendar.getInstance();
-				
-			
-				boolean flag1 = dateT.isNowDate(date2,cal1);
+
+				boolean flag1 = dateT.isNowDate(date2, cal1);
 				if (flag1 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
 						showSaleDialog();
 					} else {
-						Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0", 0)
-								.show();
+						Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0",
+								0).show();
 					}
 
 				} else {
 					LayoutInflater inflater = LayoutInflater.from(this);
-					View view = (View) inflater.inflate(R.layout.timeout_service,
-							null);
+					View view = (View) inflater.inflate(
+							R.layout.timeout_service, null);
 					final AlertDialog builder = new AlertDialog.Builder(this)
 							.create();
 					builder.setView(view, 0, 0, 0, 0);
@@ -700,16 +684,12 @@ public class TradeServiceActivity extends BaseActivity {
 					});
 
 				}
-				
-				
-			}else{
-				
+
+			} else {
+
 				Toast.makeText(this, "无网络连接", 0).show();
-				
-				
+
 			}
-			
-			
 
 			break;
 
@@ -724,39 +704,37 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
-			  ConnectivityManager connectivityManager_trans=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				
-				NetworkInfo info_trans=connectivityManager_trans.getActiveNetworkInfo();
-				if(info_trans!=null&&info_trans.isAvailable()){
-					isaliv=true;
-					
-					
-				}else{
-					isaliv=false;
-					
-					
-				}
-			if(isaliv==true){
-				
+			ConnectivityManager connectivityManager_trans = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			NetworkInfo info_trans = connectivityManager_trans
+					.getActiveNetworkInfo();
+			if (info_trans != null && info_trans.isAvailable()) {
+				isaliv = true;
+
+			} else {
+				isaliv = false;
+
+			}
+			if (isaliv == true) {
+
 				DateTest datet = new DateTest();
 				Date date3 = new Date();
 				Calendar cal2 = Calendar.getInstance();
-				
-				
-				boolean flag2 = datet.isNowDate(date3,cal2);
+
+				boolean flag2 = datet.isNowDate(date3, cal2);
 				if (flag2 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
 						shouTransDialog();
 					} else {
-						Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0", 0)
-								.show();
+						Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0",
+								0).show();
 					}
 
 				} else {
 					LayoutInflater inflater = LayoutInflater.from(this);
-					View view = (View) inflater.inflate(R.layout.timeout_service,
-							null);
+					View view = (View) inflater.inflate(
+							R.layout.timeout_service, null);
 					final AlertDialog builder = new AlertDialog.Builder(this)
 							.create();
 					builder.setView(view, 0, 0, 0, 0);
@@ -774,14 +752,11 @@ public class TradeServiceActivity extends BaseActivity {
 					});
 
 				}
-				
-			}else{
+
+			} else {
 				Toast.makeText(this, "无网络连接", 0).show();
-				
-				
+
 			}
-			
-			
 
 			break;
 		// 个人资产
@@ -858,7 +833,7 @@ public class TradeServiceActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(), "操作频繁", 0)
 								.show();
 					} else {
-						
+
 						new Thread(new Runnable() {
 
 							private InputStream iStream;
@@ -970,7 +945,7 @@ public class TradeServiceActivity extends BaseActivity {
 		builder2.setView(tihuoView);
 		builder2.setCancelable(false);
 		dialog0 = builder2.show();
-		tihuo_count=1;
+		tihuo_count = 1;
 		tihuoAdd.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1075,12 +1050,10 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-			
+
 				pricesale = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
 				count_sale = Integer.parseInt(count);
-				
-				
 
 				if (!TextUtils.isEmpty(pricesale)) {
 					double sale_price = Double.parseDouble(pricesale);
@@ -1100,7 +1073,7 @@ public class TradeServiceActivity extends BaseActivity {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-								
+
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
@@ -1127,7 +1100,7 @@ public class TradeServiceActivity extends BaseActivity {
 												String infojson = NetUtils
 														.readString(iStream);
 												parseJson_sale(infojson);
-											
+
 											}
 
 										} catch (Exception e) {
@@ -1155,7 +1128,7 @@ public class TradeServiceActivity extends BaseActivity {
 													infojson);
 											String s = jsonObject
 													.getString("message");
-											
+
 											if ("success".equals(s)) {
 												// 卖出成功
 												handler.sendEmptyMessage(7);
@@ -1230,7 +1203,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 
 		LayoutInflater inflater = LayoutInflater.from(this);
-		 View view = (View) inflater.inflate(R.layout.buy_service, null);
+		View view = (View) inflater.inflate(R.layout.buy_service, null);
 		// 增加
 		product_ordsubmit_count_sub = (ImageView) view
 				.findViewById(R.id.product_ordsubmit_count_sub);
@@ -1281,9 +1254,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-                    
-				
-				
+
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
@@ -1295,12 +1266,12 @@ public class TradeServiceActivity extends BaseActivity {
 					if (buyprice >= (buybackprice / 100)) {
 
 						if ((income / 100) >= total_price_double) {
-							
+
 							if (TradeServiceActivity.isSingle()) {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-								
+
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
@@ -1381,13 +1352,10 @@ public class TradeServiceActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 
 				count_buy++;
-			
-					product_ordsubmit_count.addTextChangedListener(textWatcher);
-					product_ordsubmit_count.setText(count_buy + "");
 
-				
-				
-				
+				product_ordsubmit_count.addTextChangedListener(textWatcher);
+				product_ordsubmit_count.setText(count_buy + "");
+
 			}
 
 		});

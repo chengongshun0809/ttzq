@@ -80,7 +80,7 @@
                  <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="原浆2011"
+                   android:text="原浆2012"
                      android:textColor="#999999"
                   android:layout_marginBottom="10dp"
                   android:layout_alignParentBottom="true"
@@ -141,7 +141,7 @@
                  <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="原浆2010"
+                   android:text="原浆2011"
                   android:layout_marginBottom="10dp"
                     android:textColor="#999999"
                   android:layout_alignParentBottom="true"
@@ -193,7 +193,7 @@
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="九年"
+                   android:text="十年"
                    android:textColor="#ff0000"
                    
                 android:layout_centerHorizontal="true"
@@ -225,7 +225,7 @@
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="675元/瓶"
+                   android:text="1690元/瓶"
                   
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"

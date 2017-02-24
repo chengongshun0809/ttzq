@@ -556,6 +556,7 @@ public class TradeFragment extends BaseFragment {
 
 						try {
 							dgid = jsonObject2.getString("dgid");
+							Log.e("main_dgid", dgid);
 							maingoodname = jsonObject2.getString("name");
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

@@ -3,6 +3,8 @@ package zz.itcast.jiujinhui.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -22,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,6 +35,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
@@ -43,6 +47,10 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	@ViewInject(R.id.line_chart)
 	private lecho.lib.hellocharts.view.LineChartView lineChart;
 
+	@ViewInject(R.id.tingpan_nodata)
+	private RelativeLayout tingpan_nodata;
+	
+	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -259,49 +267,66 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
-		new Thread(new Runnable() {
+		
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		DateTest dateTest = new DateTest();
+		boolean flag = dateTest.isNowDate_nowtrade(date, cal);
+		if (flag == true) {
+			new Thread(new Runnable() {
 
-			private InputStream iStream;
+				private InputStream iStream;
 
-			@Override
-			public void run() {
-				while (!stopThread) {
+				@Override
+				public void run() {
+					while (!stopThread) {
 
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
-					
-					try {
-						HttpsURLConnection connection = NetUtils
-								.httpsconnNoparm(url_serviceinfo, "POST");
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-						stopThread=true;
+						String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+								+ unionid + "&dgid=" + dgid;
+						
+						try {
+							HttpsURLConnection connection = NetUtils
+									.httpsconnNoparm(url_serviceinfo, "POST");
+							int code = connection.getResponseCode();
+							if (code == 200) {
+								iStream = connection.getInputStream();
+								String infojson = NetUtils.readString(iStream);
+								JSONObject jsonObject = new JSONObject(infojson);
+								// Log.e("ssssssssss", jsonObject.toString());
+								parseJson(jsonObject);
+							stopThread=true;
 
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
+
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} finally {
+							if (iStream != null) {
+								try {
+									iStream.close();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+
 						}
 
 					}
-
 				}
-			}
-		}).start();
+			}).start();
+			
+			
+			
+		}else {
+			
+			//停盘时间，数据为空
+			lineChart.setVisibility(View.GONE);
+			tingpan_nodata.setVisibility(View.VISIBLE);
+			
+		}
+		
 		
 		
 	}
@@ -310,7 +335,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void initListener() {
 		// TODO Auto-generated method stub
 
-		mPointValues.clear();
+		//mPointValues.clear();
 		
 	}
 

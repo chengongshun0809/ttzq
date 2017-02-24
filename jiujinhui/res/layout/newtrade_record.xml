@@ -15,5 +15,25 @@
         android:layout_height="fill_parent"
         >
     </lecho.lib.hellocharts.view.LineChartView>
+    
+    
+     <RelativeLayout
+         android:id="@+id/tingpan_nodata"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+         android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="停盘时间，暂无数据!"
+            android:textColor="#808080" />
+    </RelativeLayout>
+    
+    
+    
+    
 
 </LinearLayout>

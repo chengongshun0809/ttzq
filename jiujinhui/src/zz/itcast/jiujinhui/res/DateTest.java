@@ -35,7 +35,7 @@ public class DateTest {
 		String timeEnd3 = nyr + "22:00";
 
 		String start4 = nyr + "22:10";
-		String timeEnd4 = nyr + "23:00";
+		String timeEnd4 = nyr + "23:30";
 		try {
 			long start11 = sdf.parse(start1).getTime();
 			long timeEnd11 = sdf.parse(timeEnd1).getTime();
@@ -111,8 +111,8 @@ public class DateTest {
 		String start3 = nyr + "20:30";
 		String timeEnd3 = nyr + "22:00";
 
-		String start4 = nyr + "10:02";
-		String timeEnd4 = nyr + "23:00";
+		String start4 = nyr + "22:02";
+		String timeEnd4 = nyr + "24:00";
 		try {
 			long start11 = sdf.parse(start1).getTime();
 			long timeEnd11 = sdf.parse(timeEnd1).getTime();
