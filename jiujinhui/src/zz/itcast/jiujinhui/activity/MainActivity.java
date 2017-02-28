@@ -9,6 +9,7 @@ import zz.itcast.jiujinhui.fragment.NoLoginPersonFragment;
 import zz.itcast.jiujinhui.fragment.TradeFragment;
 import zz.itcast.jiujinhui.fragment.helpFragment;
 import zz.itcast.jiujinhui.fragment.personFragment;
+import zz.itcast.jiujinhui.res.ActivityCollector;
 import zz.itcast.jiujinhui.res.ToastUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity {
 				secondTime = System.currentTimeMillis();
 				if (secondTime - firstTime < 2000) {
 					// 两次点击时间间隔小于2s
-					
+					ActivityCollector.finishAll();
 					finish();
 				} else {
 					// 两次点击时间间隔大于2s

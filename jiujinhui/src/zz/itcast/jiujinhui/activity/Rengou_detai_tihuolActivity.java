@@ -48,7 +48,11 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
+				loading_dialog.dismiss();
 				Toast.makeText(getApplicationContext(), "恭喜您提货成功", 0).show();
+				
+				
+				
 				finish();
 				break;
 			case 1:
@@ -82,12 +86,16 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 		quxiao.setOnClickListener(this);
 		tv_back.setOnClickListener(this);
 	}
-
-	@Override
+	
+	
+	private Dialog loading_dialog = null;
+		@Override
 	public void initView() {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("提货");
+		
+	
 	}
 
 	@Override
@@ -106,7 +114,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			
 			addressString = et_address.getText().toString().trim();
 			if (!TextUtils.isEmpty(addressString)) {
-				
+				loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(Rengou_detai_tihuolActivity.this, "加载中...");
 				new Thread(new Runnable() {
 
 					private InputStream iStream;

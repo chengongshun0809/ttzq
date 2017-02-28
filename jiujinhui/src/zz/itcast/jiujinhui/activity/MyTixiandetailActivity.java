@@ -107,7 +107,7 @@ private RelativeLayout tixian_jieguo;
 			tixian_jieguo.setVisibility(View.GONE);
 			shuoming.setVisibility(View.VISIBLE);
 			shuodetail.setText("  提现处理中，请耐心等待...");
-			shuodetail.setTextColor(Color.YELLOW);
+			shuodetail.setTextColor(Color.BLUE);
 		}
 
 	}

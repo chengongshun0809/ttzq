@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -36,6 +37,7 @@ public class RengouSuccessActivity extends BaseActivity {
     	super.onClick(v);
     	switch (v.getId()) {
 		case R.id.wancheng:
+			Toast.makeText(getApplicationContext(), "恭喜您，认购成功", 0).show();
 			finish();
 			break;
 

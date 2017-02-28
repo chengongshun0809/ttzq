@@ -74,6 +74,8 @@ public class TixianSuccessActivity extends BaseActivity {
 			startActivity(intent);
 			Toast.makeText(getApplicationContext(), "提现申请成功", 0)
 			.show();
+			
+			
 			break;
 		default:
 			break;

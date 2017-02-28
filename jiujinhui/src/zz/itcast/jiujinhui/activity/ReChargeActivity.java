@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.Util;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -78,7 +79,7 @@ public class ReChargeActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		return R.layout.recharge_activity;
 	}
-
+	
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
@@ -89,7 +90,7 @@ public class ReChargeActivity extends BaseActivity {
 		// 此方法不完善，等绑定手机号后自动获取绑定的手机号
 		String pnumber = sp.getString("mobile", null);
 		phonenumber.setText(pnumber);
-
+		
 		sp = getSharedPreferences("user", 0);
 		String headimgurl = sp.getString("headimg", null);
 		Picasso.with(this).load(headimgurl).into(circleImabeView);

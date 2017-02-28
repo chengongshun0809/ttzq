@@ -15,6 +15,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,7 +82,7 @@ public class MyTiXianActivity extends BaseActivity {
 		wine_money.setText(incomeString);
 
 	}
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
@@ -91,7 +92,7 @@ public class MyTiXianActivity extends BaseActivity {
 		sp = getSharedPreferences("user", 0);
 		nameEditText.addTextChangedListener(textWatcher);
 		countEditText.addTextChangedListener(textWatcher);
-
+		
 		woyaotixian.setVisibility(View.GONE);
 		woyaotixian_hui.setVisibility(View.VISIBLE);
 
@@ -210,7 +211,7 @@ public class MyTiXianActivity extends BaseActivity {
 			if (isaliv == true) {
 
 				woyaotixian.setEnabled(false);
-
+				loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(MyTiXianActivity.this, "加载中...");
 				new Thread(new Runnable() {
 
 					private InputStream is;
@@ -294,6 +295,7 @@ public class MyTiXianActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
+				loading_dialog.dismiss();
 				DecimalFormat df = new DecimalFormat("#0.00");
 				Intent intent = new Intent(MyTiXianActivity.this,
 						TixianSuccessActivity.class);
@@ -303,7 +305,7 @@ public class MyTiXianActivity extends BaseActivity {
 				bundle.putString("shouxufei", df.format(ticount * 0.006));
 				intent.putExtras(bundle);
 				startActivity(intent);
-
+                 finish();
 				break;
 
 			default:
