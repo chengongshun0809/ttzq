@@ -448,6 +448,7 @@ public class WoyaorengouActivity extends BaseActivity {
 				Log.e("zhzh", price.getText().toString().trim());
 				if ((jiubiString / 100) >= priceDouble) {
 					// 继续购买
+					builder.dismiss();
 					loading_dialog.show();
 					new Thread(new Runnable() {
 

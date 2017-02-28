@@ -29,7 +29,7 @@ public class DateTest {
 		String timeEnd1 = nyr + "11:30";
 
 		String start2 = nyr + "13:30";
-		String timeEnd2 = nyr + "18:00";
+		String timeEnd2 = nyr + "18:50";
 
 		String start3 = nyr + "20:30";
 		String timeEnd3 = nyr + "22:00";

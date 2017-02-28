@@ -174,12 +174,13 @@ public class TradeServiceActivity extends BaseActivity {
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
 			isaliv = true;
-
+               
 		} else {
 			isaliv = false;
 			Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
 
 		}
+		
 
 	}
 
@@ -199,7 +200,8 @@ public class TradeServiceActivity extends BaseActivity {
 				// hscrollview.invalidate();
 				break;
 			case 3:
-				dialog_buy.dismiss();
+				loading_dialog.dismiss();
+				
 				Toast.makeText(getApplicationContext(), "恭喜您买入成功", 0).show();
 				break;
 			case 4:
@@ -207,7 +209,12 @@ public class TradeServiceActivity extends BaseActivity {
 				Toast.makeText(getApplicationContext(), "买入失败，请重新买入", 0).show();
 				break;
 			case 5:
-				dialog1.dismiss();
+				
+				loading_dialog.dismiss();
+				
+				
+				initData();
+				
 				Toast.makeText(getApplicationContext(), "您已转让成功", 0).show();
 				break;
 			case 6:
@@ -215,7 +222,8 @@ public class TradeServiceActivity extends BaseActivity {
 				Toast.makeText(getApplicationContext(), "转让失败", 0).show();
 				break;
 			case 7:
-				dialog.dismiss();
+				loading_dialog.dismiss();
+				
 				Toast.makeText(getApplicationContext(), "恭喜您卖出成功", 0).show();
 				break;
 			case 8:
@@ -266,6 +274,7 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.sendEmptyMessageDelayed(2, 3000);
 	}
 
+	
 	// 当前滚动距离
 	int currentX = 0;
 	private Dialog loading_dialog = null;
@@ -835,7 +844,8 @@ public class TradeServiceActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(), "操作频繁", 0)
 								.show();
 					} else {
-
+						dialog1.dismiss();
+						loading_dialog.show();
 						new Thread(new Runnable() {
 
 							private InputStream iStream;
@@ -990,7 +1000,7 @@ public class TradeServiceActivity extends BaseActivity {
 					bundle.putString("ddid", ddid);
 					intent.putExtras(bundle);
 					startActivity(intent);
-
+                  
 				} else {
 					Toast.makeText(getApplicationContext(), "提货的数量不能大于剩余资产", 0)
 							.show();
@@ -1075,7 +1085,8 @@ public class TradeServiceActivity extends BaseActivity {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-
+								dialog.dismiss();
+								loading_dialog.show();
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
@@ -1273,7 +1284,8 @@ public class TradeServiceActivity extends BaseActivity {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-
+								dialog_buy.dismiss();
+								loading_dialog.show();
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
