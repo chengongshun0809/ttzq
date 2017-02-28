@@ -10,11 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -32,8 +34,8 @@ public class ZongZiChanActivity extends BaseActivity {
 	private ImageView tv_back;
 	@ViewInject(R.id.tv__title)
 	private TextView tv__title;
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	/*@ViewInject(R.id.Rl_jindu)
+	private RelativeLayout Rl_jindu;*/
 	@ViewInject(R.id.ll_content)
 	private LinearLayout ll_content;
 	boolean stopThread = false;
@@ -94,7 +96,9 @@ public class ZongZiChanActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 		switch (msg.what) {
 		case 1:
-			Rl_jindu.setVisibility(View.GONE);
+			/*Rl_jindu.setVisibility(View.GONE);*/
+			loading_dialog.dismiss();
+			
 			UpdateUI();
 			break;
 
@@ -217,7 +221,7 @@ public class ZongZiChanActivity extends BaseActivity {
 		tv_back.setOnClickListener(this);
 		inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
@@ -225,8 +229,9 @@ public class ZongZiChanActivity extends BaseActivity {
 		tv__title.setText("个人资产");
 		sp = getSharedPreferences("user", 0);
 		unionidString = sp.getString("unionid", null);
-		Rl_jindu.setVisibility(View.VISIBLE);
-
+		/*Rl_jindu.setVisibility(View.VISIBLE);
+*/
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(ZongZiChanActivity.this, "加载中...");
 	}
 
 	@Override
@@ -234,6 +239,7 @@ public class ZongZiChanActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.tv_back:
+			loading_dialog.dismiss();
            finish();
 			break;
 

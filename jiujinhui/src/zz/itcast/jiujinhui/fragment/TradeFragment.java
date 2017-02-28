@@ -16,9 +16,11 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.activity.LoginActivity;
 import zz.itcast.jiujinhui.activity.TradeServiceActivity;
 import zz.itcast.jiujinhui.activity.WoyaorengouActivity;
+import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,14 +66,14 @@ public class TradeFragment extends BaseFragment {
 	private TextView tv_lirengou;
 	private TextView tv_tian;
 	private SharedPreferences sp;
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this, view);
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
-
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 		initViewPager();
 		sp = getActivity().getSharedPreferences("user", 0);
 
@@ -214,6 +216,7 @@ public class TradeFragment extends BaseFragment {
 				updateViewPager();
 				break;
 			case 1:
+				loading_dialog.dismiss();
 				UpdateUI();
 				break;
 			default:

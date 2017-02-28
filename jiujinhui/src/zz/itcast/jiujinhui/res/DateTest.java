@@ -111,8 +111,7 @@ public class DateTest {
 		String start3 = nyr + "20:30";
 		String timeEnd3 = nyr + "22:00";
 
-		String start4 = nyr + "22:02";
-		String timeEnd4 = nyr + "24:00";
+	
 		try {
 			long start11 = sdf.parse(start1).getTime();
 			long timeEnd11 = sdf.parse(timeEnd1).getTime();
@@ -123,8 +122,7 @@ public class DateTest {
 			long start33 = sdf.parse(start3).getTime();
 			long timeEnd33 = sdf.parse(timeEnd3).getTime();
 
-			long start44 = sdf.parse(start4).getTime();
-			long timeEnd44 = sdf.parse(timeEnd4).getTime();
+			
 			// 判断是周几
 
 			// cal.setTime(date);

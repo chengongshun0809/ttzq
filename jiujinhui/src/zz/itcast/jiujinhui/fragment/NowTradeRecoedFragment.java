@@ -49,14 +49,11 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 	@ViewInject(R.id.tingpan_nodata)
 	private RelativeLayout tingpan_nodata;
-	
-	
+
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			
-			
-			
+
 			case 1:
 				UpdateUI();
 
@@ -79,7 +76,6 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		sp = getActivity().getSharedPreferences("user", 0);
-		
 
 		ViewUtils.inject(this, view);
 	}
@@ -87,8 +83,9 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	private double nowprice;
 	private String nowcreatetime;
 	// private LineChartView lineChartView;
-	private List<PointValue> mPointValues = new ArrayList<PointValue>();
-	private List<AxisValue> axisValuesX = new ArrayList<AxisValue>();
+	private List<PointValue> mPointValues = new ArrayList<PointValue>();// 节点数据集合
+	private List<AxisValue> axisValuesX = new ArrayList<AxisValue>();// 定义X轴刻度值的数据集合
+	ArrayList<AxisValue> axisValuesY = new ArrayList<AxisValue>();// 定义Y轴刻度值的数据集合
 
 	// 画图表
 	protected void UpdateUI() {
@@ -97,14 +94,13 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
 
 		
-   handler.sendEmptyMessage(2);
+		handler.sendEmptyMessage(2);
 	}
 
 	private void initLineChart() {
-		
-		
+
 		line = new Line(mPointValues);
-		
+
 		List<Line> lines = new ArrayList<Line>();
 		line.setShape(ValueShape.CIRCLE);// 折线图上每个数据点的形状 这里是圆形 （有三种
 											// ：ValueShape.SQUARE
@@ -118,7 +114,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 		// line.setPointRadius(3);
 		line.setHasLabels(false);
-		//line.setHasLabelsOnlyForSelected(true);
+		// line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
 		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
 		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
@@ -126,7 +122,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// 圆点半径
 		// line.setPointRadius(2);
 		line.setStrokeWidth(1);// 设置折线宽度
-        line.setHasLabelsOnlyForSelected(true);
+		line.setHasLabelsOnlyForSelected(true);
 		lines.add(line);
 		LineChartData data = new LineChartData();
 		data.setLines(lines);
@@ -139,7 +135,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		axisX.setTextColor(Color.GRAY); // 设置字体颜色
 		axisX.setName("实时详情数据"); // 表格名称
 		axisX.setTextSize(10);// 设置字体大小
-		axisX.setHasSeparationLine(true);//设置是否有分割线
+		axisX.setHasSeparationLine(true);// 设置是否有分割线
 		axisX.setMaxLabelChars(10); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
 		axisX.setValues(axisValuesX); // 填充X轴的坐标值
 		data.setAxisXBottom(axisX); // x 轴在底部
@@ -149,7 +145,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
 		Axis axisY = new Axis().setHasLines(true); // Y轴
 		axisY.setName("价格");// y轴标注
-           axisY.setHasLines(true);
+		axisY.setHasLines(true);
 		axisY.setTextSize(10);// 设置字体大小
 		axisY.setMaxLabelChars(4);
 		data.setAxisYLeft(axisY); // Y轴设置在左边
@@ -158,21 +154,22 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// 设置行为属性，支持缩放、滑动以及平移
 		lineChart.setInteractive(false);
 		lineChart.setZoomEnabled(false);
-		 /*lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
-		 lineChart.setMaxZoom((float) 4);//最大方法比例
-*/
+		/*
+		 * lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
+		 * lineChart.setMaxZoom((float) 4);//最大方法比例
+		 */
 		lineChart.setLineChartData(data);
-        // lineChart.setInteractive(true);
+		// lineChart.setInteractive(true);
 		lineChart.setValueSelectionEnabled(true);
-		
+
 		lineChart.setValueTouchEnabled(true);
 		lineChart.setVisibility(View.VISIBLE);
 		// lineChart.startDataAnimation();
 		// 折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
 		lineChart.setViewportCalculationEnabled(false);
-		 Animation animation = new AlphaAnimation(0.3f, 1.0f);
-	        animation.setDuration(2000);
-	        lineChart.startAnimation(animation);
+		Animation animation = new AlphaAnimation(0.3f, 1.0f);
+		animation.setDuration(2000);
+		lineChart.startAnimation(animation);
 		/*
 		 * lineChart.setViewportCalculationEnabled(false); Viewport v = new
 		 * Viewport(lineChart.getMaximumViewport()); v.left = 0; v.right = 5;
@@ -183,12 +180,6 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		 * lineChart.setCurrentViewport(port);
 		 * lineChart.setMaximumViewport(port);
 		 */
-	
-		
-		
-		
-		
-		
 
 	}
 
@@ -201,9 +192,11 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			// axisValuesY.add(new
 			// AxisValue(i).setValue(firstpriceList.get(i)));// 添加Y轴显示的刻度值
 
-		}
+}
 
 	}
+
+	
 
 	public static List<String> timeList;
 	public static List<Float> priceList;
@@ -215,7 +208,6 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	private String stateString;
 	private Line line;
 
-
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		// 交易曲线
@@ -225,27 +217,34 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			priceList = new ArrayList<Float>();
 			firsttimeList = new ArrayList<String>();
 			firstpriceList = new ArrayList<Float>();
-			JSONObject object2 = (JSONObject) jsonArraylist.get(0);
+			/*JSONObject object2 = (JSONObject) jsonArraylist.get(0);
 			// 初始指导价的值时间
 			double firstprice = object2.getDouble("price");
 			String firsttime = object2.getString("createtime");
 			firstpriceList.add((float) (firstprice / 100));
-			firsttimeList.add(firsttime.substring(10, 16));
-			for (int i = 1; i < jsonArraylist.length(); i++) {
+			firsttimeList.add(firsttime.substring(10, 16));*/
+			
+			for (int i = 0; i < jsonArraylist.length(); i++) {
 				JSONObject object = (JSONObject) jsonArraylist.get(i);
 
 				stateString = object.getString("state");
 				// timeList.add(nowcreatetime.substring(10,16));
-
-				if ("0".equals(stateString)) {
+                   
+				
 
 					nowprice = object.getDouble("price");
-					nowcreatetime = object.getString("createtime");
-					timeList.add(nowcreatetime.substring(10, 16));
-					priceList.add((float) (nowprice / 100));
-				}
+					if (nowprice!=-1) {
+						
+						nowcreatetime = object.getString("createtime");
+						timeList.add(nowcreatetime.substring(10, 16));
+						priceList.add((float) (nowprice / 100));
+					}
+					
+					
+}
+				
 
-			}
+			
 			firstpriceList.addAll(priceList);
 
 			firsttimeList.addAll(timeList);
@@ -267,7 +266,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
-		
+
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
 		DateTest dateTest = new DateTest();
@@ -283,7 +282,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 						String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 								+ unionid + "&dgid=" + dgid;
-						
+
 						try {
 							HttpsURLConnection connection = NetUtils
 									.httpsconnNoparm(url_serviceinfo, "POST");
@@ -294,7 +293,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 								JSONObject jsonObject = new JSONObject(infojson);
 								// Log.e("ssssssssss", jsonObject.toString());
 								parseJson(jsonObject);
-							stopThread=true;
+								stopThread = true;
 
 							}
 
@@ -316,27 +315,23 @@ public class NowTradeRecoedFragment extends BaseFragment {
 					}
 				}
 			}).start();
-			
-			
-			
-		}else {
-			
-			//停盘时间，数据为空
+
+		} else {
+
+			// 停盘时间，数据为空
 			lineChart.setVisibility(View.GONE);
 			tingpan_nodata.setVisibility(View.VISIBLE);
-			
+
 		}
-		
-		
-		
+
 	}
 
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
 
-		//mPointValues.clear();
-		
+		// mPointValues.clear();
+
 	}
 
 	@Override

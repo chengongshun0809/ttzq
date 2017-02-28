@@ -58,7 +58,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 public class TradeServiceActivity extends BaseActivity {
 	@ViewInject(R.id.scrollview)
 	private zz.itcast.jiujinhui.view.MyScrollView scrollview;
-
+	
 	// 买入
 	@ViewInject(R.id.rb_buy_service)
 	private LinearLayout rb_buy_service;
@@ -162,7 +162,7 @@ public class TradeServiceActivity extends BaseActivity {
 	}
 
 	boolean isaliv = true;
-
+	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
@@ -189,6 +189,7 @@ public class TradeServiceActivity extends BaseActivity {
 			switch (msg.what) {
 
 			case 1:
+				
 				UpdateUI();
 				scrollview.invalidate();// 定时刷新
 				break;
@@ -269,7 +270,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 	@Override
 	public void initView() {
-
+		
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");

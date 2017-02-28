@@ -7,12 +7,14 @@
 
     <include layout="@layout/layout_base_title" />
 
+    
+
     <zz.itcast.jiujinhui.view.MyScrollView
         android:id="@+id/scrollview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:onClick="true"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:onClick="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -426,7 +428,6 @@
                             android:orientation="horizontal" >
 
                             <TextView
-                                
                                 android:id="@+id/buying"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -611,7 +612,8 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="6dp"
                         android:background="#cccccc" />
-<LinearLayout
+
+                    <LinearLayout
                         android:id="@+id/ll_scroll"
                         android:layout_width="107dp"
                         android:layout_height="fill_parent"
@@ -653,12 +655,14 @@
                                 android:textSize="14sp" />
                         </RelativeLayout>
                     </LinearLayout>
-                      <View
+
+                    <View
                         android:layout_width="1dp"
                         android:layout_height="fill_parent"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="6dp"
                         android:background="#cccccc" />
+
                     <LinearLayout
                         android:layout_width="107dp"
                         android:layout_height="fill_parent"
@@ -789,9 +793,9 @@
             android:orientation="vertical" >
 
             <ImageView
-               android:layout_marginTop="3dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/bar_buy" />
 
             <TextView
@@ -799,8 +803,9 @@
                 android:layout_height="wrap_content"
                 android:text="买入"
                 android:textSize="11sp" />
-      </LinearLayout>
-            <LinearLayout
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/rb_sale_service"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -809,9 +814,9 @@
             android:orientation="vertical" >
 
             <ImageView
-               android:layout_marginTop="3dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/bar_sale" />
 
             <TextView
@@ -819,9 +824,9 @@
                 android:layout_height="wrap_content"
                 android:text="卖出"
                 android:textSize="11sp" />
-      </LinearLayout>
+        </LinearLayout>
 
-             <LinearLayout
+        <LinearLayout
             android:id="@+id/rb_tihuo_service"
             android:layout_width="dp"
             android:layout_height="wrap_content"
@@ -830,18 +835,19 @@
             android:orientation="vertical" >
 
             <ImageView
-               android:layout_marginTop="3dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/bar_tihuo" />
 
             <TextView
-                android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="提货"
                 android:textSize="11sp" />
-      </LinearLayout>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/rb_zhuanrang_service"
             android:layout_width="0dp"
@@ -851,7 +857,6 @@
             android:orientation="vertical" >
 
             <ImageView
-                 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/bar_trans" />
@@ -861,8 +866,7 @@
                 android:layout_height="wrap_content"
                 android:text="转让"
                 android:textSize="11sp" />
-      </LinearLayout>
-
-            </LinearLayout>
-         
         </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

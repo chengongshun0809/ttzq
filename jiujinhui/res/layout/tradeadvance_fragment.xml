@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:id="@+id/Rl_jindu_chong"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
@@ -24,7 +24,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="正在加载，请等候..." />
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     <ListView
         android:id="@+id/cominglistview_recharge"

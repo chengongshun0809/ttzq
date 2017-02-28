@@ -13,29 +13,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.bean.Income;
-import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment.MyAdapter;
-import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment.ViewHolder;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
+
 public class drinkzhichuFragment extends BaseFragment {
 	@ViewInject(R.id.Rl_jindu_zhichu)
-	private RelativeLayout Rl_jindu;
+	private LinearLayout Rl_jindu;
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
 

@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.TradeAdvanceFragment.ListViewAdapter;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -40,8 +41,8 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class TradeTihuoFragment extends BaseFragment {
 
-	@ViewInject(R.id.Rl_jindu_tihuo)
-	private RelativeLayout Rl_jindu;
+	/*@ViewInject(R.id.Rl_jindu_tihuo)
+	private RelativeLayout Rl_jindu;*/
 	@ViewInject(R.id.colistview)
 	private ListView listview;
 	@ViewInject(R.id.tv_null_tihuo)
@@ -60,7 +61,9 @@ public class TradeTihuoFragment extends BaseFragment {
 
 			switch (msg.what) {
 			case 1:
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				
+				loading_dialog.dismiss();
 				tv_null.setVisibility(View.GONE);
 				adapter = new ListViewAdapter(list);
 				adapter.appendData(orderlist);// 追加数据
@@ -128,7 +131,8 @@ public class TradeTihuoFragment extends BaseFragment {
 				});
 				break;
 			case 2:
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
@@ -365,14 +369,15 @@ public class TradeTihuoFragment extends BaseFragment {
 		orderlist = new ArrayList<Map<String, Object>>();
 
 	}
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView(View view) {
 		// TODO Afuto-generated method stub
 		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
-		Rl_jindu.setVisibility(View.VISIBLE);
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		//Rl_jindu.setVisibility(View.VISIBLE);
 		tv_null.setVisibility(View.GONE);
 		list = new ArrayList<Map<String, Object>>();
 		inflater = getActivity().getLayoutInflater();

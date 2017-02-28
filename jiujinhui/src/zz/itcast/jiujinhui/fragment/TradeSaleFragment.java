@@ -28,6 +28,7 @@ import zz.itcast.jiujinhui.fragment.TradeBuyFragment.ListViewAdapter;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.R.integer;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,8 +52,8 @@ import android.widget.AbsListView.OnScrollListener;
 
 public class TradeSaleFragment extends BaseFragment {
 
-	@ViewInject(R.id.Rl_jindu_sale)
-	private RelativeLayout Rl_jindu;
+/*	@ViewInject(R.id.Rl_jindu_sale)
+	private RelativeLayout Rl_jindu;*/
 	@ViewInject(R.id.cominglistview_sale)
 	private ListView listview;
 
@@ -72,8 +73,8 @@ public class TradeSaleFragment extends BaseFragment {
 			switch (msg.what) {
 			case 1:
 
-				Rl_jindu.setVisibility(View.GONE);
-
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
 				adapter = new ListViewAdapter(list);
 				adapter.appendData(orderlist);// 追加数据
 				footer = (LinearLayout) inflater.inflate(R.layout.load_more,
@@ -140,7 +141,9 @@ public class TradeSaleFragment extends BaseFragment {
 				});
 				break;
 			case 2:
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
+				
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
@@ -554,14 +557,16 @@ public class TradeSaleFragment extends BaseFragment {
 	}
 
 	// private View loadmoreview;
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView(View view) {
 		// TODO Afuto-generated method stub
 		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
-		Rl_jindu.setVisibility(View.VISIBLE);
+		
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		//Rl_jindu.setVisibility(View.VISIBLE);
 		tv_null.setVisibility(View.GONE);
 		orderlist = new ArrayList<Map<String, Object>>();
 		list = new ArrayList<Map<String, Object>>();

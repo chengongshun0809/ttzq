@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 
 	
 	@ViewInject(R.id.Rl_jindu_shouru)
-	private RelativeLayout Rl_jindu;
+	private LinearLayout Rl_jindu;
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
 	@ViewInject(R.id.tv_null_shouru)

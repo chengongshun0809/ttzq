@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="80dp" 
         android:id="@+id/Rl_jindu_buy"
@@ -24,7 +24,7 @@
            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             />
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     <ListView
         android:id="@+id/cominglistview_buy"

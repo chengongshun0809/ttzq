@@ -2,52 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+        android:gravity="center"
     android:orientation="vertical" >
-<RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="80dp" 
+
+       <LinearLayout
         android:id="@+id/Rl_jindu_shouru"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/loading_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="21dp"
+        android:paddingRight="21dp"
         android:visibility="gone"
-        >
+        android:paddingTop="10dp" >
+
         <ProgressBar
-     
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-      
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="5dp"
-        android:layout_marginLeft="50dp" />
-        <TextView 
+            android:id="@+id/progressBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在加载，请等候..."
-           android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            />
-    </RelativeLayout>
+            android:layout_gravity="center_horizontal"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateDrawable="@drawable/dialog_loading"
+            android:indeterminateOnly="true" />
+
+        <TextView
+            android:id="@+id/tipTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="加载中..."
+            android:textColor="#f0f0f0"
+            android:textSize="14sp" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/cominglistview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-         android:cacheColorHint="#00000000"
+        android:cacheColorHint="#00000000"
         android:divider="@color/listviewdivider"
         android:dividerHeight="1px"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none" >
     </ListView>
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/tv_null_shouru"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="gone"
-         >
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="暂无数据"
-             />
+            android:text="暂无数据" />
     </RelativeLayout>
 
 </LinearLayout>

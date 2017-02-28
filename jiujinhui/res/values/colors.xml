@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!-- 分时图颜色 -->
+
+    <!-- 分时图颜色 -->
     <color name="minute_grayLine">#2D3945</color>
     <color name="minute_blue">#00D0FC</color>
     <color name="minute_yellow">#E7B448</color>
@@ -23,7 +24,7 @@
     <color name="half_transparent">#88000000</color>
     <color name="marker_bg">#1C232E</color>
     <!-- 用于页面背景 -->
-
+    <color name="transparent_dialog">#00000000</color>
     <color name="dark">#FF222222</color>
     <color name="light">#FFEEEEEE</color>
 

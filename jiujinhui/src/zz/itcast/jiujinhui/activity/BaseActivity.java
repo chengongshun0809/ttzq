@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.activity;
 
+import zz.itcast.jiujinhui.res.ActivityCollector;
 import zz.itcast.jiujinhui.res.Tools;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,7 +17,7 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 		initView();
 		initListener();
 		initData();
-       
+		ActivityCollector.addActivity(this);  
 		
 		
 		
@@ -43,7 +44,13 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 		
 		
 	}
-	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		ActivityCollector.removeActivity(this);
+		
+	}
 	 
 	
 

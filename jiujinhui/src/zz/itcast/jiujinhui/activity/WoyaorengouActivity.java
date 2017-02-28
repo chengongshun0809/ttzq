@@ -103,7 +103,7 @@ public class WoyaorengouActivity extends BaseActivity {
 				startActivity(intent);
 				
 				//Toast.makeText(getApplicationContext(), "恭喜您，认购成功", 0).show();
-				
+				WoyaorengouActivity.this.finish();
 				
 				
 				break;
