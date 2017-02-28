@@ -6,7 +6,7 @@
 
     <include layout="@layout/layout_base_title" />
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="80dp" 
         android:id="@+id/Rl_jindu_tixian"
@@ -27,7 +27,7 @@
            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             />
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     
 

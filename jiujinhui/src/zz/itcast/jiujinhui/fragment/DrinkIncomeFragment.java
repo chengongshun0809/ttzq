@@ -18,9 +18,11 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.bean.Income;
 import zz.itcast.jiujinhui.fragment.BuyChartFragment.ViewHolder;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -37,8 +39,8 @@ import android.widget.TextView;
 public class DrinkIncomeFragment extends BaseFragment {
 
 	
-	@ViewInject(R.id.Rl_jindu_shouru)
-	private LinearLayout Rl_jindu;
+	/*@ViewInject(R.id.Rl_jindu_shouru)
+	private LinearLayout Rl_jindu;*/
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
 	@ViewInject(R.id.tv_null_shouru)
@@ -58,13 +60,15 @@ public class DrinkIncomeFragment extends BaseFragment {
 			case 1:
 				data.clear();
 				data.addAll(incomeslist);
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
 				adapter = new MyAdapter();
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				break;
 			case 2:
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
 				cominglistview.setVisibility(View.GONE);
 				tv_null_shouru.setVisibility(View.VISIBLE);
 				break;
@@ -260,13 +264,15 @@ public void onDestroyView() {
 	data.clear();
 	
 }
+private Dialog loading_dialog = null;
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this,view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionString = sp.getString("unionid", null);
-		Rl_jindu.setVisibility(View.VISIBLE);
+		//Rl_jindu.setVisibility(View.VISIBLE);
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 	}
 
 	@Override

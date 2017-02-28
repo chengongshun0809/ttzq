@@ -21,6 +21,7 @@ import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,6 +81,7 @@ public class personFragment extends BaseFragment {
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
+			loading_dialog.dismiss();
 			 person_jiubi.setText(df.format(income/100));
 			break;
 
@@ -182,10 +184,10 @@ boolean stopThread = false;
 			e.printStackTrace();
 		}
 	}
-   
+	private Dialog loading_dialog = null;
 	@Override
 	public void initData() {
-	
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 		
 		
 	}

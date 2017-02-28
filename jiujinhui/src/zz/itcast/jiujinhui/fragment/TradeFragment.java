@@ -73,10 +73,10 @@ public class TradeFragment extends BaseFragment {
 		ViewUtils.inject(this, view);
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		
 		initViewPager();
 		sp = getActivity().getSharedPreferences("user", 0);
-
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 	}
 
 	boolean isaliv = true;

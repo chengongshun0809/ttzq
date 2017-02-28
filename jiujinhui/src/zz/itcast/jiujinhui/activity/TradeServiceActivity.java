@@ -189,6 +189,7 @@ public class TradeServiceActivity extends BaseActivity {
 			switch (msg.what) {
 
 			case 1:
+				loading_dialog.dismiss();
 				
 				UpdateUI();
 				scrollview.invalidate();// 定时刷新
@@ -267,7 +268,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 	// 当前滚动距离
 	int currentX = 0;
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView() {
 		
@@ -275,7 +276,7 @@ public class TradeServiceActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
 		// hscrollview定时滚动
-
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(TradeServiceActivity.this, "加载中...");
 		handler.sendEmptyMessageDelayed(2, 3000);
 
 		dgid = getIntent().getStringExtra("dealdgid");

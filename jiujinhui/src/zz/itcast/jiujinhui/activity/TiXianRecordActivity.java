@@ -21,6 +21,7 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment.MyAdapter;
 
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,9 +44,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TiXianRecordActivity extends BaseActivity {
-	
+	/*
 	@ViewInject(R.id.Rl_jindu_tixian)
-	private RelativeLayout Rl_jindu;
+	private RelativeLayout Rl_jindu;*/
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
 	@ViewInject(R.id.tv_null_tixian)
@@ -70,7 +71,9 @@ public class TiXianRecordActivity extends BaseActivity {
 			case 1:
 				data.clear();
 				data.addAll(incomeslist);
-				Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
+				
+				
 				adapter = new MyAdapter();
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
@@ -78,7 +81,9 @@ public class TiXianRecordActivity extends BaseActivity {
 				
 				break;
 			case 2:
-				Rl_jindu.setVisibility(View.GONE);
+				//Rl_jindu.setVisibility(View.GONE);
+				loading_dialog.dismiss();
+				
 				cominglistview.setVisibility(View.GONE);
 				tv_null_tixian.setVisibility(View.VISIBLE);
 				break;
@@ -291,7 +296,7 @@ public class TiXianRecordActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		tv_back.setOnClickListener(this);
 	}
-
+	private Dialog loading_dialog = null;
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
@@ -301,8 +306,8 @@ public class TiXianRecordActivity extends BaseActivity {
 		
 		data = new ArrayList<Map<String, Object>>();
 		tv__title.setText("我的提现");
-		
-		Rl_jindu.setVisibility(View.VISIBLE);
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(TiXianRecordActivity.this, "加载中...");
+		//Rl_jindu.setVisibility(View.VISIBLE);
 	}
 
 	@Override
