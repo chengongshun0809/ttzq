@@ -113,7 +113,7 @@ public class SaleChartFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-				while (!stopThread) {
+				
 
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
@@ -129,8 +129,7 @@ public class SaleChartFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							stopThread = true;
-
+						
 						}
 
 					} catch (Exception e) {
@@ -148,7 +147,7 @@ public class SaleChartFragment extends BaseFragment {
 
 					}
 
-				}
+				
 			}
 		}).start();
 		// listView.invalidate();

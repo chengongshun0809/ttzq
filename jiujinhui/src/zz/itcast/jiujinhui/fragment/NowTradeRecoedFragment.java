@@ -92,11 +92,11 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 
 		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
-
-		
+       getValues();
 		handler.sendEmptyMessage(2);
 	}
 
+	
 	private void initLineChart() {
 
 		line = new Line(mPointValues);
@@ -108,13 +108,13 @@ public class NowTradeRecoedFragment extends BaseFragment {
 											// ValueShape.DIAMOND）
 		line.setCubic(false);// 曲线是否平滑，即是曲线还是折线
 		line.setFilled(false);// 是否填充曲线的面积
-		// line.setHasLabels(true);// 曲线的数据坐标是否加上备注
+		line.setHasLabels(true);// 曲线的数据坐标是否加上备注
 		//
-		line.setHasPoints(false);
+		line.setHasPoints(true);
 
-		// line.setPointRadius(3);
-		line.setHasLabels(false);
-		// line.setHasLabelsOnlyForSelected(true);
+		line.setPointRadius(1);
+		// line.setHasLabels(false);
+		line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
 		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
 		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
@@ -131,12 +131,13 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// data.setValueLabelTypeface(typeface);
 		// 坐标轴
 		Axis axisX = new Axis(); // X轴
-		axisX.setHasTiltedLabels(true); // X坐标轴字体是斜的显示还是直的，true是斜的显示
+		axisX.setMaxLabelChars(8);
+		axisX.setHasTiltedLabels(false); // X坐标轴字体是斜的显示还是直的，true是斜的显示
 		axisX.setTextColor(Color.GRAY); // 设置字体颜色
 		axisX.setName("实时详情数据"); // 表格名称
 		axisX.setTextSize(10);// 设置字体大小
 		axisX.setHasSeparationLine(true);// 设置是否有分割线
-		axisX.setMaxLabelChars(10); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
+		//axisX.setMaxLabelChars(10); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
 		axisX.setValues(axisValuesX); // 填充X轴的坐标值
 		data.setAxisXBottom(axisX); // x 轴在底部
 		// data.setAxisXTop(axisX); //x 轴在顶部
@@ -152,7 +153,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// data.setAxisYRight(axisY); //y轴设置在右边
 
 		// 设置行为属性，支持缩放、滑动以及平移
-		lineChart.setInteractive(false);
+		lineChart.setInteractive(true);
 		lineChart.setZoomEnabled(false);
 		/*
 		 * lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
@@ -166,9 +167,9 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		lineChart.setVisibility(View.VISIBLE);
 		// lineChart.startDataAnimation();
 		// 折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
-		lineChart.setViewportCalculationEnabled(false);
+		lineChart.setViewportCalculationEnabled(true);
 		Animation animation = new AlphaAnimation(0.3f, 1.0f);
-		animation.setDuration(2000);
+		animation.setDuration(1000);
 		lineChart.startAnimation(animation);
 		/*
 		 * lineChart.setViewportCalculationEnabled(false); Viewport v = new
@@ -184,18 +185,14 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	}
 
 	// X轴刻度的显示
-	private void getAxisLables() { // TODO Auto- generated method
+	private void getValues() { // TODO Auto- generated method
 		for (int i = 0; i < priceList.size(); i++) {
 			mPointValues.add(new PointValue(i, firstpriceList.get(i)));
-			axisValuesX.add(new AxisValue(i).setValue(i).setLabel(
-					firsttimeList.get(i)));
-			// axisValuesY.add(new
-			// AxisValue(i).setValue(firstpriceList.get(i)));// 添加Y轴显示的刻度值
+			//axisValuesX.add(new AxisValue(i).setLabel(times[i]));
 
-}
+		}
 
 	}
-
 	
 
 	public static List<String> timeList;
@@ -204,10 +201,19 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public static List<String> firsttimeList;
 	public static List<Float> firstpriceList;
 
-	String[] times = { "09:00", "11:30", "15:00", "22:00" };
+	String[] times = { "09:00", "09:07", "09:15", "09:22", "09:30", "09:37",
+			"09:45", "09:52", "10:00", "10:07", "10:15", "10:22", "10:30",
+			"10:37", "10:45", "10:52", "11:00", "11:07", "11:15", "11:22",
+			"11:30", "13:30", "13:37", "13:45", "13:52", "14:00", "14:07",
+			"14:15", "14:22", "14:30", "14:37", "14:45", "14:52", "15:00" };
 	private String stateString;
 	private Line line;
-
+	private void getAxisLables() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < times.length; i++) {
+			axisValuesX.add(new AxisValue(i).setLabel(times[i]));
+		}
+	}
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		// 交易曲线
@@ -217,34 +223,41 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			priceList = new ArrayList<Float>();
 			firsttimeList = new ArrayList<String>();
 			firstpriceList = new ArrayList<Float>();
-			/*JSONObject object2 = (JSONObject) jsonArraylist.get(0);
-			// 初始指导价的值时间
-			double firstprice = object2.getDouble("price");
-			String firsttime = object2.getString("createtime");
-			firstpriceList.add((float) (firstprice / 100));
-			firsttimeList.add(firsttime.substring(10, 16));*/
-			
-			for (int i = 0; i < jsonArraylist.length(); i++) {
+			/*
+			 * JSONObject object2 = (JSONObject) jsonArraylist.get(0); //
+			 * 初始指导价的值时间 double firstprice = object2.getDouble("price"); String
+			 * firsttime = object2.getString("createtime");
+			 * firstpriceList.add((float) (firstprice / 100));
+			 * firsttimeList.add(firsttime.substring(10, 16));
+			 */
+
+			for (int i = 0; i < 21; i++) {
 				JSONObject object = (JSONObject) jsonArraylist.get(i);
 
-				stateString = object.getString("state");
-				// timeList.add(nowcreatetime.substring(10,16));
-                   
-				
+				nowprice = object.getDouble("price");
 
-					nowprice = object.getDouble("price");
-					if (nowprice!=-1) {
-						
-						nowcreatetime = object.getString("createtime");
-						timeList.add(nowcreatetime.substring(10, 16));
-						priceList.add((float) (nowprice / 100));
-					}
-					
-					
-}
-				
+				if (nowprice != -1) {
 
-			
+					nowcreatetime = object.getString("createtime");
+					timeList.add(nowcreatetime.substring(10, 16));
+					priceList.add((float) (nowprice / 100));
+				}
+
+			}
+
+			for (int i = 36; i < 49; i++) {
+				JSONObject object = (JSONObject) jsonArraylist.get(i);
+
+				nowprice = object.getDouble("price");
+
+				if (nowprice != -1) {
+
+					nowcreatetime = object.getString("createtime");
+					timeList.add(nowcreatetime.substring(10, 16));
+					priceList.add((float) (nowprice / 100));
+				}
+
+			}
 			firstpriceList.addAll(priceList);
 
 			firsttimeList.addAll(timeList);
@@ -260,7 +273,14 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	}
 
 	@Override
-	public void initData() {
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		initDatas();
+	}
+
+	public void initDatas() {
 		// TODO Auto-generated method stub
 		// 获取数据
 
@@ -278,41 +298,39 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 				@Override
 				public void run() {
-					while (!stopThread) {
 
-						String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-								+ unionid + "&dgid=" + dgid;
+					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+							+ unionid + "&dgid=" + dgid;
 
-						try {
-							HttpsURLConnection connection = NetUtils
-									.httpsconnNoparm(url_serviceinfo, "POST");
-							int code = connection.getResponseCode();
-							if (code == 200) {
-								iStream = connection.getInputStream();
-								String infojson = NetUtils.readString(iStream);
-								JSONObject jsonObject = new JSONObject(infojson);
-								// Log.e("ssssssssss", jsonObject.toString());
-								parseJson(jsonObject);
-								stopThread = true;
-
-							}
-
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} finally {
-							if (iStream != null) {
-								try {
-									iStream.close();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
+					try {
+						HttpsURLConnection connection = NetUtils
+								.httpsconnNoparm(url_serviceinfo, "POST");
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							iStream = connection.getInputStream();
+							String infojson = NetUtils.readString(iStream);
+							JSONObject jsonObject = new JSONObject(infojson);
+							// Log.e("ssssssssss", jsonObject.toString());
+							parseJson(jsonObject);
+							stopThread = true;
 
 						}
 
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						if (iStream != null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
 					}
+
 				}
 			}).start();
 
@@ -337,15 +355,24 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	@Override
 	public int getLayoutResID() {
 		// TODO Auto-generated method stub
-		return R.layout.newtrade_record;
+		return R.layout.new_trade_every;
 	}
 
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = false;
+
 		handler.removeMessages(1);
 		handler.removeMessages(2);
+		firstpriceList = null;
+		mPointValues.clear();
+		firsttimeList = null;
 		super.onDestroy();
+	}
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+
 	}
 }

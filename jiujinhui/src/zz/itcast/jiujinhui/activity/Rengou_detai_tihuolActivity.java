@@ -49,7 +49,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			switch (msg.what) {
 			case 0:
 				loading_dialog.dismiss();
-				Toast.makeText(getApplicationContext(), "恭喜您提货成功", 0).show();
+				Toast.makeText(getApplicationContext(), "恭喜您，提货成功", 0).show();
 				
 				
 				

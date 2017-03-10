@@ -17,7 +17,6 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BuyChartFragment;
 import zz.itcast.jiujinhui.fragment.EveryDayTradeRecordFragment;
 import zz.itcast.jiujinhui.fragment.NowTradeRecoedFragment;
-import zz.itcast.jiujinhui.fragment.NowTradeStopRecoedFragment;
 import zz.itcast.jiujinhui.fragment.SaleChartFragment;
 import zz.itcast.jiujinhui.res.Arith;
 import zz.itcast.jiujinhui.res.DateTest;
@@ -173,15 +172,16 @@ public class TradeServiceActivity extends BaseActivity {
 
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
-			isaliv = true;
-               
+			  isaliv = true;
+			  loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(TradeServiceActivity.this, "加载中...");
+			  initDatas();
 		} else {
 			isaliv = false;
 			Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
 
 		}
 		
-
+       
 	}
 
 	// 定义一个Handler对象
@@ -202,7 +202,9 @@ public class TradeServiceActivity extends BaseActivity {
 			case 3:
 				loading_dialog.dismiss();
 				
-				Toast.makeText(getApplicationContext(), "恭喜您买入成功", 0).show();
+				Intent intent = new Intent(TradeServiceActivity.this,
+						BuySuccessActivity.class);
+				startActivity(intent);
 				break;
 			case 4:
 				dialog_buy.dismiss();
@@ -211,11 +213,9 @@ public class TradeServiceActivity extends BaseActivity {
 			case 5:
 				
 				loading_dialog.dismiss();
-				
-				
-				initData();
-				
-				Toast.makeText(getApplicationContext(), "您已转让成功", 0).show();
+				Intent intent2 = new Intent(TradeServiceActivity.this,
+						TransSuccessActivity.class);
+				startActivity(intent2);
 				break;
 			case 6:
 				dialog1.dismiss();
@@ -223,8 +223,9 @@ public class TradeServiceActivity extends BaseActivity {
 				break;
 			case 7:
 				loading_dialog.dismiss();
-				
-				Toast.makeText(getApplicationContext(), "恭喜您卖出成功", 0).show();
+				Intent intent1 = new Intent(TradeServiceActivity.this,
+						SaleSuccessActivity.class);
+				startActivity(intent1);
 				break;
 			case 8:
 				dialog.dismiss();
@@ -285,7 +286,7 @@ public class TradeServiceActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
 		// hscrollview定时滚动
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(TradeServiceActivity.this, "加载中...");
+		
 		handler.sendEmptyMessageDelayed(2, 3000);
 
 		dgid = getIntent().getStringExtra("dealdgid");
@@ -329,8 +330,8 @@ public class TradeServiceActivity extends BaseActivity {
 	 */
 	private InputStream iStream;
 
-	@Override
-	public void initData() {
+	
+	public void initDatas() {
 		// 获取系统当前时间
 
 		/*
@@ -343,14 +344,14 @@ public class TradeServiceActivity extends BaseActivity {
 		// 判断当前页面是否联网
 
 		fragmentsList1 = new ArrayList<Fragment>();
+		fragmentsList1.add(new NowTradeRecoedFragment());
 
+		fragmentsList1.add(new EveryDayTradeRecordFragment());
 		fragmentsList2 = new ArrayList<Fragment>();
 		fragmentsList2.add(new SaleChartFragment());
 		fragmentsList2.add(new BuyChartFragment());
 
-		fragmentsList1.add(new NowTradeRecoedFragment());
-
-		fragmentsList1.add(new EveryDayTradeRecordFragment());
+		
 		trade_pager.setAdapter(new MypagerAdapter(getSupportFragmentManager(),
 				fragmentsList1));
 		buy_sale_pager.setAdapter(new MyBuySalepagerAdapter(
@@ -366,7 +367,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void run() {
-				while (!stopThread) {
+			
 
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
@@ -383,7 +384,7 @@ public class TradeServiceActivity extends BaseActivity {
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
 							// Thread.sleep(60000);
-							stopThread = true;
+						
 						}
 
 					} catch (Exception e) {
@@ -401,7 +402,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 					}
 
-				}
+				
 			}
 		}).start();
 
@@ -775,7 +776,7 @@ public class TradeServiceActivity extends BaseActivity {
 			Intent intent = new Intent(TradeServiceActivity.this,
 					TradeRecordActivity.class);
 			startActivity(intent);
-
+               
 			break;
 
 		default:
@@ -1506,9 +1507,9 @@ public class TradeServiceActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = true;
+		
 		super.onDestroy();
-		Log.e("onDestroy_stopThread", stopThread + "");
+		
 		handler.removeMessages(1);
 		handler.removeMessages(2);
 		handler.removeMessages(3);
@@ -1517,6 +1518,9 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.removeMessages(7);
 		handler.removeMessages(8);
 		// handler.removeMessages(9);
+		fragmentsList1=null;
+		fragmentsList2=null;
+		
 		if (iStream != null) {
 			try {
 				iStream.close();
@@ -1525,5 +1529,11 @@ public class TradeServiceActivity extends BaseActivity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		
 	}
 }

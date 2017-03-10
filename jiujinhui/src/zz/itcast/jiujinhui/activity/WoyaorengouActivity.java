@@ -107,7 +107,7 @@ public class WoyaorengouActivity extends BaseActivity {
 
 				// Toast.makeText(getApplicationContext(), "恭喜您，认购成功",
 				// 0).show();
-				WoyaorengouActivity.this.finish();
+				
 
 				break;
 			case 4:
@@ -180,11 +180,11 @@ public class WoyaorengouActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		
-		initData();
+		initData_onresume();
 	}
 
-	@Override
-	public void initData() {
+	private String infojson_total;
+	public void initData_onresume() {
 		handler.sendEmptyMessageDelayed(2, 3000);
 		unionidString = sp.getString("unionid", null);
 		Bundle bundle = getIntent().getExtras();
@@ -194,10 +194,11 @@ public class WoyaorengouActivity extends BaseActivity {
 		new Thread(new Runnable() {
 
 			private InputStream iStream;
+			
 
 			@Override
 			public void run() {
-				while (!stopThread) {
+			
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribe?"
 							+ "&dgid=" + dgid + "&unionid=" + unionidString;
 
@@ -208,12 +209,10 @@ public class WoyaorengouActivity extends BaseActivity {
 						int code = connection.getResponseCode();
 						if (code == 200) {
 							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							// JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("我靠快快快快快快快", jsonObject.toString());
+							infojson_total = NetUtils.readString(iStream);
 
 							// Log.e("hahahhahh", infojson);
-							parseJson(infojson);
+							parseJson(infojson_total);
 							stopThread = true;
 
 						}
@@ -233,7 +232,7 @@ public class WoyaorengouActivity extends BaseActivity {
 
 					}
 
-				}
+				
 			}
 		}).start();
 
@@ -612,7 +611,7 @@ public class WoyaorengouActivity extends BaseActivity {
 					bundle.putString("ddid", ddid);
 					intent.putExtras(bundle);
 					startActivity(intent);
-					 finish();
+					 
 				} else {
 					Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产", 0)
 							.show();
@@ -653,11 +652,17 @@ public class WoyaorengouActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		stopThread = true;
+	
 		handler.removeMessages(1);
 		handler.removeMessages(2);
 		handler.removeMessages(3);
 		handler.removeMessages(4);
 
+	}
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		
 	}
 }

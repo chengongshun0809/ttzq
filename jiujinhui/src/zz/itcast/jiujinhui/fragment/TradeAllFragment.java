@@ -388,7 +388,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
-
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 				
 			case 3:
@@ -536,6 +536,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 
 			case 7:
@@ -544,7 +545,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
-
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 8:
 				holder.tv_dan_state.setText("转让撤回");
@@ -552,7 +553,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setText(undonenum);
-
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 1:
 				holder.tv_dan_state.setText("认购完成");
@@ -560,6 +561,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 6:
 				holder.tv_dan_state.setText("提货撤回");
@@ -567,6 +569,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setText(undonenum);
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 2:
 				if (undonenum_int == 0) {
@@ -575,12 +578,14 @@ public class TradeAllFragment extends BaseFragment {
 					holder.tv_weichengjiao.setVisibility(View.GONE);
 					holder.tv_weichengjiao_num.setVisibility(View.GONE);
 					holder.msg_chengjiao.setText("全部成交");
+					holder.rl_chedanLayout.setVisibility(View.GONE);
 				} else {
 					holder.tv_dan_state.setText("买入中");
 					holder.msg_chengjiao.setVisibility(View.GONE);
 					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setText(undonenum);
+					holder.rl_chedanLayout.setVisibility(View.GONE);
 					holder.rl_chedanLayout.setVisibility(View.GONE);
 				}
 
@@ -592,6 +597,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setText(undonenum);
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 5:
 				holder.tv_dan_state.setText("卖出撤回");

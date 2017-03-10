@@ -29,7 +29,7 @@ public class DateTest {
 		String timeEnd1 = nyr + "11:30";
 
 		String start2 = nyr + "13:30";
-		String timeEnd2 = nyr + "18:50";
+		String timeEnd2 = nyr + "15:00";
 
 		String start3 = nyr + "20:30";
 		String timeEnd3 = nyr + "22:00";
@@ -54,22 +54,22 @@ public class DateTest {
 			int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
 			Log.e("sfa", week + "");
 			if (week == 0 || week == 6) {
-				if (start33 <= nowtime && nowtime <= timeEnd33) {
-
-					flag = true;
-				} else {
-					// 未到开市时间
-
-					flag = false;
-
-				}
+				/*
+				 * if (start33 <= nowtime && nowtime <= timeEnd33) {
+				 * 
+				 * flag = true; } else { // 未到开市时间
+				 * 
+				 * flag = false;
+				 * 
+				 * }
+				 */
+				flag = false;
 
 			} else {
-				if (start11 <= nowtime && nowtime <= timeEnd44) {
+				if (start11 <= nowtime && nowtime <= timeEnd22) {
 
 					if (start11 <= nowtime && nowtime <= timeEnd11
-							|| start22 <= nowtime && nowtime <= timeEnd22|| start33 <= nowtime && nowtime <= timeEnd33
-							|| start44 <= nowtime && nowtime <= timeEnd44) {
+							|| start22 <= nowtime && nowtime <= timeEnd22) {
 
 						// showBuyDialog();
 						flag = true;
@@ -106,12 +106,8 @@ public class DateTest {
 		String timeEnd1 = nyr + "11:30";
 
 		String start2 = nyr + "13:30";
-		String timeEnd2 = nyr + "15:00";
+		String timeEnd2 = nyr + "19:00";
 
-		String start3 = nyr + "20:30";
-		String timeEnd3 = nyr + "22:00";
-
-	
 		try {
 			long start11 = sdf.parse(start1).getTime();
 			long timeEnd11 = sdf.parse(timeEnd1).getTime();
@@ -119,17 +115,13 @@ public class DateTest {
 			long start22 = sdf.parse(start2).getTime();
 			long timeEnd22 = sdf.parse(timeEnd2).getTime();
 
-			long start33 = sdf.parse(start3).getTime();
-			long timeEnd33 = sdf.parse(timeEnd3).getTime();
-
-			
 			// 判断是周几
 
 			// cal.setTime(date);
 			int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
 			Log.e("sfa", week + "");
 			if (week == 0 || week == 6) {
-				if (start33 <= nowtime && nowtime <= timeEnd33) {
+			/*	if (start11 <= nowtime && nowtime <= timeEnd22) {
 
 					flag = true;
 				} else {
@@ -137,10 +129,11 @@ public class DateTest {
 
 					flag = false;
 
-				}
+				}*/
+				flag = false;
 
 			} else {
-				if (start11 <= nowtime && nowtime <= timeEnd33) {
+				if (start11 <= nowtime && nowtime <= timeEnd22) {
 
 					flag = true;
 

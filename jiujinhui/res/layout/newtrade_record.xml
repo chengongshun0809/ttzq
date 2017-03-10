@@ -7,14 +7,14 @@
    
     >
 
-    <lecho.lib.hellocharts.view.LineChartView
+    <zz.itcast.jiujinhui.mychart.MyLineChart
       
-       android:layout_marginTop="10dp"
-        android:id="@+id/line_chart"
+     
+        android:id="@+id/line_trade_chart"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="220dp"
         >
-    </lecho.lib.hellocharts.view.LineChartView>
+    </zz.itcast.jiujinhui.mychart.MyLineChart>
     
     
      <RelativeLayout

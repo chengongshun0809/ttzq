@@ -79,6 +79,9 @@
        <activity android:name="zz.itcast.jiujinhui.activity.Rengou_detai_tihuolActivity"></activity> 
        <activity android:name="zz.itcast.jiujinhui.activity.ChedanSuccessActivity"></activity>
        
+       <activity android:name="zz.itcast.jiujinhui.activity.BuySuccessActivity"></activity>
+       <activity android:name="zz.itcast.jiujinhui.activity.SaleSuccessActivity"></activity>
+       <activity android:name="zz.itcast.jiujinhui.activity.TransSuccessActivity"></activity>
        
        
         <!-- 微信回调activity -->
