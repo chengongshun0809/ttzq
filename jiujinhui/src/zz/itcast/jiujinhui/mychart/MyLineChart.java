@@ -71,7 +71,7 @@ public class MyLineChart extends LineChart {
     }
 
 
-    public void setHighlightValue(Highlight h) {
+  /*  public void setHighlightValue(Highlight h) {
       if (mData == null)
             mIndicesToHightlight = null;
         else {
@@ -79,9 +79,9 @@ public class MyLineChart extends LineChart {
         }
         invalidate();
     }
-
+*/
     @Override
-    protected void drawMarkers(Canvas canvas) {
+    protected void drawMarkers(Canvas canvas) {/*
 
         if (!mDrawMarkerViews || !valuesToHighlight())
             return;
@@ -122,5 +122,5 @@ public class MyLineChart extends LineChart {
                 myMarkerViewRight.draw(canvas, mViewPortHandler.contentRight(), pos[1] - myMarkerViewRight.getHeight() / 2);
             }
         }
-    }
+    */}
 }

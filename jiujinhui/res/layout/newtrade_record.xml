@@ -18,7 +18,7 @@
     
     
      <RelativeLayout
-         android:id="@+id/tingpan_nodata"
+         android:id="@+id/tingpan_nodata_h"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
          android:visibility="gone"

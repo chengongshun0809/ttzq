@@ -324,7 +324,7 @@ public class DomeBean {
         public String createtime;
         public String dgid;
         public int id;
-        public int price;
+        public float price;
         public int state;
 
         public String getCreatetime() {
@@ -351,7 +351,7 @@ public class DomeBean {
             this.id = id;
         }
 
-        public int getPrice() {
+        public float getPrice() {
             return price;
         }
 

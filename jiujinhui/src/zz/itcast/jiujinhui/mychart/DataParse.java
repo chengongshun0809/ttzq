@@ -24,23 +24,44 @@ public class DataParse {
 
 	public void domeMinutes(List<DomeBean.TodaydealBean> todaydeal) {
 		baseValue = todaydeal.get(0).getPrice();
-		for (int i = 0; i < todaydeal.size(); i++) {
+		/*for (int i = 0; i < todaydeal.size(); i++) {
 			if (todaydeal.get(i).getPrice() != -1) {
 				MinutesBean minutesData = new MinutesBean();
-				minutesData.cjprice = todaydeal.get(i).getPrice()/100;
-				minutesData.time = todaydeal.get(i).getCreatetime().substring(10, 16);
-				double cha = minutesData.cjprice - baseValue;
-				if (Math.abs(cha) > permaxmin) {
-					permaxmin = (float) Math.abs(cha);
-				}
+				minutesData.cjprice = todaydeal.get(i).getPrice() / 100;
+				minutesData.time = todaydeal.get(i).getCreatetime()
+						.substring(10, 16);
 
 				datas.add(minutesData);
 			}
 
+		}*/
+		for (int i = 0; i < 21; i++) {
+			if (todaydeal.get(i).getPrice() != -1) {
+				MinutesBean minutesData = new MinutesBean();
+				minutesData.cjprice = todaydeal.get(i).getPrice() / 100;
+				minutesData.time = todaydeal.get(i).getCreatetime()
+						.substring(10, 16);
+
+				datas.add(minutesData);
+			}
+			
+			
 		}
-		if (permaxmin == 0) {
-			permaxmin = baseValue * 0.02f;
+		
+		for (int i = 36; i < 49; i++) {
+			if (todaydeal.get(i).getPrice() != -1) {
+				MinutesBean minutesData = new MinutesBean();
+				minutesData.cjprice = todaydeal.get(i).getPrice() / 100;
+				minutesData.time = todaydeal.get(i).getCreatetime()
+						.substring(10, 16);
+
+				datas.add(minutesData);
+			}
+			
+			
 		}
+		
+		
 
 	}
 
@@ -60,22 +81,15 @@ public class DataParse {
 		return baseValue;
 	}
 
-	public float getMin() {
-		return baseValue - (permaxmin * 1.05f);
-	}
-
-	public float getMax() {
-		return baseValue + (permaxmin * 1.05f);
-	}
-
-	public float getPercentMax() {
-		return (permaxmin * 1.05f) / baseValue;
-	}
-
-	public float getPercentMin() {
-		return -getPercentMax();
-	}
-
+	/*
+	 * public float getMin() { return baseValue - (permaxmin * 1.05f); }
+	 * 
+	 * public float getMax() { return baseValue + (permaxmin * 1.05f); }
+	 * 
+	 * public float getPercentMax() { return (permaxmin * 1.05f) / baseValue; }
+	 * 
+	 * public float getPercentMin() { return -getPercentMax(); }
+	 */
 	public MinutesBean getMinutesDataBean() {
 		return minutesDataBean;
 	}

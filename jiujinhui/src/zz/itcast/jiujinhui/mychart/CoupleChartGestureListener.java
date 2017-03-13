@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.listener.ChartTouchListener.ChartGesture;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 
 /**
@@ -93,4 +94,16 @@ public class CoupleChartGestureListener implements OnChartGestureListener {
             }
         }
     }
+
+	@Override
+	public void onChartGestureEnd(MotionEvent arg0, ChartGesture arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onChartGestureStart(MotionEvent arg0, ChartGesture arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

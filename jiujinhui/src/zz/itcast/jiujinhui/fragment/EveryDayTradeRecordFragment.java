@@ -104,7 +104,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		//
 		line.setHasPoints(true);
 
-		 line.setPointRadius(1);
+		 line.setPointRadius(0);
 		//line.setHasLabels(false);
 		 line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
@@ -126,7 +126,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		//
 		line1.setHasPoints(true);
 
-		line1.setPointRadius(1);
+		line1.setPointRadius(0);
 		//line.setHasLabels(false);
 		line1.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
@@ -163,11 +163,11 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		data.setAxisYLeft(axisY); // Y轴设置在左边
 		// data.setAxisYRight(axisY); //y轴设置在右边
 
-		data.setValueLabelBackgroundEnabled(true);
-		data.setValueLabelsTextColor(Color.RED);
+	/*	data.setValueLabelBackgroundEnabled(true);
+		data.setValueLabelsTextColor(Color.RED);*/
 
 		// 设置行为属性，支持缩放、滑动以及平移
-		lineChart.setInteractive(false);
+		lineChart.setInteractive(true);
 		lineChart.setZoomEnabled(false);
 		lineChart.setScrollEnabled(true);
 		lineChart.setLineChartData(data);

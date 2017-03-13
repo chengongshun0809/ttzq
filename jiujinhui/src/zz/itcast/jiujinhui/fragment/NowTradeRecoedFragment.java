@@ -2,6 +2,7 @@ package zz.itcast.jiujinhui.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,45 +10,39 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import lecho.lib.hellocharts.gesture.ZoomType;
-import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.model.Viewport;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.bean.DomeBean;
+import zz.itcast.jiujinhui.mychart.DataParse;
+import zz.itcast.jiujinhui.mychart.MyXAxis;
+import zz.itcast.jiujinhui.mychart.MyYAxis;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
-public class NowTradeRecoedFragment extends BaseFragment {
+public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 	private SharedPreferences sp;
-	boolean stopThread = false;
-	@ViewInject(R.id.line_chart)
-	private lecho.lib.hellocharts.view.LineChartView lineChart;
 
-	@ViewInject(R.id.tingpan_nodata)
+	@ViewInject(R.id.line_trade_chart)
+	private zz.itcast.jiujinhui.mychart.MyLineChart lineChart;
+
+	@ViewInject(R.id.tingpan_nodata_h)
 	private RelativeLayout tingpan_nodata;
 
 	private Handler handler = new Handler() {
@@ -55,12 +50,14 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			switch (msg.what) {
 
 			case 1:
-				UpdateUI();
+				// 获取数据展示
+				DomeBean bean = (DomeBean) msg.obj;
+				// Log.e("测试", bean.todaydeal.toString()+"");
+
+				setDatas(bean.getTodaydeal());
 
 				break;
-			case 2:
-				initLineChart();
-				break;
+
 			default:
 				break;
 			}
@@ -68,9 +65,10 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		};
 
 	};
-	private JSONArray jsonArraylist;
+
 	private String dgid;
 	private String unionid;
+	private SparseArray<String> stringSparseArray;
 
 	@Override
 	public void initView(View view) {
@@ -78,209 +76,148 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		sp = getActivity().getSharedPreferences("user", 0);
 
 		ViewUtils.inject(this, view);
+		stringSparseArray = setXLabels();
+		initLineChart();
+
 	}
 
-	private double nowprice;
-	private String nowcreatetime;
-	// private LineChartView lineChartView;
-	private List<PointValue> mPointValues = new ArrayList<PointValue>();// 节点数据集合
-	private List<AxisValue> axisValuesX = new ArrayList<AxisValue>();// 定义X轴刻度值的数据集合
-	ArrayList<AxisValue> axisValuesY = new ArrayList<AxisValue>();// 定义Y轴刻度值的数据集合
+	public SparseArray<String> setXLabels() {
+		SparseArray<String> xLabels = new SparseArray<String>();
+		xLabels.put(0, "09:00");
+		xLabels.put(20, "11:30");
+		xLabels.put(33, "15:00");
+		
+		return xLabels;
+	}
 
-	// 画图表
-	protected void UpdateUI() {
+	MyXAxis xAxisLine;
+	MyYAxis axisRightLine;
+	MyYAxis axisLeftLine;
+
+	private void setDatas(List<DomeBean.TodaydealBean> todaydeal) {
 		// TODO Auto-generated method stub
+		lineChart.setDrawMarkerViews(false);
+		xAxisLine.setXLabels(stringSparseArray);
+		// Log.e("stringSparseArray", stringSparseArray.get(0)+"");
+		DataParse mData = new DataParse();
+		//Log.e("todaydeal", todaydeal.toString());
+		mData.domeMinutes(todaydeal);
 
-		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
-       getValues();
-		handler.sendEmptyMessage(2);
+		/*axisLeftLine.setAxisMinValue(mData.getMin());
+		Log.e("min", mData.getMin() + "");
+		axisLeftLine.setAxisMaxValue(mData.getMax());
+		//axisRightLine.setAxisMinValue(mData.getPercentMin());
+		Log.e("PercentMin", mData.getPercentMin() + "");*/
+		//axisRightLine.setAxisMaxValue(mData.getPercentMax());
+
+		ArrayList<Entry> lineCJEntries = new ArrayList<Entry>();
+		 ArrayList<String> dateList = new ArrayList<String>();
+		for (int i = 0; i <mData.getDatas().size(); i++) {
+			lineCJEntries.add(new Entry(mData.getDatas().get(i).cjprice, i));
+			Log.e("todaydeal", mData.getDatas().get(i).time + "");
+			Log.e("todaydeal_price", mData.getDatas().get(i).cjprice + "");
+			dateList.add(mData.getDatas().get(i).time);
+		}
+
+		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
+		d1.setDrawValues(true);
+		d1.setCircleRadius(0);
+		d1.setColor(getResources().getColor(R.color.minute_blue));
+		d1.setDrawFilled(true);
+		d1.setFillColor(getResources().getColor(R.color.minute_blue));
+		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
+		// Log.e("d1", d1+"");
+	
+		
+			List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+			dataSets.add((ILineDataSet) d1);
+
+			LineData cd = new LineData(dateList, (List<com.github.mikephil.charting.interfaces.datasets.ILineDataSet>) dataSets);
+			lineChart.setData(cd);
+			lineChart.notifyDataSetChanged();
+			lineChart.invalidate();
+		
+
 	}
 
-	
+	public String[] getMinutesCount() {
+
+		return new String[6];
+
+	}
+
 	private void initLineChart() {
+		lineChart.setScaleEnabled(false);
+		lineChart.setDrawBorders(true);
+		lineChart.setBorderWidth(1);
+		lineChart.setBorderColor(getResources().getColor(
+				R.color.minute_grayLine));
+		lineChart.setDescription("");
+		lineChart.setDrawGridBackground(false);
+            
+		Legend lineChartLegend = lineChart.getLegend();
+		lineChartLegend.setEnabled(false);
 
-		line = new Line(mPointValues);
+		// x轴
+		xAxisLine = lineChart.getXAxis();
+		xAxisLine.setDrawLabels(true);
+		//xAxisLine.setEnabled(true);
+		xAxisLine.setDrawAxisLine(true);//设置显示x轴
+		xAxisLine.setPosition(XAxis.XAxisPosition.BOTTOM);
+		// xAxisLine.setLabelsToSkip(59);
 
-		List<Line> lines = new ArrayList<Line>();
-		line.setShape(ValueShape.CIRCLE);// 折线图上每个数据点的形状 这里是圆形 （有三种
-											// ：ValueShape.SQUARE
-											// ValueShape.CIRCLE
-											// ValueShape.DIAMOND）
-		line.setCubic(false);// 曲线是否平滑，即是曲线还是折线
-		line.setFilled(false);// 是否填充曲线的面积
-		line.setHasLabels(true);// 曲线的数据坐标是否加上备注
-		//
-		line.setHasPoints(true);
+		// 左边y
+		axisLeftLine = lineChart.getAxisLeft();
+		/* 折线图y轴左没有basevalue，调用系统的 */
+		//axisLeftLine.setLabelCount(5, true);
+		axisLeftLine.setDrawLabels(true);
+		//axisLeftLine.setEnabled(true);
+		axisLeftLine.setDrawGridLines(false);
+		/* 轴不显示 避免和border冲突 */
+		axisLeftLine.setDrawAxisLine(false);
+		axisLeftLine.setStartAtZero(false);
+		// 右边y
+		axisRightLine = lineChart.getAxisRight();
+		axisRightLine.setLabelCount(1, true);
+		axisRightLine.setDrawLabels(false);
 
-		line.setPointRadius(1);
-		// line.setHasLabels(false);
-		line.setHasLabelsOnlyForSelected(true);
-		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
-		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
-		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
-		line.setColor(Color.RED);
-		// 圆点半径
-		// line.setPointRadius(2);
-		line.setStrokeWidth(1);// 设置折线宽度
-		line.setHasLabelsOnlyForSelected(true);
-		lines.add(line);
-		LineChartData data = new LineChartData();
-		data.setLines(lines);
-		// data.setValueLabelBackgroundEnabled(true);
-		data.setValueLabelsTextColor(Color.BLACK);
-		// data.setValueLabelTypeface(typeface);
-		// 坐标轴
-		Axis axisX = new Axis(); // X轴
-		axisX.setMaxLabelChars(8);
-		axisX.setHasTiltedLabels(false); // X坐标轴字体是斜的显示还是直的，true是斜的显示
-		axisX.setTextColor(Color.GRAY); // 设置字体颜色
-		axisX.setName("实时详情数据"); // 表格名称
-		axisX.setTextSize(10);// 设置字体大小
-		axisX.setHasSeparationLine(true);// 设置是否有分割线
-		//axisX.setMaxLabelChars(10); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
-		axisX.setValues(axisValuesX); // 填充X轴的坐标值
-		data.setAxisXBottom(axisX); // x 轴在底部
-		// data.setAxisXTop(axisX); //x 轴在顶部
-		axisX.setHasLines(true); // x 轴分割
+		axisRightLine.setStartAtZero(false);
+		axisRightLine.setDrawGridLines(false);
+		axisRightLine.setDrawAxisLine(false);
+		// 背景线
+		xAxisLine
+				.setGridColor(getResources().getColor(R.color.minute_grayLine));
+		xAxisLine.setAxisLineColor(getResources().getColor(
+				R.color.minute_grayLine));
+		xAxisLine.setTextColor(getResources().getColor(R.color.minute_zhoutv));
+		axisLeftLine.setGridColor(getResources().getColor(
+				R.color.minute_grayLine));
+		axisLeftLine.setTextColor(getResources()
+				.getColor(R.color.minute_zhoutv));
+		axisRightLine.setAxisLineColor(getResources().getColor(
+				R.color.minute_grayLine));
+		axisRightLine.setTextColor(getResources().getColor(
+				R.color.minute_zhoutv));
 
-		// Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
-		Axis axisY = new Axis().setHasLines(true); // Y轴
-		axisY.setName("价格");// y轴标注
-		axisY.setHasLines(true);
-		axisY.setTextSize(10);// 设置字体大小
-		axisY.setMaxLabelChars(4);
-		data.setAxisYLeft(axisY); // Y轴设置在左边
-		// data.setAxisYRight(axisY); //y轴设置在右边
-
-		// 设置行为属性，支持缩放、滑动以及平移
-		lineChart.setInteractive(true);
-		lineChart.setZoomEnabled(false);
-		/*
-		 * lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
-		 * lineChart.setMaxZoom((float) 4);//最大方法比例
-		 */
-		lineChart.setLineChartData(data);
-		// lineChart.setInteractive(true);
-		lineChart.setValueSelectionEnabled(true);
-
-		lineChart.setValueTouchEnabled(true);
-		lineChart.setVisibility(View.VISIBLE);
-		// lineChart.startDataAnimation();
-		// 折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
-		lineChart.setViewportCalculationEnabled(true);
-		Animation animation = new AlphaAnimation(0.3f, 1.0f);
-		animation.setDuration(1000);
-		lineChart.startAnimation(animation);
-		/*
-		 * lineChart.setViewportCalculationEnabled(false); Viewport v = new
-		 * Viewport(lineChart.getMaximumViewport()); v.left = 0; v.right = 5;
-		 * lineChart.setCurrentViewport(v); lineChart.setMaximumViewport(v);
-		 */
-		/*
-		 * Viewport port=initViewPort(100,0,0,120);
-		 * lineChart.setCurrentViewport(port);
-		 * lineChart.setMaximumViewport(port);
-		 */
-
-	}
-
-	// X轴刻度的显示
-	private void getValues() { // TODO Auto- generated method
-		for (int i = 0; i < priceList.size(); i++) {
-			mPointValues.add(new PointValue(i, firstpriceList.get(i)));
-			//axisValuesX.add(new AxisValue(i).setLabel(times[i]));
-
-		}
-
-	}
+		
+		axisLeftLine.setValueFormatter(new YAxisValueFormatter() {
+		    @Override
+		    public String getFormattedValue(float value, YAxis yAxis) {
+		        DecimalFormat mFormat = new DecimalFormat("#0.00");
+		        return mFormat.format(value);
+		    }
+		});
+		
+		
 	
-
-	public static List<String> timeList;
-	public static List<Float> priceList;
-
-	public static List<String> firsttimeList;
-	public static List<Float> firstpriceList;
-
-	String[] times = { "09:00", "09:07", "09:15", "09:22", "09:30", "09:37",
-			"09:45", "09:52", "10:00", "10:07", "10:15", "10:22", "10:30",
-			"10:37", "10:45", "10:52", "11:00", "11:07", "11:15", "11:22",
-			"11:30", "13:30", "13:37", "13:45", "13:52", "14:00", "14:07",
-			"14:15", "14:22", "14:30", "14:37", "14:45", "14:52", "15:00" };
-	private String stateString;
-	private Line line;
-	private void getAxisLables() {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < times.length; i++) {
-			axisValuesX.add(new AxisValue(i).setLabel(times[i]));
-		}
-	}
-	protected void parseJson(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		// 交易曲线
-		try {
-			jsonArraylist = jsonObject.getJSONArray("todaydeal");
-			timeList = new ArrayList<String>();
-			priceList = new ArrayList<Float>();
-			firsttimeList = new ArrayList<String>();
-			firstpriceList = new ArrayList<Float>();
-			/*
-			 * JSONObject object2 = (JSONObject) jsonArraylist.get(0); //
-			 * 初始指导价的值时间 double firstprice = object2.getDouble("price"); String
-			 * firsttime = object2.getString("createtime");
-			 * firstpriceList.add((float) (firstprice / 100));
-			 * firsttimeList.add(firsttime.substring(10, 16));
-			 */
-
-			for (int i = 0; i < 21; i++) {
-				JSONObject object = (JSONObject) jsonArraylist.get(i);
-
-				nowprice = object.getDouble("price");
-
-				if (nowprice != -1) {
-
-					nowcreatetime = object.getString("createtime");
-					timeList.add(nowcreatetime.substring(10, 16));
-					priceList.add((float) (nowprice / 100));
-				}
-
-			}
-
-			for (int i = 36; i < 49; i++) {
-				JSONObject object = (JSONObject) jsonArraylist.get(i);
-
-				nowprice = object.getDouble("price");
-
-				if (nowprice != -1) {
-
-					nowcreatetime = object.getString("createtime");
-					timeList.add(nowcreatetime.substring(10, 16));
-					priceList.add((float) (nowprice / 100));
-				}
-
-			}
-			firstpriceList.addAll(priceList);
-
-			firsttimeList.addAll(timeList);
-			Log.e("wewweew", firstpriceList + "");
-			Log.e("eeeeeeeeeeeeee", firsttimeList + "");
-			Message message = new Message();
-			message.what = 1;
-			handler.sendMessage(message);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		
+		
+		
 	}
 
 	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-
-		initDatas();
-	}
-
-	public void initDatas() {
+	public void initData() {
 		// TODO Auto-generated method stub
 		// 获取数据
 
@@ -302,6 +239,9 @@ public class NowTradeRecoedFragment extends BaseFragment {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
 
+					// String url_serviceinfo =
+					// "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid=o9zBFwSKbKwfv2lXj0mLpKdRplS0&dgid=DG170112210454522";
+
 					try {
 						HttpsURLConnection connection = NetUtils
 								.httpsconnNoparm(url_serviceinfo, "POST");
@@ -309,10 +249,14 @@ public class NowTradeRecoedFragment extends BaseFragment {
 						if (code == 200) {
 							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-							stopThread = true;
+							// Log.e("ssssssssssss", infojson);
+							DomeBean bean = new Gson().fromJson(infojson,
+									DomeBean.class);
+							Log.e("wangluo", bean.income + "");
+							Message message = handler.obtainMessage();
+							message.what = 1;
+							message.obj = bean;
+							handler.sendMessage(message);
 
 						}
 
@@ -346,33 +290,35 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 	@Override
 	public void initListener() {
-		// TODO Auto-generated method stub
 
-		// mPointValues.clear();
+		/*
+		 * lineChart .setOnChartValueSelectedListener(new
+		 * OnChartValueSelectedListener() {
+		 * 
+		 * @Override public void onValueSelected(Entry e, int dataSetIndex,
+		 * Highlight h) { // TODO Auto-generated method stub
+		 * 
+		 * }
+		 * 
+		 * @Override public void onNothingSelected() { // TODO Auto-generated
+		 * method stub
+		 * 
+		 * } });
+		 */
 
 	}
 
 	@Override
 	public int getLayoutResID() {
 		// TODO Auto-generated method stub
-		return R.layout.new_trade_every;
+		return R.layout.newtrade_record;
 	}
 
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-
 		handler.removeMessages(1);
-		handler.removeMessages(2);
-		firstpriceList = null;
-		mPointValues.clear();
-		firsttimeList = null;
+
 		super.onDestroy();
-	}
-
-	@Override
-	public void initData() {
-		// TODO Auto-generated method stub
-
 	}
 }

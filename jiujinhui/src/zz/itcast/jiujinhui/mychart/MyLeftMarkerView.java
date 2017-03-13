@@ -43,17 +43,7 @@ public class MyLeftMarkerView extends MarkerView {
 
    
 
-	@Override
-	public int getXOffset() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public int getYOffset() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 
@@ -61,5 +51,17 @@ public class MyLeftMarkerView extends MarkerView {
 	public void refreshContent(Entry e, Highlight highlight) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getXOffset(float arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getYOffset(float arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
