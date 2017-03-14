@@ -1,28 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-   
-    >
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_time_price"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+          
+            android:text="09:00"
+            android:textColor="#808080" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_marginLeft="30dp"
+          
+            android:orientation="horizontal" >
+         <TextView 
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="实时:"
+             android:textColor="#808080"
+             />   
+              <TextView 
+                  android:id="@+id/price"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="333.12"
+             android:textColor="#404040"
+             />   
+                
+         <TextView 
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text=" 元/瓶"
+             android:textColor="#404040"
+             />   
+            
+        </LinearLayout>
+    </LinearLayout>
 
     <zz.itcast.jiujinhui.mychart.MyLineChart
-      
-     
         android:id="@+id/line_trade_chart"
         android:layout_width="fill_parent"
-        android:layout_height="220dp"
-        >
+        android:layout_height="fill_parent" >
     </zz.itcast.jiujinhui.mychart.MyLineChart>
-    
-    
-     <RelativeLayout
-         android:id="@+id/tingpan_nodata_h"
+
+    <RelativeLayout
+        android:id="@+id/tingpan_nodata_h"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-         android:visibility="gone"
-        >
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,9 +70,5 @@
             android:text="停盘时间，暂无数据!"
             android:textColor="#808080" />
     </RelativeLayout>
-    
-    
-    
-    
 
 </LinearLayout>

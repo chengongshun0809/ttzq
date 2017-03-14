@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.w3c.dom.Text;
+
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.bean.DomeBean;
 import zz.itcast.jiujinhui.mychart.DataParse;
@@ -23,7 +25,9 @@ import android.os.Message;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -32,8 +36,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.cache.MD5FileNameGenerator;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
@@ -83,10 +90,12 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 	public SparseArray<String> setXLabels() {
 		SparseArray<String> xLabels = new SparseArray<String>();
+		xLabels.clear();
+
 		xLabels.put(0, "09:00");
 		xLabels.put(20, "11:30");
 		xLabels.put(33, "15:00");
-		
+
 		return xLabels;
 	}
 
@@ -96,23 +105,19 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 	private void setDatas(List<DomeBean.TodaydealBean> todaydeal) {
 		// TODO Auto-generated method stub
-		lineChart.setDrawMarkerViews(false);
+		lineChart.setDrawMarkerViews(true);
+		// lineChart.setMarkerView(v);
 		xAxisLine.setXLabels(stringSparseArray);
-		// Log.e("stringSparseArray", stringSparseArray.get(0)+"");
-		DataParse mData = new DataParse();
-		//Log.e("todaydeal", todaydeal.toString());
+		mData = new DataParse();
 		mData.domeMinutes(todaydeal);
-
-		/*axisLeftLine.setAxisMinValue(mData.getMin());
-		Log.e("min", mData.getMin() + "");
-		axisLeftLine.setAxisMaxValue(mData.getMax());
-		//axisRightLine.setAxisMinValue(mData.getPercentMin());
-		Log.e("PercentMin", mData.getPercentMin() + "");*/
-		//axisRightLine.setAxisMaxValue(mData.getPercentMax());
+		// 给实时设置初始值
+		time.setText(mData.getDatas().get(0).time);
+		price.setText(mData.getDatas().get(0).cjprice + "");
 
 		ArrayList<Entry> lineCJEntries = new ArrayList<Entry>();
-		 ArrayList<String> dateList = new ArrayList<String>();
-		for (int i = 0; i <mData.getDatas().size(); i++) {
+		ArrayList<String> dateList = new ArrayList<String>();
+		for (int i = 0; i < mData.getDatas().size(); i++) {
+			Log.e("todaydealfsafasfaf", mData.getDatas().size() + "");
 			lineCJEntries.add(new Entry(mData.getDatas().get(i).cjprice, i));
 			Log.e("todaydeal", mData.getDatas().get(i).time + "");
 			Log.e("todaydeal_price", mData.getDatas().get(i).cjprice + "");
@@ -120,23 +125,48 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		}
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
-		d1.setDrawValues(true);
+		d1.setDrawValues(false);// 显示折线上的数值
+
 		d1.setCircleRadius(0);
 		d1.setColor(getResources().getColor(R.color.minute_blue));
+		// d1.setDrawFilled(true);
+		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		d1.setDrawFilled(true);
-		d1.setFillColor(getResources().getColor(R.color.minute_blue));
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		// Log.e("d1", d1+"");
-	
-		
-			List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-			dataSets.add((ILineDataSet) d1);
 
-			LineData cd = new LineData(dateList, (List<com.github.mikephil.charting.interfaces.datasets.ILineDataSet>) dataSets);
-			lineChart.setData(cd);
-			lineChart.notifyDataSetChanged();
-			lineChart.invalidate();
-		
+		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+		dataSets.add((ILineDataSet) d1);
+
+		LineData cd = new LineData(
+				dateList,
+				(List<com.github.mikephil.charting.interfaces.datasets.ILineDataSet>) dataSets);
+		lineChart.setData(cd);
+		lineChart.notifyDataSetChanged();
+
+		lineChart.animateX(1);
+
+		lineChart.invalidate();
+		lineChart
+				.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+					@Override
+					public void onValueSelected(Entry e, int dataSetIndex,
+							Highlight h) { // TODO Auto-generated method stub
+						Log.e("e.getXIndex()", e.getXIndex() + "");
+
+						Log.e(" e.getVal()", e.getVal() + "");
+						price.setText(e.getVal() + "");
+						int index = e.getXIndex();
+						time.setText(mData.getDatas().get(index).time);
+
+					}
+
+					@Override
+					public void onNothingSelected() {
+
+					}
+				});
 
 	}
 
@@ -148,34 +178,41 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 	private void initLineChart() {
 		lineChart.setScaleEnabled(false);
+		lineChart.setAlpha(0.8f);
 		lineChart.setDrawBorders(true);
 		lineChart.setBorderWidth(1);
-		lineChart.setBorderColor(getResources().getColor(
-				R.color.minute_grayLine));
+		lineChart
+				.setBorderColor(getResources().getColor(R.color.minute_zhoutv));
 		lineChart.setDescription("");
 		lineChart.setDrawGridBackground(false);
-            
+
+		lineChart.getAxisRight().setDrawGridLines(false);
+		lineChart.getAxisLeft().setDrawGridLines(false);
+		lineChart.getXAxis().setDrawGridLines(false);
+		lineChart.setBackgroundColor(getResources().getColor(R.color.light));
 		Legend lineChartLegend = lineChart.getLegend();
 		lineChartLegend.setEnabled(false);
 
 		// x轴
 		xAxisLine = lineChart.getXAxis();
 		xAxisLine.setDrawLabels(true);
-		//xAxisLine.setEnabled(true);
-		xAxisLine.setDrawAxisLine(true);//设置显示x轴
+		// xAxisLine.setEnabled(true);
+		xAxisLine.setDrawAxisLine(true);// 设置显示x轴
 		xAxisLine.setPosition(XAxis.XAxisPosition.BOTTOM);
 		// xAxisLine.setLabelsToSkip(59);
+		xAxisLine.setAvoidFirstLastClipping(true);
 
 		// 左边y
 		axisLeftLine = lineChart.getAxisLeft();
 		/* 折线图y轴左没有basevalue，调用系统的 */
-		//axisLeftLine.setLabelCount(5, true);
+		axisLeftLine.setLabelCount(5, true);
 		axisLeftLine.setDrawLabels(true);
-		//axisLeftLine.setEnabled(true);
+		// axisLeftLine.setEnabled(true);
 		axisLeftLine.setDrawGridLines(false);
 		/* 轴不显示 避免和border冲突 */
 		axisLeftLine.setDrawAxisLine(false);
 		axisLeftLine.setStartAtZero(false);
+
 		// 右边y
 		axisRightLine = lineChart.getAxisRight();
 		axisRightLine.setLabelCount(1, true);
@@ -199,21 +236,14 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		axisRightLine.setTextColor(getResources().getColor(
 				R.color.minute_zhoutv));
 
-		
 		axisLeftLine.setValueFormatter(new YAxisValueFormatter() {
-		    @Override
-		    public String getFormattedValue(float value, YAxis yAxis) {
-		        DecimalFormat mFormat = new DecimalFormat("#0.00");
-		        return mFormat.format(value);
-		    }
+			@Override
+			public String getFormattedValue(float value, YAxis yAxis) {
+				DecimalFormat mFormat = new DecimalFormat("#0.00");
+				return mFormat.format(value);
+			}
 		});
-		
-		
-	
-		
-		
-		
-		
+
 	}
 
 	@Override
@@ -288,23 +318,18 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 	}
 
+	@ViewInject(R.id.ll_time_price)
+	private LinearLayout ll_time_price;// 时间价格提示
+
+	@ViewInject(R.id.time)
+	private TextView time;
+	@ViewInject(R.id.price)
+	private TextView price;
+
+	private DataParse mData;
+
 	@Override
 	public void initListener() {
-
-		/*
-		 * lineChart .setOnChartValueSelectedListener(new
-		 * OnChartValueSelectedListener() {
-		 * 
-		 * @Override public void onValueSelected(Entry e, int dataSetIndex,
-		 * Highlight h) { // TODO Auto-generated method stub
-		 * 
-		 * }
-		 * 
-		 * @Override public void onNothingSelected() { // TODO Auto-generated
-		 * method stub
-		 * 
-		 * } });
-		 */
 
 	}
 

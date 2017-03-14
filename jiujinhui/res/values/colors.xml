@@ -2,7 +2,7 @@
 <resources>
 
     <!-- 分时图颜色 -->
-    <color name="minute_shadow">#3366cc</color>
+    <color name="minute_shadow">#C6E2FF</color>
     
     <color name="minute_grayLine">#2D3945</color>
     <color name="minute_blue">#00D0FC</color>

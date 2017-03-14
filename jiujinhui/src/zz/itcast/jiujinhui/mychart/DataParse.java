@@ -24,17 +24,18 @@ public class DataParse {
 
 	public void domeMinutes(List<DomeBean.TodaydealBean> todaydeal) {
 		baseValue = todaydeal.get(0).getPrice();
-		/*for (int i = 0; i < todaydeal.size(); i++) {
-			if (todaydeal.get(i).getPrice() != -1) {
-				MinutesBean minutesData = new MinutesBean();
-				minutesData.cjprice = todaydeal.get(i).getPrice() / 100;
-				minutesData.time = todaydeal.get(i).getCreatetime()
-						.substring(10, 16);
+		/*
+		 * for (int i = 0; i < todaydeal.size(); i++) { if
+		 * (todaydeal.get(i).getPrice() != -1) { MinutesBean minutesData = new
+		 * MinutesBean(); minutesData.cjprice = todaydeal.get(i).getPrice() /
+		 * 100; minutesData.time = todaydeal.get(i).getCreatetime()
+		 * .substring(10, 16);
+		 * 
+		 * datas.add(minutesData); }
+		 * 
+		 * }
+		 */
 
-				datas.add(minutesData);
-			}
-
-		}*/
 		for (int i = 0; i < 21; i++) {
 			if (todaydeal.get(i).getPrice() != -1) {
 				MinutesBean minutesData = new MinutesBean();
@@ -43,11 +44,18 @@ public class DataParse {
 						.substring(10, 16);
 
 				datas.add(minutesData);
+			} else {
+				MinutesBean minutesData = new MinutesBean();
+				/*
+				 * minutesData.cjprice =0; minutesData.time ="";
+				 */
+
+				datas.add(minutesData);
+
 			}
-			
-			
+
 		}
-		
+
 		for (int i = 36; i < 49; i++) {
 			if (todaydeal.get(i).getPrice() != -1) {
 				MinutesBean minutesData = new MinutesBean();
@@ -56,12 +64,17 @@ public class DataParse {
 						.substring(10, 16);
 
 				datas.add(minutesData);
+			} else {
+				MinutesBean minutesData = new MinutesBean();
+				/*
+				 * minutesData.cjprice = 0; minutesData.time ="";
+				 */
+
+				datas.add(minutesData);
+
 			}
-			
-			
+
 		}
-		
-		
 
 	}
 
@@ -105,7 +118,8 @@ public class DataParse {
 	public void clear() {
 		datas.clear();
 		xValuesLabel.clear();
-		baseValue = 0;
-		permaxmin = 0;
+		/*
+		 * baseValue = 0; permaxmin = 0;
+		 */
 	}
 }
