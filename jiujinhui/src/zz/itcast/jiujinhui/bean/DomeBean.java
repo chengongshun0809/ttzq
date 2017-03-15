@@ -369,8 +369,8 @@ public class DomeBean {
     }
 
     public static class DealpriceBean {
-        public int beginprice;
-        public int buybackprice;
+        public float beginprice;
+        public float buybackprice;
         public int cellarnum;
         public int dealback;
         public int dealbacknum;
@@ -391,7 +391,7 @@ public class DomeBean {
         public int state;
         public int usernum;
 
-        public int getBeginprice() {
+        public float getBeginprice() {
             return beginprice;
         }
 
@@ -399,7 +399,7 @@ public class DomeBean {
             this.beginprice = beginprice;
         }
 
-        public int getBuybackprice() {
+        public float getBuybackprice() {
             return buybackprice;
         }
 

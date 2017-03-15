@@ -1,10 +1,12 @@
 package zz.itcast.jiujinhui.mychart;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import zz.itcast.jiujinhui.bean.DomeBean;
 import zz.itcast.jiujinhui.bean.DomeBean.DealpriceBean;
+import zz.itcast.jiujinhui.bean.EverypriceBean;
 import zz.itcast.jiujinhui.bean.MinutesBean;
 import android.util.SparseArray;
 
@@ -15,7 +17,7 @@ public class DataParse {
 
 	private ArrayList<MinutesBean> datas = new ArrayList<MinutesBean>();// 分时图总数据
 
-	private ArrayList<DealpriceBean> datas_every = new ArrayList<DealpriceBean>();// 分时图总数据
+	private ArrayList<EverypriceBean> datas_every = new ArrayList<EverypriceBean>();// 总数据
 	// private SparseArray<String> xValuesLabel = new SparseArray<>();
 
 	private float baseValue;// 基准
@@ -27,6 +29,12 @@ public class DataParse {
 	public void domeprice_date(List<DomeBean.DealpriceBean> dealprice) {
 
 		for (int i = 0; i < dealprice.size(); i++) {
+			EverypriceBean everybean = new EverypriceBean();
+			everybean.beprice = dealprice.get(i).getBeginprice() / 100;
+			everybean.byprice = dealprice.get(i).getBuybackprice()/100;
+			everybean.time = dealprice.get(i).getDealday().substring(5, dealprice.get(i).getDealday().length());
+
+			datas_every.add(everybean);
 
 		}
 
@@ -125,7 +133,7 @@ public class DataParse {
 		return datas;
 	}
 
-	public ArrayList<DealpriceBean> getDatas_every() {
+	public ArrayList<EverypriceBean> getDatas_every() {
 		return datas_every;
 	}
 
@@ -135,6 +143,7 @@ public class DataParse {
 
 	public void clear() {
 		datas.clear();
+		datas_every.clear();
 		xValuesLabel.clear();
 		/*
 		 * baseValue = 0; permaxmin = 0;
