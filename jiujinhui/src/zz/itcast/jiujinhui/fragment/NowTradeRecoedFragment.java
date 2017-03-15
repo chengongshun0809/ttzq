@@ -14,14 +14,17 @@ import org.w3c.dom.Text;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.bean.DomeBean;
+import zz.itcast.jiujinhui.bean.MinutesBean;
 import zz.itcast.jiujinhui.mychart.DataParse;
 import zz.itcast.jiujinhui.mychart.MyXAxis;
 import zz.itcast.jiujinhui.mychart.MyYAxis;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -117,11 +120,22 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		ArrayList<Entry> lineCJEntries = new ArrayList<Entry>();
 		ArrayList<String> dateList = new ArrayList<String>();
 		for (int i = 0; i < mData.getDatas().size(); i++) {
-			Log.e("todaydealfsafasfaf", mData.getDatas().size() + "");
-			lineCJEntries.add(new Entry(mData.getDatas().get(i).cjprice, i));
-			Log.e("todaydeal", mData.getDatas().get(i).time + "");
-			Log.e("todaydeal_price", mData.getDatas().get(i).cjprice + "");
-			dateList.add(mData.getDatas().get(i).time);
+			// Log.e("todaydealfsafasfaf", mData.getDatas().size() + "");
+
+			// Log.e("todaydeal", mData.getDatas().get(i).time + "");
+			// Log.e("todaydeal_price", mData.getDatas().get(i).cjprice + "");
+			// dateList.add(mData.getDatas().get(i).time);
+
+			MinutesBean minutesBean = mData.getDatas().get(i);
+			if (minutesBean.cjprice == -1) {
+				lineCJEntries.add(new Entry(Float.NaN, i));
+				dateList.add(mData.getDatas().get(i).time);
+
+			} else {
+				lineCJEntries.add(new Entry(minutesBean.cjprice, i));
+				dateList.add(mData.getDatas().get(i).time);
+			}
+
 		}
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
@@ -129,12 +143,10 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 		d1.setCircleRadius(0);
 		d1.setColor(getResources().getColor(R.color.minute_blue));
-		// d1.setDrawFilled(true);
-		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
-		d1.setDrawFilled(true);
+		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		// Log.e("d1", d1+"");
-
+        d1.setDrawFilled(true);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 		dataSets.add((ILineDataSet) d1);
 
@@ -153,9 +165,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 					@Override
 					public void onValueSelected(Entry e, int dataSetIndex,
 							Highlight h) { // TODO Auto-generated method stub
-						Log.e("e.getXIndex()", e.getXIndex() + "");
-
-						Log.e(" e.getVal()", e.getVal() + "");
+						/*
+						 * Log.e("e.getXIndex()", e.getXIndex() + "");
+						 * 
+						 * Log.e(" e.getVal()", e.getVal() + "");
+						 */
 						price.setText(e.getVal() + "");
 						int index = e.getXIndex();
 						time.setText(mData.getDatas().get(index).time);
@@ -167,12 +181,6 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 					}
 				});
-
-	}
-
-	public String[] getMinutesCount() {
-
-		return new String[6];
 
 	}
 
@@ -195,6 +203,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 		// x轴
 		xAxisLine = lineChart.getXAxis();
+
 		xAxisLine.setDrawLabels(true);
 		// xAxisLine.setEnabled(true);
 		xAxisLine.setDrawAxisLine(true);// 设置显示x轴
@@ -312,6 +321,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 			// 停盘时间，数据为空
 			lineChart.setVisibility(View.GONE);
+			ll_time_price.setVisibility(View.GONE);
 			tingpan_nodata.setVisibility(View.VISIBLE);
 
 		}

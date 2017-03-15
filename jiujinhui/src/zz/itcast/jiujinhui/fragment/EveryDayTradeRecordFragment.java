@@ -2,6 +2,7 @@ package zz.itcast.jiujinhui.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,37 +21,97 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.bean.DomeBean;
+import zz.itcast.jiujinhui.mychart.MyXAxis;
+import zz.itcast.jiujinhui.mychart.MyYAxis;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class EveryDayTradeRecordFragment extends BaseFragment {
 
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initListener() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initView(View view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getLayoutResID() {
+		// TODO Auto-generated method stub
+		return R.layout.new_trade_every;
+	}/*
+
 	private SharedPreferences sp;
 	boolean stopThread = false;
-	@ViewInject(R.id.line_chart)
-	private lecho.lib.hellocharts.view.LineChartView lineChart;
+	@ViewInject(R.id.line_trade_chart)
+	private zz.itcast.jiujinhui.mychart.MyLineChart lineChart;
+	@ViewInject(R.id.tingpan_nodata)
+	private RelativeLayout tingpan_nodata;
+
+	@ViewInject(R.id.ll_time_price_every)
+	private LinearLayout ll_time_price_every;// 闭盘时隐藏
+
+	@ViewInject(R.id.date)
+	// 日期
+	private TextView date;
+	@ViewInject(R.id.ll_cheng)
+	private LinearLayout ll_cheng;
+
+	@ViewInject(R.id.price_cheng)
+	private TextView price_cheng;// 成交价
+
+	@ViewInject(R.id.ll_trans)
+	private LinearLayout ll_trans;
+	@ViewInject(R.id.price_trans)
+	// 转让价
+	private TextView price_trans;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-
-			
 			case 1:
-				UpdateUI();
+				// 获取数据展示
+				DomeBean bean = (DomeBean) msg.obj;
+				// Log.e("测试", bean.todaydeal.toString()+"");
 
+				//setDatas(bean.getDealprice() );
 				break;
-			case 2:
-				initLineChart();
-				break;
+
 			default:
 				break;
 			}
@@ -69,149 +130,123 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 		ViewUtils.inject(this, view);
 
-		initLineChart();// 初始化
-		
+		initLineChart();
+
 	}
 
-	private LineChartView lineChartView;
-	private List<PointValue> begindealValues = new ArrayList<PointValue>();
-	private List<PointValue> buybackdealValues = new ArrayList<PointValue>();
-	private List<AxisValue> axisValuesX = new ArrayList<AxisValue>();
+	MyXAxis xAxisLine;
+	MyYAxis axisRightLine;
+	MyYAxis axisLeftLine;
 
-	// 画图表
-	protected void UpdateUI() {
+	public void setDatas(List<DomeBean.DealpriceBean> dealprice) {
 		// TODO Auto-generated method stub
+		// lineChart.setDrawMarkerViews(true);
+		// 设置初始值
+		date.setText(timeList2.get(0));
+		price_cheng.setText(beginpriceList2.get(0) + "");
+		price_trans.setText(buybackpriceList2.get(0) + "");
+		Log.e("beginpriceList2", beginpriceList2.get(0) + "");
+		ArrayList<Entry> lineCJEntries = new ArrayList<Entry>();
+		ArrayList<Entry> lineTransEntries = new ArrayList<Entry>();
 
-		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
+		for (int i = 0; i < timeList.size(); i++) {
+
+			lineCJEntries.add(new Entry(beginpriceList2.get(i), i));
+
+			lineTransEntries.add(new Entry(buybackpriceList2.get(i), i));
+
+		}
+		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
+		LineDataSet d2 = new LineDataSet(lineTransEntries, "转让价");
+		d1.setDrawValues(false);// 显示折线上的数值  
+		d2.setDrawValues(false);// 显示折线上的数值
 		
+		d1.setCircleRadius(0);
+		d2.setCircleRadius(0);
+		d1.setColor(getResources().getColor(R.color.minute_blue));
+		d2.setColor(getResources().getColor(R.color.minute_black));
+		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
+		d2.setAxisDependency(YAxis.AxisDependency.LEFT);
+		ArrayList<ILineDataSet> sets1 = new ArrayList<ILineDataSet>();
+		sets1.add(d1);
+		//LineData cd = new LineData(timeList2, sets1);
+		
+		
+		ArrayList<ILineDataSet> sets2 = new ArrayList<ILineDataSet>();
+		sets2.add(d2);
+		//LineData cd1 = new LineData(timeList2, sets2);
+		//lineChart.setData(cd);
+		//lineChart.setData(cd1);
+		lineChart.notifyDataSetChanged();
+		lineChart.invalidate();
 
-		handler.sendEmptyMessage(2);
 	}
 
 	private void initLineChart() {
 		// TODO Auto-generated method stub
-		List<Line> lines = new ArrayList<Line>();
-		Line line = new Line(begindealValues);
-		Line line1 = new Line(buybackdealValues);
+		lineChart.setScaleEnabled(false);
+		lineChart.setAlpha(0.8f);
+		lineChart.setDrawBorders(true);
+		lineChart.setBorderWidth(1);
+		lineChart
+				.setBorderColor(getResources().getColor(R.color.minute_zhoutv));
+		lineChart.setDescription("");
+		lineChart.setDrawGridBackground(false);
 
-		line.setShape(ValueShape.CIRCLE);// 折线图上每个数据点的形状 这里是圆形 （有三种
-											// ：ValueShape.SQUARE
-											// ValueShape.CIRCLE
-									// ValueShape.DIAMOND）
-		line.setCubic(false);// 曲线是否平滑，即是曲线还是折线
-		line.setFilled(false);// 是否填充曲线的面积
-		 line.setHasLabels(true);// 曲线的数据坐标是否加上备注
-		//
-		line.setHasPoints(true);
+		lineChart.getAxisRight().setDrawGridLines(false);
+		lineChart.getAxisLeft().setDrawGridLines(false);
+		lineChart.getXAxis().setDrawGridLines(false);
+		lineChart.setBackgroundColor(getResources().getColor(R.color.light));
+		Legend lineChartLegend = lineChart.getLegend();
+		lineChartLegend.setEnabled(false);
 
-		 line.setPointRadius(0);
-		//line.setHasLabels(false);
-		 line.setHasLabelsOnlyForSelected(true);
-		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
-		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
-		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
-		line.setColor(Color.RED);
-		// 圆点半径
-		// line.setPointRadius(2);
-		line.setStrokeWidth(1);// 设置折线宽度
-		line.setHasLabelsOnlyForSelected(true);
-		// 回购的曲线
-		line1.setShape(ValueShape.CIRCLE);// 折线图上每个数据点的形状 这里是圆形 （有三种
-		// ：ValueShape.SQUARE
-		// ValueShape.CIRCLE
-		// ValueShape.DIAMOND）
-		line1.setCubic(false);// 曲线是否平滑，即是曲线还是折线
-		line1.setFilled(false);// 是否填充曲线的面积
-		line1.setHasLabels(true);// 曲线的数据坐标是否加上备注
-		//
-		line1.setHasPoints(true);
+		// x轴
+		xAxisLine = lineChart.getXAxis();
+		xAxisLine.setDrawLabels(true);
+		// xAxisLine.setEnabled(true);
+		xAxisLine.setDrawAxisLine(true);// 设置显示x轴
+		xAxisLine.setPosition(XAxis.XAxisPosition.BOTTOM);
+		// xAxisLine.setLabelsToSkip(59);
+		xAxisLine.setAvoidFirstLastClipping(true);
 
-		line1.setPointRadius(0);
-		//line.setHasLabels(false);
-		line1.setHasLabelsOnlyForSelected(true);
-		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
-		line1.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
-		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
-		line1.setColor(Color.BLACK);
-		// 圆点半径
-		// line.setPointRadius(2);
-		line1.setStrokeWidth(1);// 设置折线宽度
-		line1.setHasLabelsOnlyForSelected(true);
+		// 左边y
+		axisLeftLine = lineChart.getAxisLeft();
+		// 折线图y轴左没有basevalue，调用系统的
+		axisLeftLine.setLabelCount(5, true);
+		axisLeftLine.setDrawLabels(true);
+		// axisLeftLine.setEnabled(true);
+		axisLeftLine.setDrawGridLines(false);
+		// 轴不显示 避免和border冲突
+		axisLeftLine.setDrawAxisLine(false);
+		axisLeftLine.setStartAtZero(false);
 
-		lines.add(line);
-		lines.add(line1);
-		LineChartData data = new LineChartData();
-		data.setLines(lines);
+		// 背景线
+		xAxisLine
+				.setGridColor(getResources().getColor(R.color.minute_grayLine));
+		xAxisLine.setAxisLineColor(getResources().getColor(
+				R.color.minute_grayLine));
+		xAxisLine.setTextColor(getResources().getColor(R.color.minute_zhoutv));
+		axisLeftLine.setGridColor(getResources().getColor(
+				R.color.minute_grayLine));
+		axisLeftLine.setTextColor(getResources()
+				.getColor(R.color.minute_zhoutv));
+		axisRightLine.setAxisLineColor(getResources().getColor(
+				R.color.minute_grayLine));
+		axisRightLine.setTextColor(getResources().getColor(
+				R.color.minute_zhoutv));
 
-		// 坐标轴
-		Axis axisX = new Axis(); // X轴
-		axisX.setHasTiltedLabels(true); // X坐标轴字体是斜的显示还是直的，true是斜的显示
-		axisX.setTextColor(Color.GRAY); // 设置字体颜色
-		axisX.setName("红色线:成交价         黑色线:转让价"); // 表格名称
-		axisX.setTextSize(10);// 设置字体大小
-		//axisX.setMaxLabelChars(6); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
-		axisX.setValues(axisValuesX); // 填充X轴的坐标值
-		data.setAxisXBottom(axisX); // x 轴在底部
-		// data.setAxisXTop(axisX); //x 轴在顶部
-		axisX.setHasLines(true); // x 轴分割
-
-		// Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
-		Axis axisY = new Axis(); // Y轴
-		axisY.setName("");// y轴标注
-		axisY.setTextSize(10);// 设置字体大小
-		axisY.setHasLines(true);
-		data.setAxisYLeft(axisY); // Y轴设置在左边
-		// data.setAxisYRight(axisY); //y轴设置在右边
-
-	/*	data.setValueLabelBackgroundEnabled(true);
-		data.setValueLabelsTextColor(Color.RED);*/
-
-		// 设置行为属性，支持缩放、滑动以及平移
-		lineChart.setInteractive(true);
-		lineChart.setZoomEnabled(false);
-		lineChart.setScrollEnabled(true);
-		lineChart.setLineChartData(data);
-		lineChart.setValueSelectionEnabled(true);
-		lineChart.setValueTouchEnabled(true);
-		lineChart.setVisibility(View.VISIBLE);
-		// lineChart.startDataAnimation();
-		lineChart.setViewportCalculationEnabled(true);
-		Animation animation = new AlphaAnimation(0.3f, 1.0f);
-		animation.setDuration(1000);
-		lineChart.startAnimation(animation);
-	}
-
-/*	// 图中每个点的显示
-	private void getAxisPoints() {
-
-		for (int i = 0; i < beginpriceList.size(); i++) { //
-			begindealValues.add(new PointValue(i, beginpriceList.get(i)));
-			// Log.e("eeeeeeeeeeeeee", "ssss");
-			buybackdealValues.add(new PointValue(i, buybackpriceList.get(i)));
-		}
-	}*/
-
-	// X轴刻度的显示
-	private void getAxisLables() { // TODO Auto- generated method
-		for (int i = 0; i < timeList.size(); i++) {
-			begindealValues.add(new PointValue(i, beginpriceList.get(i)));
-			// Log.e("eeeeeeeeeeeeee", "ssss");
-			buybackdealValues.add(new PointValue(i, buybackpriceList.get(i)));
-			axisValuesX.add(new AxisValue(i).setValue(i).setLabel(timeList.get(i)));
-
-			// Log.e("eeeeeeeeeeeeee", "sssfsdfsas");
-		}
-
+		axisLeftLine.setValueFormatter(new YAxisValueFormatter() {
+			@Override
+			public String getFormattedValue(float value, YAxis yAxis) {
+				DecimalFormat mFormat = new DecimalFormat("#0.00");
+				return mFormat.format(value);
+			}
+		});
 	}
 
 	public static List<String> timeList;
 	public static List<Float> beginpriceList;
 	public static List<Float> buybackpriceList;
-
-	// String[] times = { "09:00", "11:30", "15:00", "22:00" };
-	private String stateString;
-
-	
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
@@ -229,9 +264,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 				// 回购价
 				double buybackprice = object.getDouble("buybackprice");
 				buybackpriceList.add((float) buybackprice / 100);
-                
-				
-				
+
 				String dealday = object.getString("dealday");
 				timeList.add(dealday.substring(5, dealday.length()));
 
@@ -245,18 +278,19 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 			e.printStackTrace();
 		}
 	}
-@Override
-public void onResume() {
-	// TODO Auto-generated method stub
-	super.onResume();
-	
-	initDatas();
-}
-	
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		initDatas();
+	}
+
 	public void initDatas() {
 		// TODO Auto-generated method stub
 		// 获取数据
-	
+
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
 		new Thread(new Runnable() {
@@ -265,43 +299,52 @@ public void onResume() {
 
 			@Override
 			public void run() {
-			
 
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
+				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+						+ unionid + "&dgid=" + dgid;
 
-					try {
+				try {
 
-						HttpsURLConnection connection = NetUtils
-								.httpsconnNoparm(url_serviceinfo, "POST");
+					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+							url_serviceinfo, "POST");
 
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
+					int code = connection.getResponseCode();
+					if (code == 200) {
+						iStream = connection.getInputStream();
+						String infojson = NetUtils.readString(iStream);
+						//JSONObject jsonObject = new JSONObject(infojson);
+						// Log.e("ssssssssss", jsonObject.toString());
+						parseJson(jsonObject);
+
+						connection.disconnect();
+						// Log.e("ssssssssssss", infojson);
+						DomeBean bean = new Gson().fromJson(infojson,
+								DomeBean.class);
+						Log.e("wangluo", bean.income + "");
+						Message message = handler.obtainMessage();
+						message.what = 1;
+						message.obj = bean;
+						handler.sendMessage(message);
 						
-							connection.disconnect();
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
+						
+						
 					}
 
-				
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+
+					if (iStream != null) {
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+
 			}
 		}).start();
 	}
@@ -321,22 +364,19 @@ public void onResume() {
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-	
+
 		handler.removeMessages(1);
-		handler.removeMessages(2);
-		 timeList=null;
-		 beginpriceList=null;
-		 buybackpriceList=null;
-		 begindealValues.clear();
-		 buybackdealValues.clear();
+
 		
-		
+		 * timeList = null; beginpriceList = null; buybackpriceList = null;
+		 
+
 		super.onDestroy();
 	}
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
+
 	}
-}
+*/}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zz.itcast.jiujinhui.bean.DomeBean;
+import zz.itcast.jiujinhui.bean.DomeBean.DealpriceBean;
 import zz.itcast.jiujinhui.bean.MinutesBean;
 import android.util.SparseArray;
 
@@ -14,6 +15,7 @@ public class DataParse {
 
 	private ArrayList<MinutesBean> datas = new ArrayList<MinutesBean>();// 分时图总数据
 
+	private ArrayList<DealpriceBean> datas_every = new ArrayList<DealpriceBean>();// 分时图总数据
 	// private SparseArray<String> xValuesLabel = new SparseArray<>();
 
 	private float baseValue;// 基准
@@ -21,6 +23,14 @@ public class DataParse {
 
 	private SparseArray<String> xValuesLabel = new SparseArray<String>();
 	private MinutesBean minutesDataBean;
+
+	public void domeprice_date(List<DomeBean.DealpriceBean> dealprice) {
+
+		for (int i = 0; i < dealprice.size(); i++) {
+
+		}
+
+	}
 
 	public void domeMinutes(List<DomeBean.TodaydealBean> todaydeal) {
 		baseValue = todaydeal.get(0).getPrice();
@@ -46,9 +56,11 @@ public class DataParse {
 				datas.add(minutesData);
 			} else {
 				MinutesBean minutesData = new MinutesBean();
-				/*
-				 * minutesData.cjprice =0; minutesData.time ="";
-				 */
+
+				// * minutesData.cjprice =0; minutesData.time ="";
+				minutesData.time = todaydeal.get(i).getCreatetime()
+						.substring(10, 16);
+				minutesData.cjprice = -1;
 
 				datas.add(minutesData);
 
@@ -66,9 +78,11 @@ public class DataParse {
 				datas.add(minutesData);
 			} else {
 				MinutesBean minutesData = new MinutesBean();
-				/*
-				 * minutesData.cjprice = 0; minutesData.time ="";
-				 */
+
+				// * minutesData.cjprice = 0; minutesData.time ="";
+				minutesData.time = todaydeal.get(i).getCreatetime()
+						.substring(10, 16);
+				minutesData.cjprice = -1;
 
 				datas.add(minutesData);
 
@@ -109,6 +123,10 @@ public class DataParse {
 
 	public ArrayList<MinutesBean> getDatas() {
 		return datas;
+	}
+
+	public ArrayList<DealpriceBean> getDatas_every() {
+		return datas_every;
 	}
 
 	public SparseArray<String> getXValuesLabel() {

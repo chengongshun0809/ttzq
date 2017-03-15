@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-          
+          android:textSize="12sp"
             android:text="09:00"
             android:textColor="#808080" />
 
@@ -31,6 +31,7 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="实时:"
+             android:textSize="12sp"
              android:textColor="#808080"
              />   
               <TextView 
@@ -38,6 +39,7 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="333.12"
+             android:textSize="12sp"
              android:textColor="#404040"
              />   
                 
@@ -45,6 +47,7 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text=" 元/瓶"
+             android:textSize="12sp"
              android:textColor="#404040"
              />   
             
