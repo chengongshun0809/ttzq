@@ -30,7 +30,7 @@ public class DataParse {
 
 		for (int i = 0; i < dealprice.size(); i++) {
 			EverypriceBean everybean = new EverypriceBean();
-			everybean.beprice = dealprice.get(i).getBeginprice() / 100;
+			everybean.beprice = dealprice.get(i).getRealprice() / 100;
 			everybean.byprice = dealprice.get(i).getBuybackprice()/100;
 			everybean.time = dealprice.get(i).getDealday().substring(5, dealprice.get(i).getDealday().length());
 

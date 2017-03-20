@@ -129,13 +129,13 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			MinutesBean minutesBean = mData.getDatas().get(i);
 			if (minutesBean.cjprice == -1) {
 				lineCJEntries.add(new Entry(Float.NaN, i));
-				dateList.add(mData.getDatas().get(i).time);
+				//dateList.add(mData.getDatas().get(i).time);
 
 			} else {
 				lineCJEntries.add(new Entry(minutesBean.cjprice, i));
 				dateList.add(mData.getDatas().get(i).time);
 			}
-
+			
 		}
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
@@ -145,8 +145,16 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		d1.setColor(getResources().getColor(R.color.minute_blue));
 		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
+		//d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		// Log.e("d1", d1+"");
         d1.setDrawFilled(true);
+        
+		d1.setFillAlpha(65);
+		d1.setFillColor(getResources().getColor(R.color.minute_shadow));
+		
+		
+		
+       // d1.setFillAlpha((int) 0.8f);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 		dataSets.add((ILineDataSet) d1);
 
@@ -185,9 +193,12 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 	}
 
 	private void initLineChart() {
+		
+		lineChart.setNoDataText("");
+		lineChart.setNoDataTextDescription("");
 		lineChart.setScaleEnabled(false);
-		lineChart.setAlpha(0.8f);
-		lineChart.setDrawBorders(true);
+		lineChart.setAlpha(0.5f);//设置透明度
+		lineChart.setDrawBorders(false);
 		lineChart.setBorderWidth(1);
 		lineChart
 				.setBorderColor(getResources().getColor(R.color.minute_zhoutv));
@@ -197,7 +208,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		lineChart.getAxisRight().setDrawGridLines(false);
 		lineChart.getAxisLeft().setDrawGridLines(false);
 		lineChart.getXAxis().setDrawGridLines(false);
-		lineChart.setBackgroundColor(getResources().getColor(R.color.light));
+		//lineChart.setBackgroundColor(getResources().getColor(R.color.light));
 		Legend lineChartLegend = lineChart.getLegend();
 		lineChartLegend.setEnabled(false);
 
@@ -219,7 +230,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		// axisLeftLine.setEnabled(true);
 		axisLeftLine.setDrawGridLines(false);
 		/* 轴不显示 避免和border冲突 */
-		axisLeftLine.setDrawAxisLine(false);
+		axisLeftLine.setDrawAxisLine(true);
 		axisLeftLine.setStartAtZero(false);
 
 		// 右边y

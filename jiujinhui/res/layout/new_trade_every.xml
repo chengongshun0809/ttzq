@@ -103,6 +103,7 @@
          android:id="@+id/line_trade_chart_every"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+       
         >
     </zz.itcast.jiujinhui.mychart.MyLineChart>
 

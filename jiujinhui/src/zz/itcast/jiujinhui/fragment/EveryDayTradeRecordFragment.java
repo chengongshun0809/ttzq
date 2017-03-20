@@ -160,16 +160,16 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		d2.setCircleRadius(0);
 
 		d1.setColor(getResources().getColor(R.color.minute_blue));
-		d2.setColor(getResources().getColor(R.color.minute_black));
+		d2.setColor(getResources().getColor(R.color.minute_zhoutv));
 
 		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
 		d2.setHighLightColor(getResources().getColor(R.color.minute_black)); //
 		d2.setHighlightEnabled(false);
 
-		d1.setDrawFilled(true);
+		d1.setDrawFilled(false);
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		d2.setAxisDependency(YAxis.AxisDependency.LEFT);
-
+         d2.setDrawFilled(false);
 		ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
 		sets.add(d1);
 		sets.add(d2);
@@ -216,9 +216,11 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 	private void initLineChart() {
 		// TODO Auto-generated method stub
+		lineChart.setNoDataText("");
+		lineChart.setNoDataTextDescription("");
 		lineChart.setScaleEnabled(false);
 		lineChart.setAlpha(0.8f);
-		lineChart.setDrawBorders(true);
+		lineChart.setDrawBorders(false);
 		lineChart.setBorderWidth(1);
 		lineChart
 				.setBorderColor(getResources().getColor(R.color.minute_zhoutv));
@@ -228,7 +230,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		lineChart.getAxisRight().setDrawGridLines(false);
 		lineChart.getAxisLeft().setDrawGridLines(false);
 		lineChart.getXAxis().setDrawGridLines(false);
-		lineChart.setBackgroundColor(getResources().getColor(R.color.light));
+		//lineChart.setBackgroundColor(getResources().getColor(R.color.light));
 		Legend lineChartLegend = lineChart.getLegend();
 		lineChartLegend.setEnabled(false);
 
@@ -250,7 +252,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		// axisLeftLine.setEnabled(true);
 		axisLeftLine.setDrawGridLines(false);
 		/* 轴不显示 避免和border冲突 */
-		axisLeftLine.setDrawAxisLine(false);
+		axisLeftLine.setDrawAxisLine(true);
 		axisLeftLine.setStartAtZero(false);
 
 		// 右边y
