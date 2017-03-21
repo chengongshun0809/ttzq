@@ -3,7 +3,9 @@ package zz.itcast.jiujinhui.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -17,6 +19,7 @@ import zz.itcast.jiujinhui.activity.LoginActivity;
 import zz.itcast.jiujinhui.activity.TradeServiceActivity;
 import zz.itcast.jiujinhui.activity.WoyaorengouActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
+import zz.itcast.jiujinhui.bean.MinutesBean;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -67,16 +70,18 @@ public class TradeFragment extends BaseFragment {
 	private TextView tv_tian;
 	private SharedPreferences sp;
 	private Dialog loading_dialog = null;
+
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this, view);
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
-		
+
 		initViewPager();
 		sp = getActivity().getSharedPreferences("user", 0);
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
 	}
 
 	boolean isaliv = true;
@@ -464,6 +469,7 @@ public class TradeFragment extends BaseFragment {
 
 				private String maingoodname;
 				private String dgid;
+				private SimpleDateFormat sdf;
 
 				@Override
 				public void onClick(View v) {
@@ -479,14 +485,79 @@ public class TradeFragment extends BaseFragment {
 					// TODO Auto-generated method stub
 					Boolean isLogined = sp.getBoolean("isLogined", false);
 					if (isLogined) {
-						Intent intent1 = new Intent(getActivity(),
-								WoyaorengouActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putString("name", maingoodname);
-						bundle.putString("dgid", dgid);
-						bundle.putString("maindealterm", maindealterm);
-						intent1.putExtras(bundle);
-						startActivity(intent1);
+						// 当前时间
+
+						sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						// 截止时间
+						String endtime;
+						try {
+							long nowTime = new Date().getTime();
+							endtime = jsonObject2.getString("subscribetime");
+							long endTime = sdf.parse(endtime).getTime();
+							long disTime = endTime - nowTime;
+							if (disTime > 0) {
+                           
+								long hour=disTime/1000/3600;
+								long minutes=((disTime/1000)-hour*3600)/60;
+								long seconds=(disTime/1000)-hour*3600-minutes*60;
+								
+								String showTime=hour+"小时"+minutes+"分钟"+seconds+"秒";
+								
+
+								// TODO Auto-generated method stub
+
+								LayoutInflater inflater = LayoutInflater
+										.from(getActivity());
+								View openview = (View) inflater.inflate(
+										R.layout.open_trade_left, null);
+
+								final AlertDialog builder = new AlertDialog.Builder(
+										getActivity()).create();
+								builder.setView(openview, 0, 0, 0, 0);
+								builder.setCancelable(false);
+								builder.show();
+
+								RelativeLayout okLayout = (RelativeLayout) openview
+										.findViewById(R.id.dialog_ok);
+								TextView opentimeview = (TextView) openview
+										.findViewById(R.id.opentime);
+								opentimeview.setText(showTime);
+								okLayout.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										builder.dismiss();
+									}
+								});
+
+							
+								
+								
+								
+								
+								
+								
+								
+								
+							} else {
+
+								Intent intent1 = new Intent(getActivity(),
+										WoyaorengouActivity.class);
+								Bundle bundle = new Bundle();
+								bundle.putString("name", maingoodname);
+								bundle.putString("dgid", dgid);
+								bundle.putString("maindealterm", maindealterm);
+								intent1.putExtras(bundle);
+								startActivity(intent1);
+
+							}
+
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					} else {
 						Intent intent = new Intent(getActivity(),
 								LoginActivity.class);
@@ -544,17 +615,18 @@ public class TradeFragment extends BaseFragment {
 					ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
 							.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-					NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+					NetworkInfo info = connectivityManager
+							.getActiveNetworkInfo();
 					if (info != null && info.isAvailable()) {
 						isaliv = true;
 
 					} else {
 						isaliv = false;
-						Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "无网络连接",
+								Toast.LENGTH_SHORT).show();
 
 					}
-					
-					
+
 					if (isaliv == true) {
 
 						try {
@@ -581,10 +653,11 @@ public class TradeFragment extends BaseFragment {
 							startActivity(intent);
 						}
 
-					}else{
-						
-						Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
-						
+					} else {
+
+						Toast.makeText(getActivity(), "无网络连接",
+								Toast.LENGTH_SHORT).show();
+
 					}
 
 				}
@@ -643,43 +716,44 @@ public class TradeFragment extends BaseFragment {
 					public void onClick(View v) {
 
 						// TODO Auto-generated method stub
-                        
+
 						ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
 								.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-						NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+						NetworkInfo info = connectivityManager
+								.getActiveNetworkInfo();
 						if (info != null && info.isAvailable()) {
 							isaliv = true;
 
 						} else {
 							isaliv = false;
-							Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "无网络连接",
+									Toast.LENGTH_SHORT).show();
 
 						}
-						if(isaliv==true){
-                            	 
-                            	 
-                            
-						
-						Boolean isLogined = sp.getBoolean("isLogined", false);
-						if (isLogined) {
-							Intent intent = new Intent(getActivity(),
-									TradeServiceActivity.class);
-							intent.putExtra("name", dealgoodname);
-							intent.putExtra("dealdgid", dgid);
-							startActivity(intent);
+						if (isaliv == true) {
+
+							Boolean isLogined = sp.getBoolean("isLogined",
+									false);
+							if (isLogined) {
+								Intent intent = new Intent(getActivity(),
+										TradeServiceActivity.class);
+								intent.putExtra("name", dealgoodname);
+								intent.putExtra("dealdgid", dgid);
+								startActivity(intent);
+							} else {
+								Intent intent = new Intent(getActivity(),
+										LoginActivity.class);
+								startActivity(intent);
+							}
+
 						} else {
-							Intent intent = new Intent(getActivity(),
-									LoginActivity.class);
-							startActivity(intent);
+
+							Toast.makeText(getActivity(), "无网络连接",
+									Toast.LENGTH_SHORT).show();
+
 						}
 
-					}else{
-						
-						Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
-						
-					}
-                             
 					}
 
 				});

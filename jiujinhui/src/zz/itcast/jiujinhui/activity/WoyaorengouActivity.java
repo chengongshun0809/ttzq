@@ -126,7 +126,7 @@ public class WoyaorengouActivity extends BaseActivity {
 	private DecimalFormat df;
 	private String dealString;
 	private String owner;
-	private String zongString;
+	private int zongString;
 	private String yitihuoString;
 	private String yitrans;
 	private String xia;
@@ -255,7 +255,7 @@ public class WoyaorengouActivity extends BaseActivity {
 			dealdataString = jObject.getString("dealdata");
 			JSONObject jObject3 = new JSONObject(dealdataString);
 
-			zongString = jObject3.getString("subnum");// 认购数
+			zongString = jObject3.getInt("subnum");// 认购数
 			yitihuoString = jObject3.getString("consumenum");// 已提货
 			yitrans = jObject3.getString("buybacknum");
 			xia = jObject3.getString("downnum");
@@ -446,114 +446,93 @@ public class WoyaorengouActivity extends BaseActivity {
 
 				Log.e("zhzh", price.getText().toString().trim());
 				if ((jiubiString / 100) >= priceDouble) {
-					// 继续购买
-					builder.dismiss();
-					loading_dialog.show();
-					new Thread(new Runnable() {
+					
+					if ((buy_count+zongString)<=100) {
+						// 继续购买
+						builder.dismiss();
+						loading_dialog.show();
+						new Thread(new Runnable() {
 
-						private InputStream iStream;
+							private InputStream iStream;
 
-						@Override
-						public void run() {
+							@Override
+							public void run() {
 
-							String url = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribepay?"
-									+ "&ddid="
-									+ ddid
-									+ "&num="
-									+ countString
-									+ "&price=" + pricString;
-							try {
-								HttpsURLConnection connection = NetUtils
-										.httpsconnNoparm(url, "POST");
-								int code = connection.getResponseCode();
-								if (code == 200) {
-									iStream = connection.getInputStream();
-									String infojson = NetUtils
-											.readString(iStream);
-									// JSONObject jsonObject = new
-									// JSONObject(infojson);
-									Log.e("我靠快快快快快快快", infojson);
-									// handler.sendEmptyMessage(3);
-									// Log.e("hahahhahh", infojson);
-									parseJson_rengoubuy(infojson);
+								String url = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribepay?"
+										+ "&ddid="
+										+ ddid
+										+ "&num="
+										+ countString
+										+ "&price=" + pricString;
+								try {
+									HttpsURLConnection connection = NetUtils
+											.httpsconnNoparm(url, "POST");
+									int code = connection.getResponseCode();
+									if (code == 200) {
+										iStream = connection.getInputStream();
+										String infojson = NetUtils
+												.readString(iStream);
+										// JSONObject jsonObject = new
+										// JSONObject(infojson);
+										Log.e("我靠快快快快快快快", infojson);
+										// handler.sendEmptyMessage(3);
+										// Log.e("hahahhahh", infojson);
+										parseJson_rengoubuy(infojson);
 
-									Log.e("sssssssssss", "hahah");
-								}
-
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} finally {
-								if (iStream != null) {
-									try {
-										iStream.close();
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+										Log.e("sssssssssss", "hahah");
 									}
+
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} finally {
+									if (iStream != null) {
+										try {
+											iStream.close();
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+
 								}
 
 							}
 
-						}
+							private void parseJson_rengoubuy(String infojson) {
+								// TODO Auto-generated method stub
+								try {
+									JSONObject jsonObject = new JSONObject(infojson);
+									String success = jsonObject
+											.getString("message");
+									if ("success".equals(success)) {
+										// 认购成功
+										handler.sendEmptyMessage(3);
 
-						private void parseJson_rengoubuy(String infojson) {
-							// TODO Auto-generated method stub
-							try {
-								JSONObject jsonObject = new JSONObject(infojson);
-								String success = jsonObject
-										.getString("message");
-								if ("success".equals(success)) {
-									// 认购成功
-									handler.sendEmptyMessage(3);
+									}
+									if ("error".equals(success)) {
+										handler.sendEmptyMessage(4);
+									}
 
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-								if ("error".equals(success)) {
-									handler.sendEmptyMessage(4);
-								}
 
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
+ 
+						}).start();
 
-						}
+					} else {                 
+						Toast.makeText(getApplicationContext(), "最多认购数量为100瓶！", 0)
+								.show();
 
-					}).start();
-
-				} else {
+					}
+				}else {
 					Toast.makeText(getApplicationContext(), "账户酒币不够，请先充值", 0)
-							.show();
-					/*
-					 * builder.dismiss();
-					 * 
-					 * Log.e("chongzhi", "yaochongzhi"); //去充值 LayoutInflater
-					 * inflater = getLayoutInflater(); View view = (View)
-					 * inflater.inflate(R.layout.rengou_msg_chongzhi, null);
-					 * Button chongzhi_ok=(Button)
-					 * view.findViewById(R.id.dialog_ok); Button
-					 * chongzhi_cancel=(Button)
-					 * view.findViewById(R.id.dialog_cancel);
-					 * 
-					 * 
-					 * final AlertDialog builder1 = new
-					 * AlertDialog.Builder(getApplicationContext()).create();
-					 * builder1.setView(view, 0, 0, 0, 0);
-					 * builder1.setCancelable(false); builder1.show();
-					 * chongzhi_cancel.setOnClickListener(new OnClickListener()
-					 * {
-					 * 
-					 * @Override public void onClick(View v) { // TODO
-					 * Auto-generated method stub builder1.dismiss(); } });
-					 * chongzhi_ok.setOnClickListener(new OnClickListener() {
-					 * 
-					 * @Override public void onClick(View v) { // TODO
-					 * Auto-generated method stub Intent intent=new
-					 * Intent(WoyaorengouActivity.this,ReChargeActivity.class);
-					 * startActivity(intent); } });
-					 */
-
+					.show();
 				}
+			
 
 			}
 		});
