@@ -72,8 +72,10 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 				// 获取数据展示
 				DomeBean bean = (DomeBean) msg.obj;
 				Log.e("测试", bean.getDealprice().toString() + "");
+				if (isAdded()) {
+					setDatas(bean.getDealprice());
+				}
 
-				setDatas(bean.getDealprice());
 				break;
 
 			default:
@@ -93,8 +95,9 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		sp = getActivity().getSharedPreferences("user", 0);
 
 		ViewUtils.inject(this, view);
-
-		initLineChart();
+		if (isAdded()) {
+			initLineChart();
+		}
 
 	}
 
@@ -169,7 +172,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		d1.setDrawFilled(false);
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		d2.setAxisDependency(YAxis.AxisDependency.LEFT);
-         d2.setDrawFilled(false);
+		d2.setDrawFilled(false);
 		ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
 		sets.add(d1);
 		sets.add(d2);
@@ -181,32 +184,32 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 			lineChart.invalidate();// 刷新图
 		}
 		lineChart
-		.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+				.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 
-			@Override
-			public void onValueSelected(Entry e, int dataSetIndex,
-					Highlight h) { // TODO Auto-generated method stub
-				/*
-				 * Log.e("e.getXIndex()", e.getXIndex() + "");
-				 * 
-				 * Log.e(" e.getVal()", e.getVal() + "");
-				 */
-				price_cheng.setText(e.getVal() + "");
-				
-				Log.e("zhi", e+"");
-				int index = e.getXIndex();
-				date.setText(mData.getDatas_every().get(index).time);
-				price_trans.setText(mData.getDatas_every().get(index).byprice+"");
-			}
+					@Override
+					public void onValueSelected(Entry e, int dataSetIndex,
+							Highlight h) { // TODO Auto-generated method stub
+						/*
+						 * Log.e("e.getXIndex()", e.getXIndex() + "");
+						 * 
+						 * Log.e(" e.getVal()", e.getVal() + "");
+						 */
+						price_cheng.setText(e.getVal() + "");
 
-			@Override
-			public void onNothingSelected() {
+						Log.e("zhi", e + "");
+						int index = e.getXIndex();
+						date.setText(mData.getDatas_every().get(index).time);
+						price_trans
+								.setText(mData.getDatas_every().get(index).byprice
+										+ "");
+					}
 
-			}
-		});
+					@Override
+					public void onNothingSelected() {
 
-		
-		
+					}
+				});
+
 	}
 
 	MyXAxis xAxisLine;
@@ -230,7 +233,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		lineChart.getAxisRight().setDrawGridLines(false);
 		lineChart.getAxisLeft().setDrawGridLines(false);
 		lineChart.getXAxis().setDrawGridLines(false);
-		//lineChart.setBackgroundColor(getResources().getColor(R.color.light));
+		// lineChart.setBackgroundColor(getResources().getColor(R.color.light));
 		Legend lineChartLegend = lineChart.getLegend();
 		lineChartLegend.setEnabled(false);
 

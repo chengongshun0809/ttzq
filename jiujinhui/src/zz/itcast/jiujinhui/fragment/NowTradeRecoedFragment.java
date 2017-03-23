@@ -63,8 +63,10 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 				// 获取数据展示
 				DomeBean bean = (DomeBean) msg.obj;
 				// Log.e("测试", bean.todaydeal.toString()+"");
-
-				setDatas(bean.getTodaydeal());
+				if (isAdded()) {
+					ll_time_price.setVisibility(View.VISIBLE);
+					setDatas(bean.getTodaydeal());
+				}
 
 				break;
 
@@ -88,12 +90,14 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		ViewUtils.inject(this, view);
 		stringSparseArray = setXLabels();
 		initLineChart();
-
+		if (isAdded()) {
+			initLineChart();
+		}
 	}
 
 	public SparseArray<String> setXLabels() {
 		SparseArray<String> xLabels = new SparseArray<String>();
-		xLabels.clear();
+		// xLabels.clear();
 
 		xLabels.put(0, "09:00");
 		xLabels.put(20, "11:30");
@@ -119,7 +123,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 		ArrayList<Entry> lineCJEntries = new ArrayList<Entry>();
 		ArrayList<String> dateList = new ArrayList<String>();
-		for (int i = 0; i < mData.getDatas().size(); i++) {
+		for (int i = 0, j = 0; i < mData.getDatas().size(); i++, j++) {
 			// Log.e("todaydealfsafasfaf", mData.getDatas().size() + "");
 
 			// Log.e("todaydeal", mData.getDatas().get(i).time + "");
@@ -127,17 +131,29 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			// dateList.add(mData.getDatas().get(i).time);
 
 			MinutesBean minutesBean = mData.getDatas().get(i);
-			if (minutesBean.cjprice == -1) {
+			/*
+			 * if (minutesBean.cjprice != -1) { lineCJEntries.add(new
+			 * Entry(minutesBean.cjprice, i)); 
+			 * dateList.add(mData.getDatas().get(i).time);
+			 * Log.e("!=-1",mData.getDatas().get(i).time+""); } else {
+			 * lineCJEntries.add(new Entry(Float.NaN, i));
+			 * dateList.add(mData.getDatas().get(i).time); Log.e("==-1",
+			 * mData.getDatas().get(i).time+""); }
+			 */
+			MinutesBean t = mData.getDatas().get(j);
+			if (t == null) {
 				lineCJEntries.add(new Entry(Float.NaN, i));
-				dateList.add(mData.getDatas().get(i).time);
-
-			} else {
-				lineCJEntries.add(new Entry(minutesBean.cjprice, i));
-				dateList.add(mData.getDatas().get(i).time);
+				dateList.add(i + "");
+				// Log.e("==-1", mData.getDatas().get(i).time+"");
+				continue;
 			}
-			
+			lineCJEntries.add(new Entry(minutesBean.cjprice, i));
+			dateList.add(mData.getDatas().get(i).time);
+			Log.e("!=-1", mData.getDatas().get(i).time + "");
+
 		}
-		Log.e("dateList", dateList.size()+"");
+		Log.e("dateList", dateList.size() + "");
+
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
 		d1.setDrawValues(false);// 显示折线上的数值
 
@@ -145,16 +161,10 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		d1.setColor(getResources().getColor(R.color.minute_blue));
 		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
-		//d1.setFillColor(getResources().getColor(R.color.minute_shadow));
+		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		// Log.e("d1", d1+"");
-        d1.setDrawFilled(true);
-        
-		d1.setFillAlpha(65);
-		d1.setFillColor(getResources().getColor(R.color.minute_shadow));
-		
-		
-		
-       // d1.setFillAlpha((int) 0.8f);
+		d1.setDrawFilled(true);
+
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 		dataSets.add((ILineDataSet) d1);
 
@@ -164,7 +174,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		lineChart.setData(cd);
 		lineChart.notifyDataSetChanged();
 
-		lineChart.animateX(1);
+		// lineChart.animateX(1);
 
 		lineChart.invalidate();
 		lineChart
@@ -193,11 +203,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 	}
 
 	private void initLineChart() {
-		
+
 		lineChart.setNoDataText("");
 		lineChart.setNoDataTextDescription("");
 		lineChart.setScaleEnabled(false);
-		lineChart.setAlpha(0.5f);//设置透明度
+		lineChart.setAlpha(0.5f);// 设置透明度
 		lineChart.setDrawBorders(false);
 		lineChart.setBorderWidth(1);
 		lineChart
@@ -208,7 +218,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		lineChart.getAxisRight().setDrawGridLines(false);
 		lineChart.getAxisLeft().setDrawGridLines(false);
 		lineChart.getXAxis().setDrawGridLines(false);
-		//lineChart.setBackgroundColor(getResources().getColor(R.color.light));
+		// lineChart.setBackgroundColor(getResources().getColor(R.color.light));
 		Legend lineChartLegend = lineChart.getLegend();
 		lineChartLegend.setEnabled(false);
 
@@ -302,7 +312,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 							// Log.e("ssssssssssss", infojson);
 							DomeBean bean = new Gson().fromJson(infojson,
 									DomeBean.class);
-							Log.e("wangluo", bean.income + "");
+							// Log.e("wangluo", bean.income + "");
 							Message message = handler.obtainMessage();
 							message.what = 1;
 							message.obj = bean;

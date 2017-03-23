@@ -63,14 +63,15 @@ public class DataParse {
 
 				datas.add(minutesData);
 			} else {
-				MinutesBean minutesData = new MinutesBean();
+				/*MinutesBean minutesData = new MinutesBean();
 
-				// * minutesData.cjprice =0; minutesData.time ="";
 				minutesData.time = todaydeal.get(i).getCreatetime()
 						.substring(10, 16);
 				minutesData.cjprice = -1;
 
-				datas.add(minutesData);
+				datas.add(minutesData);*/
+				datas.add(null);
+				
 
 			}
 
@@ -85,14 +86,15 @@ public class DataParse {
 
 				datas.add(minutesData);
 			} else {
-				MinutesBean minutesData = new MinutesBean();
+			/*	MinutesBean minutesData = new MinutesBean();
 
 				// * minutesData.cjprice = 0; minutesData.time ="";
 				minutesData.time = todaydeal.get(i).getCreatetime()
 						.substring(10, 16);
 				minutesData.cjprice = -1;
 
-				datas.add(minutesData);
+				datas.add(minutesData);*/
+				datas.add(null);
 
 			}
 

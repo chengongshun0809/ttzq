@@ -98,15 +98,15 @@ public class DateTest {
 		boolean flag = false;
 
 		nowtime = date.getTime();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String now_time = sdf.format(date);
 		String nyr = now_time.substring(0, 11);
 
-		String start1 = nyr + "09:00";
-		String timeEnd1 = nyr + "11:30";
+		String start1 = nyr + "09:00:10";
+		String timeEnd1 = nyr + "11:30:00";
 
-		String start2 = nyr + "13:30";
-		String timeEnd2 = nyr + "19:00";
+		String start2 = nyr + "13:30:00";
+		String timeEnd2 = nyr + "19:00:00";
 
 		try {
 			long start11 = sdf.parse(start1).getTime();

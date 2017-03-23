@@ -153,7 +153,7 @@ public class TradeFragment extends BaseFragment {
 				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist1.jpg");
 		vp_ImgUrls
 				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist2.jpg");
-		vp_ImgUrls
+		vp_ImgUrls 
 				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist3.jpg");
 		initIndicator();
 		// adapterViewPager.notifyDataSetChanged();
