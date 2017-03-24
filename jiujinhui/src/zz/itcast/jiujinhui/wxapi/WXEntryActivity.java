@@ -130,8 +130,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																					JSONObject json = new JSONObject(
 																							responseInfo.result
 																									.toString());
-																					
-																					//Log.e("qqqqqqqqqqqqq", json+"");
+
+																					// Log.e("qqqqqqqqqqqqq",
+																					// json+"");
 																					// 拿到昵称和头像
 																					// 用户的unionID
 																					String unionid = json
@@ -144,7 +145,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																					System.err
 																							.println("我的unionid是:   "
 																									+ unionid);
-																					Log.e("我的unionID是：", unionid);
+																					Log.e("我的unionID是：",
+																							unionid);
 																					String nickname = json
 																							.getString("nickname");// 昵称
 																					String headimgurl = json
@@ -155,7 +157,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																									+ "  "
 																									+ headimgurl);
 
-																					
 																					sp.edit()
 																							.putBoolean(
 																									"isLogined",
@@ -190,9 +191,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																												HttpException arg0,
 																												String arg1) {
 																											// TODO
-																											
-																											
-																											
 
 																										}
 
@@ -203,10 +201,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																												JSONObject json = new JSONObject(
 																														responseInfo.result
 																																.toString());
-																												//Log.e("个人信息",json.toString() );
-																												
+																												// Log.e("个人信息",json.toString()
+																												// );
+
 																											} catch (JSONException e) {
-																												// TODO Auto-generated catch block
+																												// TODO
+																												// Auto-generated
+																												// catch
+																												// block
 																												e.printStackTrace();
 																											}
 
@@ -273,12 +275,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
 			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();
-			
-			
+
 			break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED: // 发送被拒绝
 			Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
-			
+
 			break;
 		default:
 			break;

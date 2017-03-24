@@ -48,7 +48,6 @@ import android.widget.Toast;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
-@SuppressLint({ "ResourceAsColor", "CutPasteId" })
 public class TradeFragment extends BaseFragment {
 
 	@ViewInject(R.id.tv_back)
@@ -78,7 +77,6 @@ public class TradeFragment extends BaseFragment {
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
 
-		
 		sp = getActivity().getSharedPreferences("user", 0);
 		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
 				.createLoadingDialog(getActivity(), "加载中...");
@@ -144,10 +142,34 @@ public class TradeFragment extends BaseFragment {
 	// @ViewInject(R.id.TextViewNotice)
 	// private zz.itcast.jiujinhui.view.AutoScrollTextView autoScrollTextView;
 
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+
+				updateViewPager();
+				updateIndicatior();
+				break;
+			case 1:
+				loading_dialog.dismiss();
+				initViewPagerlistener();
+				initViewPager();
+
+				UpdateUI();
+
+				break;
+
+			default:
+				break;
+			}
+
+		}
+	};
+	
+	
 	private void initViewPager() {
 		// TODO Auto-generated method stub
 
-		
 		initIndicator();
 		// adapterViewPager.notifyDataSetChanged();
 		// 设置初始显示条目
@@ -207,35 +229,7 @@ public class TradeFragment extends BaseFragment {
 		}
 	}
 
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case 0:
-				
-				
-				
-				updateViewPager();
-				break;
-			case 1:
-				loading_dialog.dismiss();
-				initViewPagerlistener();
-				initViewPager();
-				
-				UpdateUI();
-				
-				
-				
-				break;
-				
-				
-				
-				
-			default:
-				break;
-			}
-
-		}
-	};
+	
 	private LayoutInflater inflater;
 	private double maingooddealprice;
 	private RelativeLayout ll_ren;
@@ -269,34 +263,34 @@ public class TradeFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-				
-					try {
-						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/ttzqlist";
-						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
-								urlpath, "GET");
-						// 若连接服务器成功，返回数据
-						int code = conn.getResponseCode();
-						if (code == 200) {
 
-							is = conn.getInputStream();
-							String json = NetUtils.readString(is);
-							// 解析json
-							parsonJson(json);
+				try {
+					String urlpath = "https://www.4001149114.com/NLJJ/ddapp/ttzqlist";
+					HttpsURLConnection conn = NetUtils.httpsconnNoparm(urlpath,
+							"GET");
+					// 若连接服务器成功，返回数据
+					int code = conn.getResponseCode();
+					if (code == 200) {
+
+						is = conn.getInputStream();
+						String json = NetUtils.readString(is);
+						// 解析json
+						parsonJson(json);
+						is.close();
+					}
+
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					if (is != null) {
+						try {
 							is.close();
-						}
-
-					} catch (Exception e) {
-						// TODO: handle exception
-					} finally {
-						if (is != null) {
-							try {
-								is.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
+				}
 
 			}
 		}).start();
@@ -338,7 +332,7 @@ public class TradeFragment extends BaseFragment {
 			// 置顶的酒金窖
 			String maindealgood = jsonObject.getString("maindealgood");
 			jsonObject2 = new JSONObject(maindealgood);
-			
+
 			mainname = jsonObject2.getString("name");
 			opentime = jsonObject2.getString("subscribetime");
 			// maindgid = jsonObject2.getString("dgid");
@@ -347,31 +341,28 @@ public class TradeFragment extends BaseFragment {
 			maindealcode = jsonObject2.getString("dealcode");
 
 			mainstock = jsonObject2.getString("stock");
-             //轮播图
-			
-			String  wxapp=jsonObject.getString("wxapp");
-			JSONObject jsonWxapp=new JSONObject(wxapp);
-			
-			String url1=jsonWxapp.getString("jjimg1");
-			String url2=jsonWxapp.getString("jjimg2");
-			String url3=jsonWxapp.getString("jjimg3");
-			
-			String urlimg1="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url1;
-			String urlimg2="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url2;
-			String urlimg3="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url3;
-			
+			// 轮播图
+
+			String wxapp = jsonObject.getString("wxapp");
+			JSONObject jsonWxapp = new JSONObject(wxapp);
+
+			String url1 = jsonWxapp.getString("jjimg1");
+			String url2 = jsonWxapp.getString("jjimg2");
+			String url3 = jsonWxapp.getString("jjimg3");
+
+			String urlimg1 = "https://www.4001149114.com/NLJJ/resources/image/wxapps/"
+					+ url1;
+			String urlimg2 = "https://www.4001149114.com/NLJJ/resources/image/wxapps/"
+					+ url2;
+			String urlimg3 = "https://www.4001149114.com/NLJJ/resources/image/wxapps/"
+					+ url3;
+
 			vp_ImgUrls = new ArrayList<String>();
 
-			vp_ImgUrls
-					.add(urlimg1);
-			vp_ImgUrls
-					.add(urlimg2);
-			vp_ImgUrls 
-					.add(urlimg3);
-			
-			
-			
-			
+			vp_ImgUrls.add(urlimg1);
+			vp_ImgUrls.add(urlimg2);
+			vp_ImgUrls.add(urlimg3);
+
 			double mainrateint = jsonObject2.getDouble("rate");
 			DecimalFormat df = new DecimalFormat("#0.0");
 			mainrate = df.format(mainrateint);
@@ -391,6 +382,7 @@ public class TradeFragment extends BaseFragment {
 
 	}
 
+	
 	private void UpdateUI() {
 		if ("3".equals(maingoodstate)) {
 			View view = inflater.inflate(R.layout.trade_item_jiujiao, null);
@@ -415,10 +407,11 @@ public class TradeFragment extends BaseFragment {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					LayoutInflater inflater = LayoutInflater
-							.from(getActivity());
-					View openview = (View) inflater.inflate(
-							R.layout.open_trade, null);
+					/*
+					 * LayoutInflater inflater = LayoutInflater
+					 * .from(getActivity());
+					 */
+					View openview = inflater.inflate(R.layout.open_trade, null);
 
 					final AlertDialog builder = new AlertDialog.Builder(
 							getActivity()).create();
@@ -444,7 +437,6 @@ public class TradeFragment extends BaseFragment {
 			});
 			btn_name.setText("我要认购");
 			btn_name.setTextSize(18);
-			btn_name.setTextColor(R.color.white_btn_ren);
 			tv_lirengou.setText("离认购还剩:");
 			tv_lirengou.setTextSize(15);
 			// tv_lirengou.setTextColor(R.color.red);
@@ -479,7 +471,6 @@ public class TradeFragment extends BaseFragment {
 			tv_stock.setText(mainstock);
 			btn_name.setText("我要认购");
 			btn_name.setTextSize(18);
-			btn_name.setTextColor(R.color.white_btn_ren);
 
 			// tv_lirengou.setTextColor(R.color.red);
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -520,13 +511,14 @@ public class TradeFragment extends BaseFragment {
 							long endTime = sdf.parse(endtime).getTime();
 							long disTime = endTime - nowTime;
 							if (disTime > 0) {
-                           
-								long hour=disTime/1000/3600;
-								long minutes=((disTime/1000)-hour*3600)/60;
-								long seconds=(disTime/1000)-hour*3600-minutes*60;
-								
-								String showTime=hour+"小时"+minutes+"分钟"+seconds+"秒";
-								
+
+								long hour = disTime / 1000 / 3600;
+								long minutes = ((disTime / 1000) - hour * 3600) / 60;
+								long seconds = (disTime / 1000) - hour * 3600
+										- minutes * 60;
+
+								String showTime = hour + "小时" + minutes + "分钟"
+										+ seconds + "秒";
 
 								// TODO Auto-generated method stub
 
@@ -555,15 +547,6 @@ public class TradeFragment extends BaseFragment {
 									}
 								});
 
-							
-								
-								
-								
-								
-								
-								
-								
-								
 							} else {
 
 								Intent intent1 = new Intent(getActivity(),
@@ -616,7 +599,6 @@ public class TradeFragment extends BaseFragment {
 			tv_stock.setText(mainstock);
 			btn_name.setText("进入交易大厅");
 			btn_name.setTextSize(18);
-			btn_name.setTextColor(R.color.white_btn_ren);
 
 			// tv_lirengou.setTextColor(R.color.red);
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -796,7 +778,7 @@ public class TradeFragment extends BaseFragment {
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
