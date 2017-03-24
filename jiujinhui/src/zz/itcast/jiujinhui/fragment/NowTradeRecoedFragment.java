@@ -171,7 +171,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		d1.setDrawFilled(true);
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-		dataSets.add((ILineDataSet) d1);
+		dataSets.add((ILineDataSet) d1);  
 
 		LineData cd = new LineData(
 				dateList,

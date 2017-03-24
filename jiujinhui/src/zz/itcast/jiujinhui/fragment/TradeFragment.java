@@ -269,7 +269,7 @@ public class TradeFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-				while (!stopThread) {
+				
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/ttzqlist";
 						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
@@ -282,7 +282,6 @@ public class TradeFragment extends BaseFragment {
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
-							stopThread = true;
 							is.close();
 						}
 
@@ -299,7 +298,6 @@ public class TradeFragment extends BaseFragment {
 						}
 					}
 
-				}
 			}
 		}).start();
 	}
@@ -818,7 +816,6 @@ public class TradeFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread = false;
 		handler.removeMessages(0);
 		handler.removeMessages(1);
 	}
