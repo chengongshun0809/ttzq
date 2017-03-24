@@ -52,8 +52,9 @@ import android.widget.Toast;
 
 public class TradeAllFragment extends BaseFragment {
 
-	/*@ViewInject(R.id.Rl_jindu_all)
-	private RelativeLayout Rl_jindu;*/
+	/*
+	 * @ViewInject(R.id.Rl_jindu_all) private RelativeLayout Rl_jindu;
+	 */
 	@ViewInject(R.id.cominglistview_all)
 	private ListView listview;
 	boolean stopThread = false;
@@ -70,9 +71,9 @@ public class TradeAllFragment extends BaseFragment {
 
 			switch (msg.what) {
 			case 1:
-				/*Rl_jindu.setVisibility(View.GONE);*/
+				/* Rl_jindu.setVisibility(View.GONE); */
 				loading_dialog.dismiss();
-				
+
 				adapter = new ListViewAdapter(list);
 				adapter.appendData(orderlist);// 追加数据
 				footer = (LinearLayout) inflater.inflate(R.layout.load_more,
@@ -82,9 +83,9 @@ public class TradeAllFragment extends BaseFragment {
 				listview.addFooterView(footer, null, false);// 必须在setadapter之前调用
 				adapter.notifyDataSetChanged();
 				listview.setAdapter(adapter);
-				
+
 				listview.setSelection(sclectId);
-				
+
 				// TODO Auto-generated method stub
 
 				bt_Msg.setText("加载更多");
@@ -95,11 +96,13 @@ public class TradeAllFragment extends BaseFragment {
 				listview.setOnScrollListener(new OnScrollListener() {
 
 					@Override
-					public void onScrollStateChanged(AbsListView view, int scrollState) {
+					public void onScrollStateChanged(AbsListView view,
+							int scrollState) {
 						// TODO Auto-generated method stub
 						if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
 							// 滚动停止
-							if (view.getLastVisiblePosition() == view.getCount() - 1) {
+							if (view.getLastVisiblePosition() == view
+									.getCount() - 1) {
 								footer.setVisibility(View.VISIBLE);
 								bt_Msg.setOnClickListener(new OnClickListener() {
 
@@ -117,8 +120,7 @@ public class TradeAllFragment extends BaseFragment {
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
 
-												
-												//bt_Msg.setText("加载更多");
+												// bt_Msg.setText("加载更多");
 												Log.e("kobe", "lebron");
 
 											}
@@ -134,35 +136,41 @@ public class TradeAllFragment extends BaseFragment {
 					}
 
 					@Override
-					public void onScroll(AbsListView view, int firstVisibleItem,
-							int visibleItemCount, int totalItemCount) {
+					public void onScroll(AbsListView view,
+							int firstVisibleItem, int visibleItemCount,
+							int totalItemCount) {
 						sclectId = firstVisibleItem;
 					}
 				});
 
-				
-				//listview.setAdapter(adapter);
+				// listview.setAdapter(adapter);
 				break;
 			case 2:
 
-				/*Rl_jindu.setVisibility(View.GONE);*/
+				/* Rl_jindu.setVisibility(View.GONE); */
 				loading_dialog.dismiss();
-				
+
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			case 3:
-//				Intent intent=new Intent(getActivity(),ChedanSuccessActivity.class);
-//				startActivity(intent);
-				//visitService(1);
+				// Intent intent=new
+				// Intent(getActivity(),ChedanSuccessActivity.class);
+				// startActivity(intent);
+				// visitService(1);
 				Toast.makeText(getActivity(), "撤单成功", 0).show();
-				
-				
+
 				break;
 
 			case 4:
 				Toast.makeText(getActivity(), "撤单失败,请稍后重试", 0).show();
 				break;
+
+			case 5:
+
+				Toast.makeText(getActivity(), "当前网络异常,请检查更新！", 0).show();
+				break;
+
 			default:
 				break;
 			}
@@ -177,7 +185,6 @@ public class TradeAllFragment extends BaseFragment {
 		CurrentpageNum = 1;
 		visitService(CurrentpageNum);
 		listview.setSelection(0);
-		
 
 	}
 
@@ -216,6 +223,11 @@ public class TradeAllFragment extends BaseFragment {
 						Log.e("stopThread", stopThread + "hahahahhaah");
 						++CurrentpageNum;
 
+					} else {
+						Message message = handler.obtainMessage();
+						message.what = 5;
+
+						handler.sendMessage(message);
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -278,7 +290,7 @@ public class TradeAllFragment extends BaseFragment {
 
 				Message message = handler.obtainMessage();
 				message.what = 1;
-				
+
 				handler.sendMessage(message);
 
 			}
@@ -333,14 +345,15 @@ public class TradeAllFragment extends BaseFragment {
 			adapter.notifyDataSetChanged();
 
 		}
-		 ViewHolder holder=null ;
+
+		ViewHolder holder = null;
 
 		private long dingdantime;
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 
-			
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.trade_record_detail,
@@ -390,7 +403,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.msg_chengjiao.setText("全部成交");
 				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
-				
+
 			case 3:
 				if (undonenum_int == 0) {
 					holder.tv_dan_state.setText("卖出完成");
@@ -525,8 +538,7 @@ public class TradeAllFragment extends BaseFragment {
 									}
 								});
 					}
-					
-					
+
 				}
 
 				break;
@@ -643,14 +655,16 @@ public class TradeAllFragment extends BaseFragment {
 
 	// private View loadmoreview;
 	private Dialog loading_dialog = null;
+
 	@Override
 	public void initView(View view) {
 		// TODO Afuto-generated method stub
 		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
-		/*Rl_jindu.setVisibility(View.VISIBLE);*/
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
+		/* Rl_jindu.setVisibility(View.VISIBLE); */
 		tv_null.setVisibility(View.GONE);
 		list = new ArrayList<Map<String, Object>>();
 		orderlist = new ArrayList<Map<String, Object>>();
@@ -666,14 +680,14 @@ public class TradeAllFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		
+
 		handler.removeMessages(3);
-	
+
 		handler.removeMessages(2);
-        handler.removeMessages(1);
-        listview.setSelection(0);
+		handler.removeMessages(1);
+		listview.setSelection(0);
 		list.clear();
-		
+
 	}
 
 }

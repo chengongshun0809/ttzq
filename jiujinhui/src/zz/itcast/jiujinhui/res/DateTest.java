@@ -106,7 +106,7 @@ public class DateTest {
 		String timeEnd1 = nyr + "11:30:00";
 
 		String start2 = nyr + "13:30:00";
-		String timeEnd2 = nyr + "19:00:00";
+		String timeEnd2 = nyr + "15:00:00";
 
 		try {
 			long start11 = sdf.parse(start1).getTime();

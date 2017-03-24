@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -69,7 +70,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 				}
 
 				break;
-
+			case 2:
+				
+				Toast.makeText(getActivity(), "当前网络异常,请检查更新！",
+						0).show();
+				break;
 			default:
 				break;
 			}
@@ -160,11 +165,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		d1.setCircleRadius(0);
 		d1.setColor(getResources().getColor(R.color.minute_blue));
 		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
-		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
+		
 		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		// Log.e("d1", d1+"");
 		d1.setDrawFilled(true);
-
+		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 		dataSets.add((ILineDataSet) d1);
 
@@ -318,6 +323,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 							message.obj = bean;
 							handler.sendMessage(message);
 
+						}else {
+							Message message = handler.obtainMessage();
+							message.what = 2;
+						
+							handler.sendMessage(message);
 						}
 
 					} catch (Exception e) {

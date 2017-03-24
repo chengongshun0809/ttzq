@@ -78,7 +78,7 @@ public class TradeFragment extends BaseFragment {
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
 
-		initViewPager();
+		
 		sp = getActivity().getSharedPreferences("user", 0);
 		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
 				.createLoadingDialog(getActivity(), "加载中...");
@@ -147,14 +147,7 @@ public class TradeFragment extends BaseFragment {
 	private void initViewPager() {
 		// TODO Auto-generated method stub
 
-		vp_ImgUrls = new ArrayList<String>();
-
-		vp_ImgUrls
-				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist1.jpg");
-		vp_ImgUrls
-				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist2.jpg");
-		vp_ImgUrls 
-				.add("https://www.4001149114.com/NLJJ/resources/deal/deallist3.jpg");
+		
 		initIndicator();
 		// adapterViewPager.notifyDataSetChanged();
 		// 设置初始显示条目
@@ -218,12 +211,25 @@ public class TradeFragment extends BaseFragment {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
+				
+				
+				
 				updateViewPager();
 				break;
 			case 1:
 				loading_dialog.dismiss();
+				initViewPagerlistener();
+				initViewPager();
+				
 				UpdateUI();
+				
+				
+				
 				break;
+				
+				
+				
+				
 			default:
 				break;
 			}
@@ -334,11 +340,7 @@ public class TradeFragment extends BaseFragment {
 			// 置顶的酒金窖
 			String maindealgood = jsonObject.getString("maindealgood");
 			jsonObject2 = new JSONObject(maindealgood);
-			// Log.e("v", jsonObject2.getString("dgid"));
-			/*
-			 * String dgid= jsonObject2.getString("dgid");
-			 * sp.edit().putString("dgid", dgid).commit();
-			 */
+			
 			mainname = jsonObject2.getString("name");
 			opentime = jsonObject2.getString("subscribetime");
 			// maindgid = jsonObject2.getString("dgid");
@@ -347,7 +349,31 @@ public class TradeFragment extends BaseFragment {
 			maindealcode = jsonObject2.getString("dealcode");
 
 			mainstock = jsonObject2.getString("stock");
+             //轮播图
+			
+			String  wxapp=jsonObject.getString("wxapp");
+			JSONObject jsonWxapp=new JSONObject(wxapp);
+			
+			String url1=jsonWxapp.getString("jjimg1");
+			String url2=jsonWxapp.getString("jjimg2");
+			String url3=jsonWxapp.getString("jjimg3");
+			
+			String urlimg1="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url1;
+			String urlimg2="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url2;
+			String urlimg3="https://www.4001149114.com/NLJJ/resources/image/wxapps/"+url3;
+			
+			vp_ImgUrls = new ArrayList<String>();
 
+			vp_ImgUrls
+					.add(urlimg1);
+			vp_ImgUrls
+					.add(urlimg2);
+			vp_ImgUrls 
+					.add(urlimg3);
+			
+			
+			
+			
 			double mainrateint = jsonObject2.getDouble("rate");
 			DecimalFormat df = new DecimalFormat("#0.0");
 			mainrate = df.format(mainrateint);
@@ -772,7 +798,7 @@ public class TradeFragment extends BaseFragment {
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
-		initViewPagerlistener();
+		
 	}
 
 	@Override
