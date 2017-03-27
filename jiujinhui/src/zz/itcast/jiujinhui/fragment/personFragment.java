@@ -81,7 +81,7 @@ public class personFragment extends BaseFragment {
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
-			loading_dialog.dismiss();
+			 //loading_dialog.dismiss();
 			 person_jiubi.setText(df.format(income/100));
 			break;
 
@@ -94,7 +94,6 @@ public class personFragment extends BaseFragment {
   };
 private String phonenum;
 private DecimalFormat df;
-boolean stopThread = false;
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -123,7 +122,7 @@ boolean stopThread = false;
 
 			@Override
 			public void run() {
-				while (!stopThread) {
+				
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 								+ unionString + "&dgid=DG161027140008895";
@@ -137,8 +136,6 @@ boolean stopThread = false;
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
-							stopThread=true;
-							is.close();
 						}
 
 					} catch (Exception e) {
@@ -155,7 +152,7 @@ boolean stopThread = false;
 					}
 				
 				}
-			}
+			
 			
 		}).start();
 	   
@@ -173,21 +170,21 @@ boolean stopThread = false;
 			df = new DecimalFormat("#0.00");
 			JSONObject jsonObject = new JSONObject(json);
 			income = jsonObject.getDouble("income");
-			Message message=Message.obtain();
-			handler.sendEmptyMessage(1);
+			
 			sp.edit().putString("income", income+"").commit();
 			phonenum = jsonObject.getString("mobile");
 			sp.edit().putString("mobile", phonenum).commit();
-			
-		} catch (JSONException e) {
+			Message message=Message.obtain();
+			handler.sendEmptyMessage(1);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	private Dialog loading_dialog = null;
+	//private Dialog loading_dialog = null;
 	@Override
 	public void initData() {
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		//loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 		
 		
 	}
@@ -384,7 +381,6 @@ boolean stopThread = false;
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread=false;
 		handler.removeMessages(1);
 	}
 	

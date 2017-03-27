@@ -2,9 +2,11 @@ package zz.itcast.jiujinhui.activity;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.Constants;
+import zz.itcast.jiujinhui.wxapi.WXEntryActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,12 +105,20 @@ public class PerInfoActivity extends BaseActivity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					if ("shun".equals(isshun)) {
+					/*if ("shun".equals(isshun)) {
 						setResult(200);
-					}
+					}*/
 					sp.edit().putBoolean("isLogined", false).commit();
 					builder.dismiss();
 					finish();
+
+					Toast.makeText(
+							PerInfoActivity.this,
+							"退出成功",
+							Toast.LENGTH_SHORT)
+							.show();
+					Intent intent=new Intent(PerInfoActivity.this,MainActivity.class);
+					startActivity(intent);
 
 				}
 			});

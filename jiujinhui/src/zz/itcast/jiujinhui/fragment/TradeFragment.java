@@ -68,7 +68,7 @@ public class TradeFragment extends BaseFragment {
 	private TextView tv_lirengou;
 	private TextView tv_tian;
 	private SharedPreferences sp;
-	private Dialog loading_dialog = null;
+	//private Dialog loading_dialog = null;
 
 	@Override
 	public void initView(View view) {
@@ -78,8 +78,8 @@ public class TradeFragment extends BaseFragment {
 		tv__title.setText("天天涨钱");
 
 		sp = getActivity().getSharedPreferences("user", 0);
-		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
-				.createLoadingDialog(getActivity(), "加载中...");
+		/*loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");*/
 	}
 
 	boolean isaliv = true;
@@ -146,16 +146,17 @@ public class TradeFragment extends BaseFragment {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-
-				updateViewPager();
-				updateIndicatior();
-				break;
-			case 1:
-				loading_dialog.dismiss();
-				initViewPagerlistener();
+				//loading_dialog.dismiss();
 				initViewPager();
+				initViewPagerlistener();
+				
 
 				UpdateUI();
+				
+				break;
+			case 1:
+				updateViewPager();
+				updateIndicatior();
 
 				break;
 
@@ -176,7 +177,7 @@ public class TradeFragment extends BaseFragment {
 		vp_home_fragment.setCurrentItem(0);
 		lastPosition = 0;
 		isPlaying = true;
-		handler.sendEmptyMessageDelayed(0, 2000);
+		handler.sendEmptyMessageDelayed(1, 2000);
 
 	}
 
@@ -276,7 +277,7 @@ public class TradeFragment extends BaseFragment {
 						String json = NetUtils.readString(is);
 						// 解析json
 						parsonJson(json);
-						is.close();
+						//is.close();
 					}
 
 				} catch (Exception e) {
@@ -303,8 +304,8 @@ public class TradeFragment extends BaseFragment {
 					% vp_ImgUrls.size();
 			vp_home_fragment.setCurrentItem(currPosition);
 			updateIndicatior();
-			handler.removeMessages(0);
-			handler.sendEmptyMessageDelayed(0, 4000);
+			handler.removeMessages(1);
+			handler.sendEmptyMessageDelayed(1, 4000);
 		}
 
 	}
@@ -320,7 +321,6 @@ public class TradeFragment extends BaseFragment {
 		lastPosition = currPosition;
 	}
 
-	@SuppressLint("ResourceAsColor")
 	private void parsonJson(String json) {
 		// TODO Auto-generated method stub
 		try {
@@ -374,7 +374,7 @@ public class TradeFragment extends BaseFragment {
 			dealgoodslist = jsonObject.getJSONArray("dealgoods");
 			length = dealgoodslist.length();
 			Message message = new Message();
-			message.what = 1;
+			message.what = 0;
 			handler.sendMessage(message);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -637,7 +637,7 @@ public class TradeFragment extends BaseFragment {
 
 						try {
 							dgid = jsonObject2.getString("dgid");
-							Log.e("main_dgid", dgid);
+							//Log.e("main_dgid", dgid);
 							maingoodname = jsonObject2.getString("name");
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -702,7 +702,7 @@ public class TradeFragment extends BaseFragment {
 				int goodstate = jsonObject3.getInt("state");
 
 				final String dealgoodname = jsonObject3.getString("name");
-				Log.e("vr", dealgoodname);
+			//	Log.e("vr", dealgoodname);
 				String goodsdealcode = jsonObject3.getString("dealcode");
 				double rate = jsonObject3.getDouble("rate");
 
@@ -712,7 +712,7 @@ public class TradeFragment extends BaseFragment {
 
 				final String dgid = jsonObject3.getString("dgid");
 				sp.edit().putString("dgid", dgid).commit();
-				Log.e("GD", dgid);
+				//Log.e("GD", dgid);
 				tv_name2.setText(dealgoodname);
 				dealcode.setText(goodsdealcode);
 

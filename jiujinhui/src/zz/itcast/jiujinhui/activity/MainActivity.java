@@ -5,7 +5,6 @@ import java.util.List;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BaseFragment;
-import zz.itcast.jiujinhui.fragment.NoLoginPersonFragment;
 import zz.itcast.jiujinhui.fragment.TradeFragment;
 import zz.itcast.jiujinhui.fragment.helpFragment;
 import zz.itcast.jiujinhui.fragment.personFragment;
@@ -51,7 +50,6 @@ public class MainActivity extends BaseActivity {
 		fragments.add(new TradeFragment());
 		fragments.add(new personFragment());
 		fragments.add(new helpFragment());
-		fragments.add(new NoLoginPersonFragment());
 		// Ĭ��ѡ�е���Ŀ
 		radiogroup.check(R.id.rb_trade);
 
@@ -107,6 +105,7 @@ public class MainActivity extends BaseActivity {
 						radiogroup.check(R.id.rb_trade);
 						fm.beginTransaction()
 								.replace(R.id.fl, fragments.get(0)).commit();
+						
 						return;
 					}else {
 						radiogroup.check(R.id.rb_person);
@@ -125,7 +124,7 @@ public class MainActivity extends BaseActivity {
 
 	}
 
-	@Override
+/*	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
@@ -136,7 +135,7 @@ public class MainActivity extends BaseActivity {
 		
                    
 	}
-	}
+	}*/
 
 	private boolean isSecondBackPressed;
 	private long secondTime;

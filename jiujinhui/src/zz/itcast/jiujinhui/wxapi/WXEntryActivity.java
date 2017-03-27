@@ -3,8 +3,10 @@ package zz.itcast.jiujinhui.wxapi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import zz.itcast.jiujinhui.activity.MainActivity;
 import zz.itcast.jiujinhui.res.Constants;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,10 +72,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 								final String openid = jsonObject
 										.getString("openid");
 								sp.edit().putString("openid", openid).commit();
-								System.err.println("accessToken:   "
-										+ accessToken);
-								Log.e("openid", openid);
-								System.err.println("openid:   " + openid);
+							/*	System.err.println("accessToken:   "
+										+ accessToken);*/
+								//Log.e("openid", openid);
+								//System.err.println("openid:   " + openid);
 								// 获取access_token，openid后，就可以用来获取更多用户信息，比如微信昵称，头像，性别等。接口为：
 								/*
 								 * 这个是验证access_token 是否是有效的
@@ -107,11 +109,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																+ openid
 																+ "&lang=zh_CN";
 
-														Toast.makeText(
-																WXEntryActivity.this,
-																"登录成功",
-																Toast.LENGTH_SHORT)
-																.show();
+														
 														HttpUtils httpUtils = new HttpUtils();
 														httpUtils
 																.send(HttpRequest.HttpMethod.GET,
@@ -142,20 +140,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																									"unionid",
 																									unionid)
 																							.commit();
-																					System.err
+																					/*System.err
 																							.println("我的unionid是:   "
-																									+ unionid);
-																					Log.e("我的unionID是：",
-																							unionid);
+																									+ unionid);*/
+																					/*Log.e("我的unionID是：",
+																							unionid);*/
 																					String nickname = json
 																							.getString("nickname");// 昵称
 																					String headimgurl = json
 																							.getString("headimgurl");// 头像
 
-																					Log.e("ms",
+																				/*	Log.e("ms",
 																							nickname
 																									+ "  "
-																									+ headimgurl);
+																									+ headimgurl);*/
 
 																					sp.edit()
 																							.putBoolean(
@@ -174,7 +172,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																									"nickname",
 																									nickname)
 																							.commit();
-																					finish();
+																					 finish();
+																						Intent intent=new Intent(WXEntryActivity.this,MainActivity.class);
+																						startActivity(intent);
+																						Toast.makeText(
+																								WXEntryActivity.this,
+																								"登录成功",
+																								Toast.LENGTH_SHORT)
+																								.show();
 																					// 登录成功后，顺便把个人信息传入数据库
 																					String urlinfo = "https://www.4001149114.com/NLJJ/ddapp/register?appid=wxdb59e14854a747c8&unionid="
 																							+ unionid
@@ -203,7 +208,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																																.toString());
 																												// Log.e("个人信息",json.toString()
 																												// );
-
+                                                     
 																											} catch (JSONException e) {
 																												// TODO
 																												// Auto-generated
@@ -271,20 +276,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 						}
 
 					});
-			finish();
+			
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
 			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();
-
+			finish();
 			break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED: // 发送被拒绝
 			Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
-
+			finish();
 			break;
 		default:
 			break;
 		}
-		finish();
+		
 	}
 
 	@Override
