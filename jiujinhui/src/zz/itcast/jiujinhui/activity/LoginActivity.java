@@ -116,7 +116,7 @@ public class LoginActivity extends BaseActivity {
 				req.state="none";
 				api.sendReq(req);
 				//sp.edit().putBoolean("isLogined", true).commit();
-				finish();
+				//finish();
 			
 			}
 

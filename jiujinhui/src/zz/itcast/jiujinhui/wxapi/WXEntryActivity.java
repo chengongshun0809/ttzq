@@ -172,7 +172,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																									"nickname",
 																									nickname)
 																							.commit();
-																					 finish();
+																					    
 																						Intent intent=new Intent(WXEntryActivity.this,MainActivity.class);
 																						startActivity(intent);
 																						Toast.makeText(
@@ -180,6 +180,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																								"登录成功",
 																								Toast.LENGTH_SHORT)
 																								.show();
+																						 finish();
 																					// 登录成功后，顺便把个人信息传入数据库
 																					String urlinfo = "https://www.4001149114.com/NLJJ/ddapp/register?appid=wxdb59e14854a747c8&unionid="
 																							+ unionid
@@ -280,11 +281,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
 			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();
-			finish();
+			
+		     finish();
+			
 			break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED: // 发送被拒绝
 			Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
 			finish();
+			
 			break;
 		default:
 			break;
