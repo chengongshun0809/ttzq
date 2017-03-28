@@ -71,7 +71,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 			case 1:
 				// 获取数据展示
 				DomeBean bean = (DomeBean) msg.obj;
-				Log.e("测试", bean.getDealprice().toString() + "");
+				//Log.e("测试", bean.getDealprice().toString() + "");
 				if (isAdded()) {
 					setDatas(bean.getDealprice());
 				}
@@ -101,16 +101,6 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 	}
 
-	public SparseArray<String> setXLabelss() {
-		SparseArray<String> xLabels = new SparseArray<String>();
-		xLabels.clear();
-
-		xLabels.put(0, "09:00");
-		xLabels.put(20, "11:30");
-		xLabels.put(33, "15:00");
-
-		return xLabels;
-	}
 
 	private SparseArray<String> stringSparseArray;
 
@@ -142,10 +132,9 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		ArrayList<String> dateList = new ArrayList<String>();
 
 		for (int i = 0; i < mData.getDatas_every().size(); i++) {
-			// Log.e("chengjiaojiagge", mData.getDatas_every().get(0).beprice +
-			// "");
-			// Log.e("trnasjiaojiagge", mData.getDatas_every().get(0).byprice +
-			// "");
+			// Log.e("chengjiaojiagge", mData.getDatas_every().get(i).beprice + "");
+			
+			
 			lineCJEntries.add(new Entry(mData.getDatas_every().get(i).beprice,
 					i));
 			lineTransEntries.add(new Entry(
@@ -157,8 +146,8 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
 		LineDataSet d2 = new LineDataSet(lineTransEntries, "转让价");
-		d1.setDrawValues(true);
-		d2.setDrawValues(true);
+		d1.setDrawValues(false);
+		d2.setDrawValues(false);
 		d1.setCircleRadius(0);
 		d2.setCircleRadius(0);
 
@@ -194,14 +183,16 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 						 * 
 						 * Log.e(" e.getVal()", e.getVal() + "");
 						 */
-						price_cheng.setText(e.getVal() + "");
-
-						Log.e("zhi", e + "");
+					
+						
 						int index = e.getXIndex();
+						price_cheng.setText(mData.getDatas_every().get(index).beprice + "");
+						//Log.e("成交价", mData.getDatas_every().get(index).beprice  + "");
 						date.setText(mData.getDatas_every().get(index).time);
 						price_trans
 								.setText(mData.getDatas_every().get(index).byprice
 										+ "");
+						//Log.e("转让价", mData.getDatas_every().get(index).byprice + "");
 					}
 
 					@Override
@@ -320,7 +311,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 						// Log.e("ssssssssssss", infojson);
 						DomeBean bean = new Gson().fromJson(infojson,
 								DomeBean.class);
-						Log.e("11111dealprice1", bean.dealprice.get(1) + "");
+						//Log.e("11111dealprice1", bean.dealprice.get(1) + "");
 						Message message = handler.obtainMessage();
 						message.what = 1;
 						message.obj = bean;

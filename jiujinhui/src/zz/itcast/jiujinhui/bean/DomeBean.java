@@ -387,7 +387,7 @@ public class DomeBean {
         public int minprice;
         public String name;
         public String owner;
-        public int realprice;
+        public float realprice;
         public int state;
         public int usernum;
 
@@ -535,7 +535,7 @@ public class DomeBean {
             this.owner = owner;
         }
 
-        public int getRealprice() {
+        public float getRealprice() {
             return realprice;
         }
 

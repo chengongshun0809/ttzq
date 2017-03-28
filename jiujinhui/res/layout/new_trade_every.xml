@@ -46,7 +46,7 @@
                   android:id="@+id/price_cheng"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="333.12"
+             android:text=""
              android:textSize="12sp"
              android:textColor="#404040"
              />   
@@ -80,7 +80,7 @@
                   android:id="@+id/price_trans"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="333.12"
+             android:text=""
              android:textSize="12sp"
              android:textColor="#404040"
              />   

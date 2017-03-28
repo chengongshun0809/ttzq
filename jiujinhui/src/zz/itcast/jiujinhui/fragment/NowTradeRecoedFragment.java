@@ -154,10 +154,10 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			}
 			lineCJEntries.add(new Entry(minutesBean.cjprice, i));
 			dateList.add(mData.getDatas().get(i).time);
-			Log.e("!=-1", mData.getDatas().get(i).time + "");
+			//Log.e("!=-1", mData.getDatas().get(i).time + "");
 
 		}
-		Log.e("dateList", dateList.size() + "");
+		//Log.e("dateList", dateList.size() + "");
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
 		d1.setDrawValues(false);// 显示折线上的数值
