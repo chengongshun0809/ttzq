@@ -107,6 +107,7 @@
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="5dp"
                 android:text="收储服务费"
+                 android:textColor="#404040"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -145,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="交易代码: "
-                     
+                     android:textColor="#404040"
                     android:textSize="14sp" />
 
                 <TextView
@@ -153,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16002"
+                     android:textColor="#404040"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -168,6 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="限量发行: "
+                     android:textColor="#404040"
                     android:textSize="14sp" />
 
                 <TextView
@@ -175,12 +178,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10000"
+                     android:textColor="#404040"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="瓶"
+                     android:textColor="#404040"
                     android:textSize="14sp" />
             </LinearLayout>
 

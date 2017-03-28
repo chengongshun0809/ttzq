@@ -21,6 +21,7 @@ import zz.itcast.jiujinhui.activity.WoyaorengouActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.bean.MinutesBean;
 import zz.itcast.jiujinhui.res.NetUtils;
+import zz.itcast.jiujinhui.res.OurApplication;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -77,7 +78,7 @@ public class TradeFragment extends BaseFragment {
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("天天涨钱");
 
-		sp = getActivity().getSharedPreferences("user", 0);
+		sp = OurApplication.getContext().getSharedPreferences("user", 0);
 		/*loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
 				.createLoadingDialog(getActivity(), "加载中...");*/
 	}
@@ -90,8 +91,8 @@ public class TradeFragment extends BaseFragment {
 		super.onResume();
 
 		// 判断当前页面是否联网
-		ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication.getContext()
+				.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
@@ -99,7 +100,7 @@ public class TradeFragment extends BaseFragment {
 
 		} else {
 			isaliv = false;
-			Toast.makeText(getActivity(), "无网络连接", Toast.LENGTH_SHORT).show();
+			Toast.makeText(OurApplication.getContext(), "无网络连接", Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -184,11 +185,11 @@ public class TradeFragment extends BaseFragment {
 	private void initIndicator() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < vp_ImgUrls.size(); i++) {
-			ImageView iv_indicator = new ImageView(getActivity());
+			ImageView iv_indicator = new ImageView(OurApplication.getContext());
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, -2);
 			layoutParams.leftMargin = zz.itcast.jiujinhui.res.DensityUtil
-					.dip2px(getActivity(), 20);
+					.dip2px(OurApplication.getContext(), 20);
 			if (i == 0) {
 				iv_indicator.setImageResource(R.drawable.slide_adv_selected);
 			} else {
@@ -203,7 +204,7 @@ public class TradeFragment extends BaseFragment {
 	private void initViewPagerlistener() {
 		// TODO Auto-generated method stub
 		adapterViewPager = new zz.itcast.jiujinhui.adapter.HomeFragPagerAdapter(
-				getActivity(), vp_ImgUrls);
+				OurApplication.getContext(), vp_ImgUrls);
 		vp_home_fragment.setAdapter(adapterViewPager);
 		// 设置页面改变的监听
 		vp_home_fragment
@@ -255,8 +256,8 @@ public class TradeFragment extends BaseFragment {
 		 * autoScrollTextView.init(getActivity().getWindowManager());
 		 * autoScrollTextView.startScroll();
 		 */
-		inflater = (LayoutInflater) getActivity().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) OurApplication.getContext().getSystemService(
+				OurApplication.getContext().LAYOUT_INFLATER_SERVICE);
 
 		new Thread(new Runnable() {
 
@@ -414,7 +415,7 @@ public class TradeFragment extends BaseFragment {
 					View openview = inflater.inflate(R.layout.open_trade, null);
 
 					final AlertDialog builder = new AlertDialog.Builder(
-							getActivity()).create();
+							OurApplication.getContext()).create();
 					builder.setView(openview, 0, 0, 0, 0);
 					builder.setCancelable(false);
 					builder.show();
@@ -523,12 +524,12 @@ public class TradeFragment extends BaseFragment {
 								// TODO Auto-generated method stub
 
 								LayoutInflater inflater = LayoutInflater
-										.from(getActivity());
+										.from(OurApplication.getContext());
 								View openview = (View) inflater.inflate(
 										R.layout.open_trade_left, null);
 
 								final AlertDialog builder = new AlertDialog.Builder(
-										getActivity()).create();
+										OurApplication.getContext()).create();
 								builder.setView(openview, 0, 0, 0, 0);
 								builder.setCancelable(false);
 								builder.show();
@@ -549,7 +550,7 @@ public class TradeFragment extends BaseFragment {
 
 							} else {
 
-								Intent intent1 = new Intent(getActivity(),
+								Intent intent1 = new Intent(OurApplication.getContext(),
 										WoyaorengouActivity.class);
 								Bundle bundle = new Bundle();
 								bundle.putString("name", maingoodname);
@@ -566,7 +567,7 @@ public class TradeFragment extends BaseFragment {
 						}
 
 					} else {
-						Intent intent = new Intent(getActivity(),
+						Intent intent = new Intent(OurApplication.getContext(),
 								LoginActivity.class);
 						startActivity(intent);
 					}
@@ -618,8 +619,8 @@ public class TradeFragment extends BaseFragment {
 
 				@Override
 				public void onClick(View v) {
-					ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-							.getSystemService(Context.CONNECTIVITY_SERVICE);
+					ConnectivityManager connectivityManager = (ConnectivityManager)OurApplication.getContext()
+							.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 					NetworkInfo info = connectivityManager
 							.getActiveNetworkInfo();
@@ -628,7 +629,7 @@ public class TradeFragment extends BaseFragment {
 
 					} else {
 						isaliv = false;
-						Toast.makeText(getActivity(), "无网络连接",
+						Toast.makeText(OurApplication.getContext(), "无网络连接",
 								Toast.LENGTH_SHORT).show();
 
 					}
@@ -647,21 +648,21 @@ public class TradeFragment extends BaseFragment {
 						// TODO Auto-generated method stub
 						Boolean isLogined = sp.getBoolean("isLogined", false);
 						if (isLogined) {
-							Intent intent = new Intent(getActivity(),
+							Intent intent = new Intent(OurApplication.getContext(),
 									TradeServiceActivity.class);
 							intent.putExtra("name", maingoodname);
 							intent.putExtra("dealdgid", dgid);
 
 							startActivity(intent);
 						} else {
-							Intent intent = new Intent(getActivity(),
+							Intent intent = new Intent(OurApplication.getContext(),
 									LoginActivity.class);
 							startActivity(intent);
 						}
 
 					} else {
 
-						Toast.makeText(getActivity(), "无网络连接",
+						Toast.makeText(OurApplication.getContext(), "无网络连接",
 								Toast.LENGTH_SHORT).show();
 
 					}
@@ -723,8 +724,8 @@ public class TradeFragment extends BaseFragment {
 
 						// TODO Auto-generated method stub
 
-						ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
-								.getSystemService(Context.CONNECTIVITY_SERVICE);
+						ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication.getContext()
+								.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 						NetworkInfo info = connectivityManager
 								.getActiveNetworkInfo();
@@ -733,7 +734,7 @@ public class TradeFragment extends BaseFragment {
 
 						} else {
 							isaliv = false;
-							Toast.makeText(getActivity(), "无网络连接",
+							Toast.makeText(OurApplication.getContext(), "无网络连接",
 									Toast.LENGTH_SHORT).show();
 
 						}
@@ -742,20 +743,20 @@ public class TradeFragment extends BaseFragment {
 							Boolean isLogined = sp.getBoolean("isLogined",
 									false);
 							if (isLogined) {
-								Intent intent = new Intent(getActivity(),
+								Intent intent = new Intent(OurApplication.getContext(),
 										TradeServiceActivity.class);
 								intent.putExtra("name", dealgoodname);
 								intent.putExtra("dealdgid", dgid);
 								startActivity(intent);
 							} else {
-								Intent intent = new Intent(getActivity(),
+								Intent intent = new Intent(OurApplication.getContext(),
 										LoginActivity.class);
 								startActivity(intent);
 							}
 
 						} else {
 
-							Toast.makeText(getActivity(), "无网络连接",
+							Toast.makeText(OurApplication.getContext(), "无网络连接",
 									Toast.LENGTH_SHORT).show();
 
 						}

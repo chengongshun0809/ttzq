@@ -21,6 +21,7 @@ import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
+import zz.itcast.jiujinhui.res.OurApplication;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -101,9 +102,9 @@ private DecimalFormat df;
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("个人中心");
 		// 微信头像
-		sp = getActivity().getSharedPreferences("user", 0);
+		sp =OurApplication.getContext().getSharedPreferences("user", 0);
 		String headimgurl = sp.getString("headimg", null);
-		Picasso.with(getActivity()).load(headimgurl).into(circleImabeView);
+		Picasso.with(OurApplication.getContext()).load(headimgurl).into(circleImabeView);
 		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
 		NickName.setText(nickNameString);
@@ -221,7 +222,7 @@ private DecimalFormat df;
            
             	
 				//判断当前页面是否联网
-				ConnectivityManager connectivityManager=(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+				ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 				
 				NetworkInfo info=connectivityManager.getActiveNetworkInfo();
 				if(info!=null&&info.isAvailable()){
@@ -230,7 +231,7 @@ private DecimalFormat df;
 					
 				}else{
 					isaliv=false;
-					Toast.makeText(getActivity(),"无网络连接",Toast.LENGTH_SHORT).show();
+					Toast.makeText(OurApplication.getContext(),"无网络连接",Toast.LENGTH_SHORT).show();
 					
 				}
 					
@@ -247,22 +248,22 @@ private DecimalFormat df;
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.zongzichan:// 总资产
-			Intent intent0 = new Intent(getActivity(), ZongZiChanActivity.class);
+			Intent intent0 = new Intent(OurApplication.getContext(), ZongZiChanActivity.class);
 			startActivity(intent0);
 			break;
 		case R.id.drink_record:// 酒币记录
-			Intent intent1 = new Intent(getActivity(),
+			Intent intent1 = new Intent(OurApplication.getContext(),
 					DrinkRecordActivity.class);
 			startActivity(intent1);
 			break;
 		case R.id.trade_record:// 交易记录
-			Intent intent2 = new Intent(getActivity(),
+			Intent intent2 = new Intent(OurApplication.getContext(),
 					TradeRecordActivity.class);
 			startActivity(intent2);
 
 			break;
 		case R.id.tixianRecord:// 提现记录
-			Intent intent3 = new Intent(getActivity(),
+			Intent intent3 = new Intent(OurApplication.getContext(),
 					TiXianRecordActivity.class);
 			
 			
@@ -285,7 +286,7 @@ private DecimalFormat df;
 						MyTiXianActivity.class);
 				startActivity(intent4);
 			}*/
-			ConnectivityManager connectivityManager=(ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 			
 			NetworkInfo info=connectivityManager.getActiveNetworkInfo();
 			if(info!=null&&info.isAvailable()){
@@ -310,7 +311,7 @@ private DecimalFormat df;
 				boolean flag2 = datet.isNowDate(date3,cal2);
 				if (flag2 == true) {
 					// 符合交易时间
-					Intent intent4 = new Intent(getActivity(),
+					Intent intent4 = new Intent(OurApplication.getContext(),
 							MyTiXianActivity.class);
 					Bundle bundle=new Bundle();
 					bundle.putString("mobile", phonenum);
@@ -320,7 +321,7 @@ private DecimalFormat df;
 
 				} else {
 					
-					Toast.makeText(getActivity(), "非交易时间无法提现", 0).show();
+					Toast.makeText(OurApplication.getContext(), "非交易时间无法提现", 0).show();
 
 				}
 				
@@ -328,7 +329,7 @@ private DecimalFormat df;
 				
 			}else{
 				
-				Toast.makeText(getActivity(), "无网络连接", 0).show();
+				Toast.makeText(OurApplication.getContext(), "无网络连接", 0).show();
 				
 			}
 			
@@ -361,13 +362,13 @@ private DecimalFormat df;
 						ReChargeActivity.class);
 				startActivity(intent5);
 			}*/
-			Intent intent5 = new Intent(getActivity(),
+			Intent intent5 = new Intent(OurApplication.getContext(),
 					ReChargeActivity.class);
 			startActivity(intent5);
 			break;
 		case R.id.personInfo:// 进入个人信息页面
 
-			Intent intent = new Intent(getActivity(), PerInfoActivity.class);
+			Intent intent = new Intent(OurApplication.getContext(), PerInfoActivity.class);
 			intent.putExtra("shun", "shun");
 			startActivityForResult(intent, 0);
 			break;
