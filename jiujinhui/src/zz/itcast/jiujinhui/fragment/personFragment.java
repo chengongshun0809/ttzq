@@ -2,6 +2,8 @@ package zz.itcast.jiujinhui.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +24,7 @@ import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import zz.itcast.jiujinhui.res.OurApplication;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +34,9 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,6 +98,7 @@ public class personFragment extends BaseFragment {
 		  
 	  };
   };
+  private Dialog dialog_NO;
 private String phonenum;
 private DecimalFormat df;
 	@Override
@@ -215,6 +221,7 @@ private DecimalFormat df;
 
 	}
 	     boolean isaliv=true;
+		private long datime;
               @Override
             public void onResume() {
             	// TODO Auto-generated method stub
@@ -303,12 +310,20 @@ private DecimalFormat df;
 			
 			
 			if(isaliv==true){
-				DateTest datet = new DateTest();
-				Date date3 = new Date();
-				Calendar cal2 = Calendar.getInstance();
 				
-				
-				boolean flag2 = datet.isNowDate(date3,cal2);
+				Calendar cal = Calendar.getInstance();
+				URL url = null;//取得资源对象
+				try {
+				  url = new URL("http://www.baidu.com");
+				  URLConnection uc = url.openConnection();//生成连接对象
+				  uc.connect(); //发出连接
+				datime = uc.getDate();
+				 
+				} catch (Exception e) {
+				  e.printStackTrace();
+				}
+				DateTest dateTest = new DateTest();
+				boolean flag2 = dateTest.isNowDate(datime, cal);
 				if (flag2 == true) {
 					// 符合交易时间
 					Intent intent4 = new Intent(OurApplication.getContext(),
@@ -320,8 +335,24 @@ private DecimalFormat df;
 					startActivity(intent4);
 
 				} else {
-					
-					Toast.makeText(OurApplication.getContext(), "非交易时间无法提现", 0).show();
+					LayoutInflater inflater = LayoutInflater.from(getActivity());
+					View view = (View) inflater.inflate(
+							R.layout.timeout_service, null);
+					final AlertDialog builder = new AlertDialog.Builder(getActivity())
+							.create();
+					builder.setView(view, 0, 0, 0, 0);
+					builder.setCancelable(false);
+					builder.show();
+
+					RelativeLayout haode = (RelativeLayout) view
+							.findViewById(R.id.haode);
+					haode.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) { // TODO Auto-generated
+							builder.dismiss();
+						}
+					});
 
 				}
 				

@@ -17,12 +17,12 @@ public class DateTest {
 	private static long nowtime;
 
 	@SuppressLint("SimpleDateFormat")
-	public boolean isNowDate(Date date, Calendar cal) {
+	public boolean isNowDate(long datetime, Calendar cal) {
 		boolean flag = false;
 
-		nowtime = date.getTime();
+		nowtime = datetime;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		String now_time = sdf.format(date);
+		String now_time = sdf.format(datetime);
 		String nyr = now_time.substring(0, 11);
 
 		String start1 = nyr + "09:00";

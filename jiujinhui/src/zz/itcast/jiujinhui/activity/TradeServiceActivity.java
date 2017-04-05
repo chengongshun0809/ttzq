@@ -2,6 +2,8 @@ package zz.itcast.jiujinhui.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -596,7 +598,7 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_buy_service:
-			// 获取系统当前时间
+			// 获取网络当前时间
 			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
@@ -609,11 +611,20 @@ public class TradeServiceActivity extends BaseActivity {
 			}
 			if (isaliv == true) {
 
-				Date date = new Date();
+				
 				Calendar cal = Calendar.getInstance();
-
+				URL url = null;//取得资源对象
+				try {
+				  url = new URL("http://www.baidu.com");
+				  URLConnection uc = url.openConnection();//生成连接对象
+				  uc.connect(); //发出连接
+				  datime = uc.getDate();
+				 
+				} catch (Exception e) {
+				  e.printStackTrace();
+				}
 				DateTest dateTest = new DateTest();
-				boolean flag = dateTest.isNowDate(date, cal);
+				boolean flag = dateTest.isNowDate(datime, cal);
 				if (flag == true) {
 					// 符合交易时间
 					showBuyDialog();
@@ -661,11 +672,20 @@ public class TradeServiceActivity extends BaseActivity {
 
 			}
 			if (isaliv == true) {
-				DateTest dateT = new DateTest();
-				Date date2 = new Date();
-				Calendar cal1 = Calendar.getInstance();
-
-				boolean flag1 = dateT.isNowDate(date2, cal1);
+				
+				Calendar cal = Calendar.getInstance();
+				URL url = null;//取得资源对象
+				try {
+				  url = new URL("http://www.baidu.com");
+				  URLConnection uc = url.openConnection();//生成连接对象
+				  uc.connect(); //发出连接
+				  datime = uc.getDate();
+				 
+				} catch (Exception e) {
+				  e.printStackTrace();
+				}
+				DateTest dateTest = new DateTest();
+				boolean flag1 = dateTest.isNowDate(datime, cal);
 				if (flag1 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
@@ -729,11 +749,20 @@ public class TradeServiceActivity extends BaseActivity {
 			}
 			if (isaliv == true) {
 
-				DateTest datet = new DateTest();
-				Date date3 = new Date();
-				Calendar cal2 = Calendar.getInstance();
-
-				boolean flag2 = datet.isNowDate(date3, cal2);
+				//获取网络时间
+				Calendar cal = Calendar.getInstance();
+				URL url = null;//取得资源对象
+				try {
+				  url = new URL("http://www.baidu.com");
+				  URLConnection uc = url.openConnection();//生成连接对象
+				  uc.connect(); //发出连接
+				  datime = uc.getDate();
+				 
+				} catch (Exception e) {
+				  e.printStackTrace();
+				}
+				DateTest dateTest = new DateTest();
+				boolean flag2 = dateTest.isNowDate(datime, cal);
 				if (flag2 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
@@ -870,11 +899,11 @@ public class TradeServiceActivity extends BaseActivity {
 												.readString(iStream);
 										// JSONObject jsonObject = new
 										// JSONObject(infojson);
-										Log.e("我靠快快快快快快快", infojson);
+									//	Log.e("我靠快快快快快快快", infojson);
 										// handler.sendEmptyMessage(3);
 										// Log.e("hahahhahh", infojson);
 										parseJson_trans(infojson);
-										Log.e("sssssssssss", "hahah");
+										//Log.e("sssssssssss", "hahah");
 									}
 
 								} catch (Exception e) {
@@ -1503,6 +1532,8 @@ public class TradeServiceActivity extends BaseActivity {
 	private Dialog dialog_NO;
 
 	private static long firstTime;
+
+	private long datime;
 
 	@Override
 	protected void onDestroy() {
