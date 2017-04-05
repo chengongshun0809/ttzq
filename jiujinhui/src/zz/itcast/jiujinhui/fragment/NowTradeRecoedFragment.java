@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import zz.itcast.jiujinhui.R;
@@ -43,6 +45,7 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.cache.MD5FileNameGenerator;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -59,8 +62,12 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-
 			case 1:
+				lineChart.setVisibility(View.GONE);
+				ll_time_price.setVisibility(View.GONE);
+				tingpan_nodata.setVisibility(View.VISIBLE);
+				break;
+			case 2:
 				// 获取数据展示
 				DomeBean bean = (DomeBean) msg.obj;
 				// Log.e("测试", bean.todaydeal.toString()+"");
@@ -70,11 +77,11 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 				}
 
 				break;
-			case 2:
-				
-				Toast.makeText(getActivity(), "当前网络异常,请检查更新！",
-						0).show();
+			case 3:
+
+				Toast.makeText(getActivity(), "当前网络异常,请检查更新！", 0).show();
 				break;
+
 			default:
 				break;
 			}
@@ -107,7 +114,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		xLabels.put(0, "09:00");
 		xLabels.put(20, "11:30");
 		xLabels.put(33, "15:00");
-
+		xLabels.put(34, "15:01");
 		return xLabels;
 	}
 
@@ -138,7 +145,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			MinutesBean minutesBean = mData.getDatas().get(i);
 			/*
 			 * if (minutesBean.cjprice != -1) { lineCJEntries.add(new
-			 * Entry(minutesBean.cjprice, i)); 
+			 * Entry(minutesBean.cjprice, i));
 			 * dateList.add(mData.getDatas().get(i).time);
 			 * Log.e("!=-1",mData.getDatas().get(i).time+""); } else {
 			 * lineCJEntries.add(new Entry(Float.NaN, i));
@@ -149,15 +156,16 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			if (t == null) {
 				lineCJEntries.add(new Entry(Float.NaN, i));
 				dateList.add(i + "");
+				dateList.add(100 + "");
 				// Log.e("==-1", mData.getDatas().get(i).time+"");
 				continue;
 			}
 			lineCJEntries.add(new Entry(minutesBean.cjprice, i));
 			dateList.add(mData.getDatas().get(i).time);
-			//Log.e("!=-1", mData.getDatas().get(i).time + "");
+			// Log.e("!=-1", mData.getDatas().get(i).time + "");
 
 		}
-		//Log.e("dateList", dateList.size() + "");
+		// Log.e("dateList", dateList.size() + "");
 
 		LineDataSet d1 = new LineDataSet(lineCJEntries, "成交价");
 		d1.setDrawValues(false);// 显示折线上的数值
@@ -165,13 +173,13 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		d1.setCircleRadius(0);
 		d1.setColor(getResources().getColor(R.color.minute_blue));
 		d1.setHighLightColor(getResources().getColor(R.color.minute_yellow));
-		
+
 		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		// Log.e("d1", d1+"");
 		d1.setDrawFilled(true);
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-		dataSets.add((ILineDataSet) d1);  
+		dataSets.add((ILineDataSet) d1);
 
 		LineData cd = new LineData(
 				dateList,
@@ -293,69 +301,84 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		Calendar cal = Calendar.getInstance();
 		DateTest dateTest = new DateTest();
 		boolean flag = dateTest.isNowDate_nowtrade(date, cal);
-		if (flag == true) {
-			new Thread(new Runnable() {
+		// if (flag == true) {
+		new Thread(new Runnable() {
 
-				private InputStream iStream;
+			private InputStream iStream;
 
-				@Override
-				public void run() {
+			@Override
+			public void run() {
 
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
+				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+						+ unionid + "&dgid=" + dgid;
 
-					// String url_serviceinfo =
-					// "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid=o9zBFwSKbKwfv2lXj0mLpKdRplS0&dgid=DG170112210454522";
+				// String url_serviceinfo =
+				// "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid=o9zBFwSKbKwfv2lXj0mLpKdRplS0&dgid=DG170112210454522";
 
-					try {
-						HttpsURLConnection connection = NetUtils
-								.httpsconnNoparm(url_serviceinfo, "POST");
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
+				try {
+					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+							url_serviceinfo, "POST");
+					int code = connection.getResponseCode();
+					if (code == 200) {
+						iStream = connection.getInputStream();
+						String infojson = NetUtils.readString(iStream);
+						JSONObject jsonObject = new JSONObject(infojson);
+						JSONArray jsonArray = jsonObject
+								.getJSONArray("todaydeal");
+
+						if (jsonArray.isNull(0)) {
+							// 停盘时间，数据为空
+
+							Message message = handler.obtainMessage();
+							message.what = 1;
+
+							handler.sendMessage(message);
+
+						} else {
 							// Log.e("ssssssssssss", infojson);
 							DomeBean bean = new Gson().fromJson(infojson,
 									DomeBean.class);
 							// Log.e("wangluo", bean.income + "");
 							Message message = handler.obtainMessage();
-							message.what = 1;
+							message.what = 2;
 							message.obj = bean;
 							handler.sendMessage(message);
-
-						}else {
-							Message message = handler.obtainMessage();
-							message.what = 2;
-						
-							handler.sendMessage(message);
 						}
 
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
+					} else {
+						Message message = handler.obtainMessage();
+						message.what = 3;
 
+						handler.sendMessage(message);
+					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (iStream != null) {
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 				}
-			}).start();
 
-		} else {
+			}
+		}).start();
 
-			// 停盘时间，数据为空
-			lineChart.setVisibility(View.GONE);
-			ll_time_price.setVisibility(View.GONE);
-			tingpan_nodata.setVisibility(View.VISIBLE);
-
-		}
+		/*
+		 * } else {
+		 * 
+		 * // 停盘时间，数据为空 lineChart.setVisibility(View.GONE);
+		 * ll_time_price.setVisibility(View.GONE);
+		 * tingpan_nodata.setVisibility(View.VISIBLE);
+		 * 
+		 * }
+		 */
 
 	}
 
@@ -384,7 +407,8 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		handler.removeMessages(1);
-
+		handler.removeMessages(2);
+		handler.removeMessages(3);
 		super.onDestroy();
 	}
 }
