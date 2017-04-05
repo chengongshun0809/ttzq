@@ -27,7 +27,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
 	private IWXAPI mApi;
-	private static SharedPreferences sp;
+	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

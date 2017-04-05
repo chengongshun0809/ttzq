@@ -406,7 +406,9 @@ public class TradeSaleFragment extends BaseFragment {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
+					
 					long now = new Date().getTime();
+					Log.e("maichu", (now - dingdantime)+"");
 					if ((now - dingdantime) > 432000000) {
 						// 系统自动撤单
 						holder.tv_dan_state.setText("卖出完成");

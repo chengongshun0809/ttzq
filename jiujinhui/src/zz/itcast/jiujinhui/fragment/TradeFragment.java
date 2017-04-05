@@ -69,7 +69,7 @@ public class TradeFragment extends BaseFragment {
 	private TextView tv_lirengou;
 	private TextView tv_tian;
 	private SharedPreferences sp;
-	//private Dialog loading_dialog = null;
+	private Dialog loading_dialog = null;
 
 	@Override
 	public void initView(View view) {
@@ -79,8 +79,8 @@ public class TradeFragment extends BaseFragment {
 		tv__title.setText("天天涨钱");
 
 		sp = OurApplication.getContext().getSharedPreferences("user", 0);
-		/*loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
-				.createLoadingDialog(getActivity(), "加载中...");*/
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
 	}
 
 	boolean isaliv = true;
@@ -147,7 +147,7 @@ public class TradeFragment extends BaseFragment {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				//loading_dialog.dismiss();
+				loading_dialog.dismiss();
 				initViewPager();
 				initViewPagerlistener();
 				

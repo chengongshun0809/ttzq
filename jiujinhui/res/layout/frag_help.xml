@@ -365,7 +365,7 @@
                     android:layout_marginLeft="15dp"
                       android:textColor="#999999"
                        android:lineSpacingExtra="4dp"
-                    android:text="8、交易时间为每周一至周五的上午:09:00-11:30、下午:13:30-15:00、晚上:20:30-22:00。周六日的晚上:20:30-22:00。" />
+                    android:text="8、交易时间为每周一至周五的上午:09:00-11:30、下午:13:30-15:00。" />
             </RelativeLayout>
 
 <RelativeLayout

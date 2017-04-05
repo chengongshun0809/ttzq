@@ -9,6 +9,7 @@ import zz.itcast.jiujinhui.fragment.TradeFragment;
 import zz.itcast.jiujinhui.fragment.helpFragment;
 import zz.itcast.jiujinhui.fragment.personFragment;
 import zz.itcast.jiujinhui.res.ActivityCollector;
+import zz.itcast.jiujinhui.res.OurApplication;
 import zz.itcast.jiujinhui.res.ToastUtil;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -98,13 +99,15 @@ public class MainActivity extends BaseActivity {
 					boolean isLogined = sp.getBoolean("isLogined", false);
 					if (isLogined == false) {
 						
-						Intent intent = new Intent(MainActivity.this,
+						Intent intent = new Intent(OurApplication.getContext(),
 								LoginActivity.class);
 						startActivity(intent);
 						
 						radiogroup.check(R.id.rb_trade);
 						fm.beginTransaction()
 								.replace(R.id.fl, fragments.get(0)).commit();
+						 
+						
 						
 						return;
 					}else {
@@ -150,6 +153,9 @@ public class MainActivity extends BaseActivity {
 			currentItem = 0;
 
 			radiogroup.check(R.id.rb_trade);
+			fm.beginTransaction()
+			.replace(R.id.fl, fragments.get(0)).commit();
+	 
 
 		} else {
 
