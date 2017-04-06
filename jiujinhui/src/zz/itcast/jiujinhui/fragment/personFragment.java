@@ -221,7 +221,7 @@ private DecimalFormat df;
 
 	}
 	     boolean isaliv=true;
-		private long datime;
+		
               @Override
             public void onResume() {
             	// TODO Auto-generated method stub
@@ -310,21 +310,13 @@ private DecimalFormat df;
 			
 			
 			if(isaliv==true){
-				
-				Calendar cal = Calendar.getInstance();
-				URL url = null;//取得资源对象
-				try {
-				  url = new URL("http://www.baidu.com");
-				  URLConnection uc = url.openConnection();//生成连接对象
-				  uc.connect(); //发出连接
-				datime = uc.getDate();
-				 
-				} catch (Exception e) {
-				  e.printStackTrace();
-				}
 				DateTest dateTest = new DateTest();
-				boolean flag2 = dateTest.isNowDate(datime, cal);
-				if (flag2 == true) {
+				Calendar cal = Calendar.getInstance();
+				long datet=new Date().getTime();
+
+				
+				boolean flag3 = dateTest.isNowDate(datet, cal);
+				if (flag3 == true) {
 					// 符合交易时间
 					Intent intent4 = new Intent(OurApplication.getContext(),
 							MyTiXianActivity.class);
@@ -337,7 +329,7 @@ private DecimalFormat df;
 				} else {
 					LayoutInflater inflater = LayoutInflater.from(getActivity());
 					View view = (View) inflater.inflate(
-							R.layout.timeout_service, null);
+							R.layout.timeout_tixiantime, null);
 					final AlertDialog builder = new AlertDialog.Builder(getActivity())
 							.create();
 					builder.setView(view, 0, 0, 0, 0);

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,7 +60,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 public class TradeServiceActivity extends BaseActivity {
 	@ViewInject(R.id.scrollview)
 	private zz.itcast.jiujinhui.view.MyScrollView scrollview;
-	
+
 	// 买入
 	@ViewInject(R.id.rb_buy_service)
 	private LinearLayout rb_buy_service;
@@ -163,7 +164,7 @@ public class TradeServiceActivity extends BaseActivity {
 	}
 
 	boolean isaliv = true;
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
@@ -174,16 +175,16 @@ public class TradeServiceActivity extends BaseActivity {
 
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
-			  isaliv = true;
-			  loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(TradeServiceActivity.this, "加载中...");
-			  initDatas();
+			isaliv = true;
+			loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+					.createLoadingDialog(TradeServiceActivity.this, "加载中...");
+			initDatas();
 		} else {
 			isaliv = false;
 			Toast.makeText(this, "无网络连接", Toast.LENGTH_SHORT).show();
 
 		}
-		
-       
+
 	}
 
 	// 定义一个Handler对象
@@ -193,7 +194,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			case 1:
 				loading_dialog.dismiss();
-				
+
 				UpdateUI();
 				scrollview.invalidate();// 定时刷新
 				break;
@@ -203,7 +204,7 @@ public class TradeServiceActivity extends BaseActivity {
 				break;
 			case 3:
 				loading_dialog.dismiss();
-				
+
 				Intent intent = new Intent(TradeServiceActivity.this,
 						BuySuccessActivity.class);
 				startActivity(intent);
@@ -213,7 +214,7 @@ public class TradeServiceActivity extends BaseActivity {
 				Toast.makeText(getApplicationContext(), "买入失败，请重新买入", 0).show();
 				break;
 			case 5:
-				
+
 				loading_dialog.dismiss();
 				Intent intent2 = new Intent(TradeServiceActivity.this,
 						TransSuccessActivity.class);
@@ -277,18 +278,18 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.sendEmptyMessageDelayed(2, 3000);
 	}
 
-	
 	// 当前滚动距离
 	int currentX = 0;
 	private Dialog loading_dialog = null;
+
 	@Override
 	public void initView() {
-		
+
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
 		// hscrollview定时滚动
-		
+
 		handler.sendEmptyMessageDelayed(2, 3000);
 
 		dgid = getIntent().getStringExtra("dealdgid");
@@ -332,7 +333,6 @@ public class TradeServiceActivity extends BaseActivity {
 	 */
 	private InputStream iStream;
 
-	
 	public void initDatas() {
 		// 获取系统当前时间
 
@@ -353,7 +353,6 @@ public class TradeServiceActivity extends BaseActivity {
 		fragmentsList2.add(new SaleChartFragment());
 		fragmentsList2.add(new BuyChartFragment());
 
-		
 		trade_pager.setAdapter(new MypagerAdapter(getSupportFragmentManager(),
 				fragmentsList1));
 		buy_sale_pager.setAdapter(new MyBuySalepagerAdapter(
@@ -369,42 +368,40 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void run() {
-			
 
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
+				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+						+ unionid + "&dgid=" + dgid;
 
-					try {
-						HttpsURLConnection connection = NetUtils
-								.httpsconnNoparm(url_serviceinfo, "POST");
+				try {
+					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+							url_serviceinfo, "POST");
 
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-							// Thread.sleep(60000);
-						
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
+					int code = connection.getResponseCode();
+					if (code == 200) {
+						iStream = connection.getInputStream();
+						String infojson = NetUtils.readString(iStream);
+						JSONObject jsonObject = new JSONObject(infojson);
+						// Log.e("ssssssssss", jsonObject.toString());
+						parseJson(jsonObject);
+						// Thread.sleep(60000);
 
 					}
 
-				
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (iStream != null) {
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+				}
+
 			}
 		}).start();
 
@@ -587,6 +584,8 @@ public class TradeServiceActivity extends BaseActivity {
 	private Button dialog_ok;
 	private Button diaog_cancel;
 	private int count_buy = 1;
+	private long datime_trans;
+	private long datime_sale;
 
 	@Override
 	public void onClick(View v) {
@@ -611,20 +610,11 @@ public class TradeServiceActivity extends BaseActivity {
 			}
 			if (isaliv == true) {
 
-				
 				Calendar cal = Calendar.getInstance();
-				URL url = null;//取得资源对象
-				try {
-				  url = new URL("http://www.baidu.com");
-				  URLConnection uc = url.openConnection();//生成连接对象
-				  uc.connect(); //发出连接
-				  datime = uc.getDate();
-				 
-				} catch (Exception e) {
-				  e.printStackTrace();
-				}
+				long date_buy = new Date().getTime();
+
 				DateTest dateTest = new DateTest();
-				boolean flag = dateTest.isNowDate(datime, cal);
+				boolean flag = dateTest.isNowDate(date_buy, cal);
 				if (flag == true) {
 					// 符合交易时间
 					showBuyDialog();
@@ -672,20 +662,11 @@ public class TradeServiceActivity extends BaseActivity {
 
 			}
 			if (isaliv == true) {
-				
+
 				Calendar cal = Calendar.getInstance();
-				URL url = null;//取得资源对象
-				try {
-				  url = new URL("http://www.baidu.com");
-				  URLConnection uc = url.openConnection();//生成连接对象
-				  uc.connect(); //发出连接
-				  datime = uc.getDate();
-				 
-				} catch (Exception e) {
-				  e.printStackTrace();
-				}
+				long date_sale = new Date().getTime();
 				DateTest dateTest = new DateTest();
-				boolean flag1 = dateTest.isNowDate(datime, cal);
+				boolean flag1 = dateTest.isNowDate(date_sale, cal);
 				if (flag1 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
@@ -749,20 +730,11 @@ public class TradeServiceActivity extends BaseActivity {
 			}
 			if (isaliv == true) {
 
-				//获取网络时间
+				// 获取系统时间
 				Calendar cal = Calendar.getInstance();
-				URL url = null;//取得资源对象
-				try {
-				  url = new URL("http://www.baidu.com");
-				  URLConnection uc = url.openConnection();//生成连接对象
-				  uc.connect(); //发出连接
-				  datime = uc.getDate();
-				 
-				} catch (Exception e) {
-				  e.printStackTrace();
-				}
+				long date_trans = new Date().getTime();
 				DateTest dateTest = new DateTest();
-				boolean flag2 = dateTest.isNowDate(datime, cal);
+				boolean flag2 = dateTest.isNowDate(date_trans, cal);
 				if (flag2 == true) {
 					// 符合交易时间
 					if (leftgoodassets > 0) {
@@ -805,7 +777,7 @@ public class TradeServiceActivity extends BaseActivity {
 			Intent intent = new Intent(TradeServiceActivity.this,
 					TradeRecordActivity.class);
 			startActivity(intent);
-               
+
 			break;
 
 		default:
@@ -899,11 +871,11 @@ public class TradeServiceActivity extends BaseActivity {
 												.readString(iStream);
 										// JSONObject jsonObject = new
 										// JSONObject(infojson);
-									//	Log.e("我靠快快快快快快快", infojson);
+										// Log.e("我靠快快快快快快快", infojson);
 										// handler.sendEmptyMessage(3);
 										// Log.e("hahahhahh", infojson);
 										parseJson_trans(infojson);
-										//Log.e("sssssssssss", "hahah");
+										// Log.e("sssssssssss", "hahah");
 									}
 
 								} catch (Exception e) {
@@ -1030,7 +1002,7 @@ public class TradeServiceActivity extends BaseActivity {
 					bundle.putString("ddid", ddid);
 					intent.putExtras(bundle);
 					startActivity(intent);
-                  
+
 				} else {
 					Toast.makeText(getApplicationContext(), "提货的数量不能大于剩余资产", 0)
 							.show();
@@ -1533,14 +1505,14 @@ public class TradeServiceActivity extends BaseActivity {
 
 	private static long firstTime;
 
-	private long datime;
+	private static long datime;
 
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		
+
 		super.onDestroy();
-		
+
 		handler.removeMessages(1);
 		handler.removeMessages(2);
 		handler.removeMessages(3);
@@ -1549,9 +1521,9 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.removeMessages(7);
 		handler.removeMessages(8);
 		// handler.removeMessages(9);
-		fragmentsList1=null;
-		fragmentsList2=null;
-		
+		fragmentsList1 = null;
+		fragmentsList2 = null;
+
 		if (iStream != null) {
 			try {
 				iStream.close();
@@ -1565,6 +1537,6 @@ public class TradeServiceActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

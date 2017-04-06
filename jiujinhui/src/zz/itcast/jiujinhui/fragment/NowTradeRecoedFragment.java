@@ -114,7 +114,6 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 		xLabels.put(0, "09:00");
 		xLabels.put(20, "11:30");
 		xLabels.put(33, "15:00");
-		xLabels.put(34, "15:01");
 		return xLabels;
 	}
 
@@ -156,7 +155,6 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 			if (t == null) {
 				lineCJEntries.add(new Entry(Float.NaN, i));
 				dateList.add(i + "");
-				dateList.add(100 + "");
 				// Log.e("==-1", mData.getDatas().get(i).time+"");
 				continue;
 			}
