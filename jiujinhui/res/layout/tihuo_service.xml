@@ -30,7 +30,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_reduce" />
 
-        <TextView
+        <EditText
             android:id="@+id/product_ordsubmit_count"
             android:layout_width="40dp"
             android:layout_height="25dp"

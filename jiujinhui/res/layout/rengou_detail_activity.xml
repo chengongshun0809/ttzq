@@ -8,28 +8,30 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:orientation="horizontal" >
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1" >
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            
+             >
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/loction_rengou" />
         </RelativeLayout>
 
         <EditText
             android:id="@+id/et_address"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_weight="7"
            
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:background="@null"
             android:hint="请填写收货地址" />
     </LinearLayout>

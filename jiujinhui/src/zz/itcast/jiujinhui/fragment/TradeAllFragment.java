@@ -675,7 +675,7 @@ public class TradeAllFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		return R.layout.tradeall_fragment;
 	}
-
+         
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub

@@ -29,7 +29,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_reduce" />
 
-        <TextView
+        <EditText
             android:id="@+id/num"
             android:layout_width="40dp"
             android:layout_height="25dp"

@@ -18,12 +18,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,7 +109,6 @@ public class WoyaorengouActivity extends BaseActivity {
 
 				// Toast.makeText(getApplicationContext(), "恭喜您，认购成功",
 				// 0).show();
-				
 
 				break;
 			case 4:
@@ -150,7 +151,7 @@ public class WoyaorengouActivity extends BaseActivity {
 	int j = 0;
 	private ImageView addImageView;
 	private ImageView jianImageView;
-	private TextView counTextView;
+	private EditText counTextView;
 	private TextView price;
 	private Button dialog_cancel;
 	private Button dialog_ok;
@@ -179,11 +180,12 @@ public class WoyaorengouActivity extends BaseActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
+
 		initData_onresume();
 	}
 
 	private String infojson_total;
+
 	public void initData_onresume() {
 		handler.sendEmptyMessageDelayed(2, 3000);
 		unionidString = sp.getString("unionid", null);
@@ -194,45 +196,43 @@ public class WoyaorengouActivity extends BaseActivity {
 		new Thread(new Runnable() {
 
 			private InputStream iStream;
-			
 
 			@Override
 			public void run() {
-			
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribe?"
-							+ "&dgid=" + dgid + "&unionid=" + unionidString;
 
-					try {
-						HttpsURLConnection connection = NetUtils
-								.httpsconnNoparm(url_serviceinfo, "POST");
+				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribe?"
+						+ "&dgid=" + dgid + "&unionid=" + unionidString;
 
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							infojson_total = NetUtils.readString(iStream);
+				try {
+					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+							url_serviceinfo, "POST");
 
-							// Log.e("hahahhahh", infojson);
-							parseJson(infojson_total);
-							stopThread = true;
+					int code = connection.getResponseCode();
+					if (code == 200) {
+						iStream = connection.getInputStream();
+						infojson_total = NetUtils.readString(iStream);
 
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
+						// Log.e("hahahhahh", infojson);
+						parseJson(infojson_total);
+						stopThread = true;
 
 					}
 
-				
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (iStream != null) {
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+				}
+
 			}
 		}).start();
 
@@ -301,8 +301,6 @@ public class WoyaorengouActivity extends BaseActivity {
 		return R.layout.woyaorengou_activity;
 	}
 
-	int buy_count = 1;
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -343,10 +341,19 @@ public class WoyaorengouActivity extends BaseActivity {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
-			countString = counTextView.getText().toString().trim();
-			price.setText(""
-					+ Arith.mul(rengou_price / 100,
-							Double.parseDouble(countString)));
+			// countString = counTextView.getText().toString().trim();
+			/*
+			 * String ss=s.toString(); int nu=Integer.valueOf(ss);
+			 * price.setText("" + (rengou_price / 100)*nu);
+			 */
+			String coun = counTextView.getText().toString().trim();
+			if (!TextUtils.isEmpty(coun)) {
+				int num = Integer.valueOf(count);
+				price.setText("" + (rengou_price / 100) * num);
+
+			} else {
+				price.setText("0.00");
+			}
 
 		}
 
@@ -365,7 +372,8 @@ public class WoyaorengouActivity extends BaseActivity {
 	};
 	private ImageView add_tihuo;
 	private ImageView reduce_tihuo;
-	private TextView num;
+	private EditText num;
+	int buy_count = 1;
 
 	private void showRengou_buy() {
 		// TODO Auto-generated method stub
@@ -373,7 +381,7 @@ public class WoyaorengouActivity extends BaseActivity {
 		View view = (View) inflater.inflate(R.layout.rengou_buy, null);
 		addImageView = (ImageView) view.findViewById(R.id.add);
 		jianImageView = (ImageView) view.findViewById(R.id.jian);
-		counTextView = (TextView) view.findViewById(R.id.count);
+		counTextView = (EditText) view.findViewById(R.id.count);
 		price = (TextView) view.findViewById(R.id.price);
 		dialog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
@@ -381,9 +389,12 @@ public class WoyaorengouActivity extends BaseActivity {
 		builder.setView(view, 0, 0, 0, 0);
 		builder.setCancelable(false);
 		builder.show();
-		countString = counTextView.getText().toString().trim();
-		num2 = Integer.parseInt(countString);
+
+		// countString = counTextView.getText().toString().trim();
+		// num2 = Integer.parseInt(countString);
+		// counTextView.setText(1+"");
 		price.setText(df.format(rengou_price / 100));
+
 		counTextView.addTextChangedListener(textWatcher);
 		// price.addTextChangedListener(textWatcher);
 
@@ -391,17 +402,29 @@ public class WoyaorengouActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				buy_count++;
-				if (buy_count <= 100) {
-					counTextView.addTextChangedListener(textWatcher);
-					counTextView.setText(buy_count + "");
+
+				String num = counTextView.getText().toString().trim();
+				if (num == null || num.equals("")) {
+
+					price.setText(0.00 + "");
 
 				} else {
-					Toast.makeText(getApplicationContext(), "最大认购量不能超过100", 0)
-							.show();
-					buy_count = 100;
-					counTextView.setText(buy_count + "");
+					buy_count = Integer.parseInt(counTextView.getText()
+							.toString().trim());
+					;
+					buy_count++;
+
+					if (buy_count <= 100) {
+						counTextView.addTextChangedListener(textWatcher);
+						counTextView.setText(buy_count + "");
+
+					} else {
+						Toast.makeText(getApplicationContext(), "最大认购量不能超过100",
+								0).show();
+						buy_count = 100;
+						counTextView.setText(buy_count + "");
+
+					}
 				}
 
 			}
@@ -412,15 +435,30 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (buy_count > 1) {
-					buy_count--;
-					counTextView.addTextChangedListener(textWatcher);
-					counTextView.setText(buy_count + "");
+				// int
+				// n_1=Integer.parseInt(counTextView.getText().toString().trim());
+				String num = counTextView.getText().toString().trim();
+				if (num == null || num.equals("")) {
+					counTextView.setText(1 + "");
+					price.setText(df.format(rengou_price / 100));
+
 				} else {
-					buy_count = 1;
-					Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0)
-							.show();
+					buy_count = Integer.valueOf(num);
+
+					if (buy_count > 1) {
+						buy_count--;
+						counTextView.addTextChangedListener(textWatcher);
+						counTextView.setText(buy_count + "");
+
+					} else {
+						counTextView.setText(1 + "");
+
+						Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0)
+								.show();
+					}
+
 				}
+
 			}
 		});
 		dialog_cancel.setOnClickListener(new OnClickListener() {
@@ -446,8 +484,8 @@ public class WoyaorengouActivity extends BaseActivity {
 
 				Log.e("zhzh", price.getText().toString().trim());
 				if ((jiubiString / 100) >= priceDouble) {
-					
-					if ((buy_count+zongString)<=100) {
+
+					if ((buy_count + zongString) <= 100) {
 						// 继续购买
 						builder.dismiss();
 						loading_dialog.show();
@@ -462,8 +500,7 @@ public class WoyaorengouActivity extends BaseActivity {
 										+ "&ddid="
 										+ ddid
 										+ "&num="
-										+ countString
-										+ "&price=" + pricString;
+										+ countString + "&price=" + pricString;
 								try {
 									HttpsURLConnection connection = NetUtils
 											.httpsconnNoparm(url, "POST");
@@ -502,7 +539,8 @@ public class WoyaorengouActivity extends BaseActivity {
 							private void parseJson_rengoubuy(String infojson) {
 								// TODO Auto-generated method stub
 								try {
-									JSONObject jsonObject = new JSONObject(infojson);
+									JSONObject jsonObject = new JSONObject(
+											infojson);
 									String success = jsonObject
 											.getString("message");
 									if ("success".equals(success)) {
@@ -520,19 +558,18 @@ public class WoyaorengouActivity extends BaseActivity {
 								}
 
 							}
- 
+
 						}).start();
 
-					} else {                 
-						Toast.makeText(getApplicationContext(), "最多认购数量为100瓶！", 0)
-								.show();
+					} else {
+						Toast.makeText(getApplicationContext(), "最多认购数量为100瓶！",
+								0).show();
 
 					}
-				}else {
+				} else {
 					Toast.makeText(getApplicationContext(), "账户酒币不够，请先充值", 0)
-					.show();
+							.show();
 				}
-			
 
 			}
 		});
@@ -553,7 +590,7 @@ public class WoyaorengouActivity extends BaseActivity {
 		View view = (View) inflater.inflate(R.layout.rengou_tihuo, null);
 		reduce_tihuo = (ImageView) view.findViewById(R.id.reduce_tihuo);
 		add_tihuo = (ImageView) view.findViewById(R.id.add_tihuo);
-		num = (TextView) view.findViewById(R.id.num);
+		num = (EditText) view.findViewById(R.id.num);
 		dialog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
 		builder1 = new AlertDialog.Builder(this).create();
@@ -575,26 +612,36 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				int number = Integer.parseInt(num.getText().toString().trim());
+				String num_t=num.getText().toString().trim();
+				
 				// 总资产
 				int zong_num = Integer.parseInt(stock);
-				if (number <= zong_num) {
+				if (!TextUtils.isEmpty(num_t)) {
+					int number = Integer.parseInt(num_t);
+					if (number <= zong_num) {
 
-					builder1.dismiss();
+						builder1.dismiss();
 
-					Log.e("tihuo_ok", num.getText().toString().trim());
-					Intent intent = new Intent(WoyaorengouActivity.this,
-							Rengou_detai_tihuolActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putString("num", number + "");
-					bundle.putString("ddid", ddid);
-					intent.putExtras(bundle);
-					startActivity(intent);
-					 
-				} else {
-					Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产", 0)
-							.show();
+						Log.e("tihuo_ok", num.getText().toString().trim());
+						Intent intent = new Intent(WoyaorengouActivity.this,
+								Rengou_detai_tihuolActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putString("num", number + "");
+						bundle.putString("ddid", ddid);
+						intent.putExtras(bundle);
+						startActivity(intent);
+
+					} else {
+						Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产", 0)
+								.show();
+					}
+				}else {
+					Toast.makeText(getApplicationContext(), "请输入提货的数量!", 0)
+					.show();
 				}
+				
+				
+				
 
 			}
 		});
@@ -603,8 +650,18 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				tihuo_count++;
-				num.setText(tihuo_count + "");
+				String nu = num.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					num.setText("" + 1);
+					num.setSelection(num.getText()
+							.toString().trim().length());
+				} else {
+					int n = Integer.valueOf(nu);
+					n++;
+					num.setText("" + n);
+					num.setSelection(num.getText()
+							.toString().trim().length());
+				}
 			}
 		});
 		reduce_tihuo.setOnClickListener(new OnClickListener() {
@@ -612,14 +669,22 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (tihuo_count > 1) {
-					tihuo_count--;
-					num.setText(tihuo_count + "");
+				String nu = num.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					num.setText("" + 1);
+					num.setSelection(num.getText()
+							.toString().trim().length());
 				} else {
-					Toast.makeText(getApplicationContext(), "最小提货量不能小于1", 0)
-							.show();
-					tihuo_count = 1;
+					int n = Integer.valueOf(nu);
 
+					if (n > 1) {
+						n--;
+						num.setText("" + n);
+						num.setSelection(num.getText()
+								.toString().trim().length());
+					} else {
+						n = 1;
+					}
 				}
 
 			}
@@ -631,7 +696,7 @@ public class WoyaorengouActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-	
+
 		handler.removeMessages(1);
 		handler.removeMessages(2);
 		handler.removeMessages(3);
@@ -642,6 +707,6 @@ public class WoyaorengouActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

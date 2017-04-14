@@ -30,7 +30,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_reduce" />
 
-        <TextView
+        <EditText
             android:id="@+id/product_ordsubmit_count"
             android:layout_width="40dp"
             android:layout_height="25dp"
@@ -39,6 +39,8 @@
             android:background="@null"
             android:inputType="number"
             android:text="1"
+            
+            android:numeric="decimal"
             android:textColor="#ff323232"
             android:textSize="15sp" />
 

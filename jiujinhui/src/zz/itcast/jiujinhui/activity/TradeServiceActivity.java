@@ -145,7 +145,6 @@ public class TradeServiceActivity extends BaseActivity {
 	// 奖励
 	@ViewInject(R.id.reward)
 	private TextView reward;
-	boolean stopThread = false;
 	private static long lastTime = 0;
 	private static final int DEFAULT_TIME = 2000;
 
@@ -418,7 +417,7 @@ public class TradeServiceActivity extends BaseActivity {
 			// 回购价
 
 			buybackprice = jsonObject.getDouble("buybackprice");
-			Log.e("buybackprice", buybackprice + "");
+			// Log.e("buybackprice", buybackprice + "");
 			// sp.edit().putFloat("jiubi", (float) (income/100)).commit();
 			String incomeing = (income / 100) + "";
 			sp.edit().putString("jiubi", incomeing).commit();
@@ -578,7 +577,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private static TradeServiceActivity instance;
 	private ImageView product_ordsubmit_count_sub;
 	private ImageView product_ordsubmit_count_add;
-	private TextView product_ordsubmit_count;
+	private EditText product_ordsubmit_count;
 	private EditText product_ordsubmit_price;
 	private TextView product_total_price;
 	private Button dialog_ok;
@@ -792,7 +791,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View transView = (View) inflater.inflate(R.layout.trans_service, null);
-		transTextView = (TextView) transView
+		transTextView = (EditText) transView
 				.findViewById(R.id.product_ordsubmit_count);
 		transOk = (Button) transView.findViewById(R.id.dialog_ok);
 		transCancel = (Button) transView.findViewById(R.id.dialog_cancel);
@@ -810,21 +809,42 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				trans_count++;
-				transTextView.setText("" + trans_count);
+				String nu = transTextView.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					transTextView.setText("" + 1);
+					transTextView.setSelection(transTextView.getText()
+							.toString().trim().length());
+				} else {
+					int n = Integer.valueOf(nu);
+					n++;
+					transTextView.setText("" + n);
+					transTextView.setSelection(transTextView.getText()
+							.toString().trim().length());
+				}
+
 			}
 		});
 		transReduce.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (trans_count > 1) {
-					trans_count--;
-					transTextView.setText("" + trans_count);
+				String nu = transTextView.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					transTextView.setText("" + 1);
+					transTextView.setSelection(transTextView.getText()
+							.toString().trim().length());
 				} else {
-					trans_count = 1;
-				}
+					int n = Integer.valueOf(nu);
 
+					if (n > 1) {
+						n--;
+						transTextView.setText("" + n);
+						transTextView.setSelection(transTextView.getText()
+								.toString().trim().length());
+					} else {
+						n = 1;
+					}
+				}
 			}
 		});
 		transOk.setOnClickListener(new OnClickListener() {
@@ -835,96 +855,109 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				String num = transTextView.getText().toString().trim();
+				
+				if (!TextUtils.isEmpty(num)) {
+					trans_num = Integer.parseInt(num);
+					double total_price = trans_num * buybackprice;
+					totalprice = total_price + "";
+					if (trans_num <= leftgoodassets) {
+						rb_zhuanrang_service.setEnabled(false);
+						if (TradeServiceActivity.isSingle()) {
+							Toast.makeText(getApplicationContext(), "操作频繁", 0)
+									.show();
+						} else {
+							dialog1.dismiss();
+							loading_dialog.show();
+							new Thread(new Runnable() {
 
-				trans_num = Integer.parseInt(transTextView.getText().toString()
-						.trim());
-				double total_price = trans_num * buybackprice;
-				totalprice = total_price + "";
-				if (trans_num <= leftgoodassets) {
-					rb_zhuanrang_service.setEnabled(false);
-					if (TradeServiceActivity.isSingle()) {
-						Toast.makeText(getApplicationContext(), "操作频繁", 0)
-								.show();
-					} else {
-						dialog1.dismiss();
-						loading_dialog.show();
-						new Thread(new Runnable() {
+								private InputStream iStream;
 
-							private InputStream iStream;
+								@Override
+								public void run() {
 
-							@Override
-							public void run() {
-
-								String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuyback?"
-										+ "&ddid="
-										+ ddid
-										+ "&num="
-										+ trans_num
-										+ "&price=" + buybackprice;
-								try {
-									HttpsURLConnection connection = NetUtils
-											.httpsconnNoparm(url, "POST");
-									int code = connection.getResponseCode();
-									if (code == 200) {
-										iStream = connection.getInputStream();
-										String infojson = NetUtils
-												.readString(iStream);
-										// JSONObject jsonObject = new
-										// JSONObject(infojson);
-										// Log.e("我靠快快快快快快快", infojson);
-										// handler.sendEmptyMessage(3);
-										// Log.e("hahahhahh", infojson);
-										parseJson_trans(infojson);
-										// Log.e("sssssssssss", "hahah");
-									}
-
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} finally {
-									if (iStream != null) {
-										try {
-											iStream.close();
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
+									String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuyback?"
+											+ "&ddid="
+											+ ddid
+											+ "&num="
+											+ trans_num
+											+ "&price=" + buybackprice;
+									try {
+										HttpsURLConnection connection = NetUtils
+												.httpsconnNoparm(url, "POST");
+										int code = connection.getResponseCode();
+										if (code == 200) {
+											iStream = connection.getInputStream();
+											String infojson = NetUtils
+													.readString(iStream);
+											// JSONObject jsonObject = new
+											// JSONObject(infojson);
+											// Log.e("我靠快快快快快快快", infojson);
+											// handler.sendEmptyMessage(3);
+											// Log.e("hahahhahh", infojson);
+											parseJson_trans(infojson);
+											// Log.e("sssssssssss", "hahah");
 										}
+
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} finally {
+										if (iStream != null) {
+											try {
+												iStream.close();
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+										}
+
 									}
 
 								}
 
-							}
+								private void parseJson_trans(String infojson) {
+									// TODO Auto-generated method stub
+									try {
+										JSONObject jsonObject = new JSONObject(
+												infojson);
+										String success = jsonObject
+												.getString("message");
+										if ("success".equals(success)) {
+											// 转让成功
+											handler.sendEmptyMessage(5);
 
-							private void parseJson_trans(String infojson) {
-								// TODO Auto-generated method stub
-								try {
-									JSONObject jsonObject = new JSONObject(
-											infojson);
-									String success = jsonObject
-											.getString("message");
-									if ("success".equals(success)) {
-										// 转让成功
-										handler.sendEmptyMessage(5);
+										}
+										if ("error".equals(success)) {
+											handler.sendEmptyMessage(6);
+										}
 
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
 									}
-									if ("error".equals(success)) {
-										handler.sendEmptyMessage(6);
-									}
 
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
 								}
 
-							}
+							}).start();
+						}
 
-						}).start();
+					} else {
+						Toast.makeText(getApplicationContext(), "可转让的资产不能大于剩余资产", 0)
+								.show();
+						
+						
 					}
-
-				} else {
-					Toast.makeText(getApplicationContext(), "可转让的资产不能大于剩余资产", 0)
-							.show();
-				}
+						
+						
+					}else {
+						Toast.makeText(getApplicationContext(), "请输入可转让的资产!", 0)
+						.show();
+					}
+					
+					
+					
+					
 
 			}
 		});
@@ -946,7 +979,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private void showTihuoDialog() {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View tihuoView = (View) inflater.inflate(R.layout.tihuo_service, null);
-		tihuoTextView = (TextView) tihuoView
+		tihuoTextView = (EditText) tihuoView
 				.findViewById(R.id.product_ordsubmit_count);
 		tihuoAdd = (ImageView) tihuoView
 				.findViewById(R.id.product_ordsubmit_count_add);
@@ -965,8 +998,18 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				tihuo_count++;
-				tihuoTextView.setText("" + tihuo_count);
+				String nu = tihuoTextView.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					tihuoTextView.setText("" + 1);
+					tihuoTextView.setSelection(tihuoTextView.getText()
+							.toString().trim().length());
+				} else {
+					int n = Integer.valueOf(nu);
+					n++;
+					tihuoTextView.setText("" + n);
+					tihuoTextView.setSelection(tihuoTextView.getText()
+							.toString().trim().length());
+				}
 			}
 		});
 		tihuoreduce.setOnClickListener(new OnClickListener() {
@@ -974,12 +1017,26 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (tihuo_count > 1) {
-					tihuo_count--;
-					tihuoTextView.setText("" + tihuo_count);
+
+				// TODO Auto-generated method stub
+				String nu = tihuoTextView.getText().toString().trim();
+				if (nu == null || nu.equals("")) {
+					tihuoTextView.setText("" + 1);
+					tihuoTextView.setSelection(tihuoTextView.getText()
+							.toString().trim().length());
 				} else {
-					tihuo_count = 1;
+					int n = Integer.valueOf(nu);
+
+					if (n > 1) {
+						n--;
+						tihuoTextView.setText("" + n);
+						tihuoTextView.setSelection(tihuoTextView.getText()
+								.toString().trim().length());
+					} else {
+						n = 1;
+					}
 				}
+
 			}
 		});
 
@@ -988,24 +1045,31 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				int num_ti = Integer.parseInt(tihuoTextView.getText()
-						.toString().trim());
+				String num = tihuoTextView.getText().toString().trim();
+
 				rb_tihuo_service.setEnabled(false);
 				// 总资产
-				if (num_ti <= leftgoodassets) {
-
-					dialog0.dismiss();
-					Intent intent = new Intent(TradeServiceActivity.this,
-							Rengou_detai_tihuolActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putString("num", num_ti + "");
-					bundle.putString("ddid", ddid);
-					intent.putExtras(bundle);
-					startActivity(intent);
+				if (!TextUtils.isEmpty(num)) {
+					int num_ti = Integer.parseInt(num);
+					if (num_ti <= leftgoodassets) {
+						dialog0.dismiss();
+						Intent intent = new Intent(TradeServiceActivity.this,
+								Rengou_detai_tihuolActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putString("num", num_ti + "");
+						bundle.putString("ddid", ddid);
+						intent.putExtras(bundle);
+						startActivity(intent);
+					} else {
+						Toast.makeText(getApplicationContext(),
+								"提货的数量不能大于剩余资产", 0).show();
+					}
 
 				} else {
-					Toast.makeText(getApplicationContext(), "提货的数量不能大于剩余资产", 0)
+
+					Toast.makeText(getApplicationContext(), "请输入提货数量！", 0)
 							.show();
+
 				}
 				rb_tihuo_service.setEnabled(true);
 			}
@@ -1030,7 +1094,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View saleView = (View) inflater.inflate(R.layout.sale_service, null);
-		product_ordsubmit_count2 = (TextView) saleView
+		product_ordsubmit_count2 = (EditText) saleView
 				.findViewById(R.id.product_ordsubmit_count);
 		zhi_price = (TextView) saleView.findViewById(R.id.zhi_price);
 		zhi_price.setText(df.format(tradeprice / 100));
@@ -1067,9 +1131,9 @@ public class TradeServiceActivity extends BaseActivity {
 
 				pricesale = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
-				count_sale = Integer.parseInt(count);
 
-				if (!TextUtils.isEmpty(pricesale)) {
+				if (!TextUtils.isEmpty(pricesale) && !TextUtils.isEmpty(count)) {
+					count_sale = Integer.parseInt(count);
 					double sale_price = Double.parseDouble(pricesale);
 					double total_price = sale_price * count_sale;
 					totalp = total_price + "";
@@ -1170,7 +1234,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 				} else {
 
-					Toast.makeText(getApplicationContext(), "卖出价不能为空", 0)
+					Toast.makeText(getApplicationContext(), "卖出价或者卖出量不能为空！", 0)
 							.show();
 				}
 
@@ -1182,8 +1246,22 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				sale_count++;
-				product_ordsubmit_count2.setText("" + sale_count);
+
+				String nu = product_ordsubmit_count2.getText().toString()
+						.trim();
+				if (nu == null || nu.equals("")) {
+					product_ordsubmit_count2.setText("" + 1);
+					product_ordsubmit_count2
+							.setSelection(product_ordsubmit_count2.getText()
+									.toString().trim().length());
+				} else {
+					int n = Integer.valueOf(nu);
+					n++;
+					product_ordsubmit_count2.setText("" + n);
+					product_ordsubmit_count2
+							.setSelection(product_ordsubmit_count2.getText()
+									.toString().trim().length());
+				}
 
 			}
 		});
@@ -1192,11 +1270,25 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (sale_count > 1) {
-					sale_count--;
-					product_ordsubmit_count2.setText("" + sale_count);
+				String nu = product_ordsubmit_count2.getText().toString()
+						.trim();
+				if (nu == null || nu.equals("")) {
+					product_ordsubmit_count2.setText("" + 1);
+					product_ordsubmit_count2
+							.setSelection(product_ordsubmit_count2.getText()
+									.toString().trim().length());
 				} else {
-					sale_count = 1;
+					int n = Integer.valueOf(nu);
+
+					if (n > 1) {
+						n--;
+						product_ordsubmit_count2.setText("" + n);
+						product_ordsubmit_count2
+								.setSelection(product_ordsubmit_count2
+										.getText().toString().trim().length());
+					} else {
+						n = 1;
+					}
 				}
 
 			}
@@ -1226,7 +1318,7 @@ public class TradeServiceActivity extends BaseActivity {
 		product_ordsubmit_count_add = (ImageView) view
 				.findViewById(R.id.product_ordsubmit_count_add);
 		// 数量
-		product_ordsubmit_count = (TextView) view
+		product_ordsubmit_count = (EditText) view
 				.findViewById(R.id.product_ordsubmit_count);
 		// 指导价
 		TextView zhidaojia = (TextView) view.findViewById(R.id.zhidaojia);
@@ -1276,7 +1368,8 @@ public class TradeServiceActivity extends BaseActivity {
 						.trim();
 				double total_price_double = Double.parseDouble(total_price);
 
-				if (!TextUtils.isEmpty(buy_priceString)) {
+				if (!TextUtils.isEmpty(buy_priceString)
+						&& !TextUtils.isEmpty(num_buy)) {
 					double buyprice = Double.parseDouble(buy_priceString);
 					if (buyprice >= (buybackprice / 100)) {
 
@@ -1356,7 +1449,8 @@ public class TradeServiceActivity extends BaseActivity {
 								"买入价不能低于回购价:" + buybackprice / 100, 0).show();
 					}
 				} else {
-					Toast.makeText(getApplicationContext(), "请输入买入价", 0).show();
+					Toast.makeText(getApplicationContext(), "买入价或者买入量不能为空！", 0)
+							.show();
 				}
 			}
 		});
@@ -1367,10 +1461,20 @@ public class TradeServiceActivity extends BaseActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				count_buy++;
+				String n_buystring = product_ordsubmit_count.getText()
+						.toString().trim();
 
-				product_ordsubmit_count.addTextChangedListener(textWatcher);
-				product_ordsubmit_count.setText(count_buy + "");
+				if (n_buystring == null || n_buystring.equals("")) {
+
+					product_ordsubmit_count.setText(1 + "");
+				} else {
+					count_buy = Integer.valueOf(n_buystring);
+					count_buy++;
+
+					product_ordsubmit_count.addTextChangedListener(textWatcher);
+					product_ordsubmit_count.setText(count_buy + "");
+
+				}
 
 			}
 
@@ -1380,17 +1484,31 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (count_buy > 1) {
 
-					count_buy--;
-					product_ordsubmit_count.addTextChangedListener(textWatcher);
+				String n_buystring = product_ordsubmit_count.getText()
+						.toString().trim();
 
-					product_ordsubmit_count.setText(count_buy + "");
+				if (n_buystring == null || n_buystring.equals("")) {
+
+					product_ordsubmit_count.setText(1 + "");
 
 				} else {
-					count_buy = 1;
-					Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0)
-							.show();
+					count_buy = Integer.valueOf(n_buystring);
+					if (count_buy > 1) {
+
+						count_buy--;
+						product_ordsubmit_count
+								.addTextChangedListener(textWatcher);
+
+						product_ordsubmit_count.setText(count_buy + "");
+
+					} else {
+						product_ordsubmit_count.setText(1 + "");
+
+						Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0)
+								.show();
+					}
+
 				}
 
 			}
@@ -1402,6 +1520,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private TextWatcher textWatcher = new TextWatcher() {
 		private CharSequence charSequence;
 		private String price;
+		private String n;
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
@@ -1409,10 +1528,12 @@ public class TradeServiceActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 
 			price = product_ordsubmit_price.getText().toString().trim();
-			if (!TextUtils.isEmpty(price)) {
+			n = product_ordsubmit_count.getText().toString().trim();
 
-				product_total_price.setText(""
-						+ Arith.mul(Double.parseDouble(price), count_buy));
+			if (!TextUtils.isEmpty(price) && !TextUtils.isEmpty(n)) {
+				double p = Double.valueOf(price);
+				int num = Integer.valueOf(n);
+				product_total_price.setText("" + (p * num));
 			} else {
 
 				product_total_price.setText("0.00");
@@ -1430,6 +1551,8 @@ public class TradeServiceActivity extends BaseActivity {
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
+			product_ordsubmit_count.setSelection(product_ordsubmit_count
+					.getText().toString().trim().length());
 
 		}
 	};
@@ -1441,14 +1564,14 @@ public class TradeServiceActivity extends BaseActivity {
 	private Button ok;
 	private Button cancel;
 	private Dialog dialog;
-	private TextView product_ordsubmit_count2;
-	private TextView tihuoTextView;
+	private EditText product_ordsubmit_count2;
+	private EditText tihuoTextView;
 	private ImageView tihuoAdd;
 	private ImageView tihuoreduce;
 	private Button tihuoOk;
 	private Button tihuocancel;
 	private Dialog dialog0;
-	private TextView transTextView;
+	private EditText transTextView;
 	private Button transOk;
 	private Button transCancel;
 	private Dialog dialog1;
@@ -1532,6 +1655,14 @@ public class TradeServiceActivity extends BaseActivity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	// 按返回键退出
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		finish();
 	}
 
 	@Override
