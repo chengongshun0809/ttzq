@@ -277,7 +277,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 						}
 
 					});
-			
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
 			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();

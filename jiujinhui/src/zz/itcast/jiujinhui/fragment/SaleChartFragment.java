@@ -27,8 +27,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -55,15 +57,19 @@ public class SaleChartFragment extends BaseFragment {
 				data.addAll(list);
 				adapter = new MyAdapter();
 				listView.setAdapter(adapter);
+				 //listView.setSelection(Integer.MAX_VALUE/2+1);
 				adapter.notifyDataSetChanged();
 
 				handler.sendEmptyMessage(1);
 			case 1:
-
 				handler.removeMessages(1);
 				scrolllistview();
+				
 				handler.sendEmptyMessageDelayed(1, 1000);
 
+				
+				
+				
 				break;
 			default:
 				break;
@@ -113,61 +119,92 @@ public class SaleChartFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-				
 
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
+				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+						+ unionid + "&dgid=" + dgid;
 
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
-					int code;
-					try {
-						code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-						
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} finally {
-						if (iStream != null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
+				HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+						url_serviceinfo, "POST");
+				int code;
+				try {
+					code = connection.getResponseCode();
+					if (code == 200) {
+						iStream = connection.getInputStream();
+						String infojson = NetUtils.readString(iStream);
+						JSONObject jsonObject = new JSONObject(infojson);
+						// Log.e("ssssssssss", jsonObject.toString());
+						parseJson(jsonObject);
 
 					}
 
-				
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					if (iStream != null) {
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+				}
+
 			}
 		}).start();
 		// listView.invalidate();
 		data = new ArrayList<Map<String, Object>>();
-		// 禁止listView手动滚动
-		listView.setOnTouchListener(new OnTouchListener() {
 
+		/*
+		 * listView.setOnTouchListener(new OnTouchListener() {
+		 * 
+		 * @Override public boolean onTouch(View v, MotionEvent event) { if
+		 * (event.getAction()==MotionEvent.ACTION_UP) { ((ViewParent)
+		 * getActivity()).requestDisallowInterceptTouchEvent(false); }else {
+		 * ((ViewParent)
+		 * getActivity()).requestDisallowInterceptTouchEvent(true); } return
+		 * false; } });
+		 */
+
+listView.setOnTouchListener(new OnTouchListener() {
+			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				switch (event.getAction()) {
+				 if(event.getAction() == MotionEvent.ACTION_UP){  
+					 handler.removeMessages(1);
+					 handler.sendEmptyMessage(1);
+	                }else{  
+	                	handler.removeMessages(1);
+	                }  
+	                return false;  
+			}
+		});
+		listView.setOnScrollListener(new OnScrollListener() {
 
-				case MotionEvent.ACTION_MOVE:
-					return true;
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+					// 判断是否滚动到底部
+					if (view.getLastVisiblePosition() == view.getCount()-1) {
 
-				default:
-					break;
+						index= 2*data.size();
+						handler.sendEmptyMessage(1);
+
+					}
+
 				}
 
-				return true;
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}
@@ -176,22 +213,22 @@ public class SaleChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		// int totaloff = listView.getMeasuredHeight();
 
-		if (index < 3 * data.size()) {
-			listView.smoothScrollBy(10, 0);
-
+		if (index <2*data.size()) {
+			listView.smoothScrollBy(listView.getMeasuredHeight()/listView.getCount()/2, 0);
 			index += 1;
-
+			
 		} else {
+			
 			listView.smoothScrollToPosition(0);
 			index = 0;
-
+			//handler.sendEmptyMessage(1);
 		}
 	}
 
 	// listview自动滚动
 
 	// 刷新数据
-
+	
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		// 卖出数据解析 state:1代表卖出未成交，2代表卖出已成交

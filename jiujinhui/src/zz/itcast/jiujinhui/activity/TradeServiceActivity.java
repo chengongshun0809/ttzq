@@ -43,6 +43,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -360,7 +361,20 @@ public class TradeServiceActivity extends BaseActivity {
 		tabs_buysale.setViewPager(buy_sale_pager);
 		tabs.setShouldExpand(true);
 		tabs_buysale.setShouldExpand(true);
-
+		buy_sale_pager.setOnTouchListener(new View.OnTouchListener() {  
+            @Override  
+            public boolean onTouch(View v, MotionEvent event) {  
+                if(event.getAction() == MotionEvent.ACTION_UP){  
+                	scrollview.requestDisallowInterceptTouchEvent(false);  
+                }else{  
+                	scrollview.requestDisallowInterceptTouchEvent(true);//屏蔽父控件的拦截事件  
+                }  
+                return false;  
+            }  
+        });  
+		
+		
+		
 		// 获取数据
 
 		new Thread(new Runnable() {
@@ -1365,7 +1379,7 @@ public class TradeServiceActivity extends BaseActivity {
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
-						.trim();
+				  		.trim();
 				double total_price_double = Double.parseDouble(total_price);
 
 				if (!TextUtils.isEmpty(buy_priceString)

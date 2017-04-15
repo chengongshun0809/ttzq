@@ -33,7 +33,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -116,19 +118,41 @@ public class BuyChartFragment extends BaseFragment {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				
-	           case MotionEvent.ACTION_MOVE:
-	        	   return true;
-	        	   
-				default:
-					break;
-				}
-				
-				
-				return true;
+				 if(event.getAction() == MotionEvent.ACTION_UP){  
+					 handler.removeMessages(1);
+					 handler.sendEmptyMessage(1);
+	                }else{  
+	                	handler.removeMessages(1);
+	                }  
+	                return false;  
 			}
 		});
+		listView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+					// 判断是否滚动到底部
+					if (view.getLastVisiblePosition() == view.getCount()-1) {
+
+						index=2*data.size();
+						handler.sendEmptyMessage(1);
+
+					}
+
+				}
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		
 		new Thread(new Runnable() {
 
 			private InputStream iStream;
@@ -191,8 +215,8 @@ public class BuyChartFragment extends BaseFragment {
 		
 		
 		
-		if (index <3 * data.size()) {
-			listView.smoothScrollBy(10, 0);
+		if (index <2*data.size()) {
+			listView.smoothScrollBy(listView.getMeasuredHeight()/listView.getCount()/2, 0);
 			index += 1;
 			
 		} else {
