@@ -40,10 +40,7 @@ public class SplashActivity extends BaseActivity {
 	public void initData() {
 		// TODO Auto-generated method stub
 
-		
-
 	}
-
 
 	@Override
 	public void initListener() {

@@ -38,9 +38,8 @@
             android:layout_marginTop="5dp"
             android:inputType="number"
             android:background="@null"
-            android:text="1"
             
-            android:cursorVisible="false"
+            
             android:textColor="#ff323232"
             android:textSize="15sp" />
 

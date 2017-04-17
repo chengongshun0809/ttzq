@@ -347,9 +347,12 @@ public class WoyaorengouActivity extends BaseActivity {
 			 * price.setText("" + (rengou_price / 100)*nu);
 			 */
 			String coun = counTextView.getText().toString().trim();
+
 			if (!TextUtils.isEmpty(coun)) {
-				int num = Integer.valueOf(count);
-				price.setText("" + (rengou_price / 100) * num);
+				int num = Integer.valueOf(coun);
+				String pri = df.format((rengou_price / 100) * num);
+
+				price.setText(pri);
 
 			} else {
 				price.setText("0.00");
@@ -367,7 +370,10 @@ public class WoyaorengouActivity extends BaseActivity {
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-
+			String text = s.toString();
+			if (text.startsWith("0")) {
+				s.clear();
+			}
 		}
 	};
 	private ImageView add_tihuo;
@@ -392,7 +398,10 @@ public class WoyaorengouActivity extends BaseActivity {
 
 		// countString = counTextView.getText().toString().trim();
 		// num2 = Integer.parseInt(countString);
-		// counTextView.setText(1+"");
+		counTextView.setText(1 + "");
+		counTextView.setSelection(counTextView.getText().toString().trim()
+				.length());
+
 		price.setText(df.format(rengou_price / 100));
 
 		counTextView.addTextChangedListener(textWatcher);
@@ -474,6 +483,7 @@ public class WoyaorengouActivity extends BaseActivity {
 		dialog_ok.setOnClickListener(new OnClickListener() {
 
 			private String pricString;
+			private String count;
 
 			@Override
 			public void onClick(View v) {
@@ -481,96 +491,104 @@ public class WoyaorengouActivity extends BaseActivity {
 				double priceDouble = Double.parseDouble(price.getText()
 						.toString().trim());
 				pricString = price.getText().toString().trim();
+				count = counTextView.getText().toString().trim();
+				if (!TextUtils.isEmpty(count)) {
 
-				Log.e("zhzh", price.getText().toString().trim());
-				if ((jiubiString / 100) >= priceDouble) {
+					if ((jiubiString / 100) >= priceDouble) {
 
-					if ((buy_count + zongString) <= 100) {
-						// 继续购买
-						builder.dismiss();
-						loading_dialog.show();
-						new Thread(new Runnable() {
+						if ((buy_count + zongString) <= 100) {
+							// 继续购买
+							builder.dismiss();
+							loading_dialog.show();
+							new Thread(new Runnable() {
 
-							private InputStream iStream;
+								private InputStream iStream;
 
-							@Override
-							public void run() {
+								@Override
+								public void run() {
 
-								String url = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribepay?"
-										+ "&ddid="
-										+ ddid
-										+ "&num="
-										+ countString + "&price=" + pricString;
-								try {
-									HttpsURLConnection connection = NetUtils
-											.httpsconnNoparm(url, "POST");
-									int code = connection.getResponseCode();
-									if (code == 200) {
-										iStream = connection.getInputStream();
-										String infojson = NetUtils
-												.readString(iStream);
-										// JSONObject jsonObject = new
-										// JSONObject(infojson);
-										Log.e("我靠快快快快快快快", infojson);
-										// handler.sendEmptyMessage(3);
-										// Log.e("hahahhahh", infojson);
-										parseJson_rengoubuy(infojson);
+									String url = "https://www.4001149114.com/NLJJ/ddapp/dealsubscribepay?"
+											+ "&ddid="
+											+ ddid
+											+ "&num="
+											+ count
+											+ "&price="
+											+ pricString;
+									try {
+										HttpsURLConnection connection = NetUtils
+												.httpsconnNoparm(url, "POST");
+										int code = connection.getResponseCode();
+										if (code == 200) {
+											iStream = connection
+													.getInputStream();
+											String infojson = NetUtils
+													.readString(iStream);
+											// JSONObject jsonObject = new
+											// JSONObject(infojson);
+											Log.e("我靠快快快快快快快", infojson);
+											// handler.sendEmptyMessage(3);
+											// Log.e("hahahhahh", infojson);
+											parseJson_rengoubuy(infojson);
 
-										Log.e("sssssssssss", "hahah");
-									}
-
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} finally {
-									if (iStream != null) {
-										try {
-											iStream.close();
-										} catch (IOException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
+											Log.e("sssssssssss", "hahah");
 										}
+
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} finally {
+										if (iStream != null) {
+											try {
+												iStream.close();
+											} catch (IOException e) {
+												// TODO Auto-generated catch
+												// block
+												e.printStackTrace();
+											}
+										}
+
 									}
 
 								}
 
-							}
+								private void parseJson_rengoubuy(String infojson) {
+									// TODO Auto-generated method stub
+									try {
+										JSONObject jsonObject = new JSONObject(
+												infojson);
+										String success = jsonObject
+												.getString("message");
+										if ("success".equals(success)) {
+											// 认购成功
+											handler.sendEmptyMessage(3);
 
-							private void parseJson_rengoubuy(String infojson) {
-								// TODO Auto-generated method stub
-								try {
-									JSONObject jsonObject = new JSONObject(
-											infojson);
-									String success = jsonObject
-											.getString("message");
-									if ("success".equals(success)) {
-										// 认购成功
-										handler.sendEmptyMessage(3);
+										}
+										if ("error".equals(success)) {
+											handler.sendEmptyMessage(4);
+										}
 
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
 									}
-									if ("error".equals(success)) {
-										handler.sendEmptyMessage(4);
-									}
 
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
 								}
 
-							}
+							}).start();
 
-						}).start();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									"最多认购数量为100瓶！", 0).show();
 
+						}
 					} else {
-						Toast.makeText(getApplicationContext(), "最多认购数量为100瓶！",
+						Toast.makeText(getApplicationContext(), "账户酒币不够，请先充值",
 								0).show();
-
 					}
 				} else {
-					Toast.makeText(getApplicationContext(), "账户酒币不够，请先充值", 0)
-							.show();
+					Toast.makeText(getApplicationContext(), "请输入认购量",
+							0).show();
 				}
-
 			}
 		});
 
@@ -612,8 +630,8 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String num_t=num.getText().toString().trim();
-				
+				String num_t = num.getText().toString().trim();
+
 				// 总资产
 				int zong_num = Integer.parseInt(stock);
 				if (!TextUtils.isEmpty(num_t)) {
@@ -632,16 +650,13 @@ public class WoyaorengouActivity extends BaseActivity {
 						startActivity(intent);
 
 					} else {
-						Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产", 0)
-								.show();
+						Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产",
+								0).show();
 					}
-				}else {
+				} else {
 					Toast.makeText(getApplicationContext(), "请输入提货的数量!", 0)
-					.show();
+							.show();
 				}
-				
-				
-				
 
 			}
 		});
@@ -653,14 +668,12 @@ public class WoyaorengouActivity extends BaseActivity {
 				String nu = num.getText().toString().trim();
 				if (nu == null || nu.equals("")) {
 					num.setText("" + 1);
-					num.setSelection(num.getText()
-							.toString().trim().length());
+					num.setSelection(num.getText().toString().trim().length());
 				} else {
 					int n = Integer.valueOf(nu);
 					n++;
 					num.setText("" + n);
-					num.setSelection(num.getText()
-							.toString().trim().length());
+					num.setSelection(num.getText().toString().trim().length());
 				}
 			}
 		});
@@ -672,16 +685,15 @@ public class WoyaorengouActivity extends BaseActivity {
 				String nu = num.getText().toString().trim();
 				if (nu == null || nu.equals("")) {
 					num.setText("" + 1);
-					num.setSelection(num.getText()
-							.toString().trim().length());
+					num.setSelection(num.getText().toString().trim().length());
 				} else {
 					int n = Integer.valueOf(nu);
 
 					if (n > 1) {
 						n--;
 						num.setText("" + n);
-						num.setSelection(num.getText()
-								.toString().trim().length());
+						num.setSelection(num.getText().toString().trim()
+								.length());
 					} else {
 						n = 1;
 					}

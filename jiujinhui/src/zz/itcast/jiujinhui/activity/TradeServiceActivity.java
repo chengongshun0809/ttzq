@@ -807,6 +807,8 @@ public class TradeServiceActivity extends BaseActivity {
 		View transView = (View) inflater.inflate(R.layout.trans_service, null);
 		transTextView = (EditText) transView
 				.findViewById(R.id.product_ordsubmit_count);
+		
+		transTextView.addTextChangedListener(textwatcher_trans);
 		transOk = (Button) transView.findViewById(R.id.dialog_ok);
 		transCancel = (Button) transView.findViewById(R.id.dialog_cancel);
 		trans_price = (TextView) transView.findViewById(R.id.trans_price);
@@ -995,6 +997,8 @@ public class TradeServiceActivity extends BaseActivity {
 		View tihuoView = (View) inflater.inflate(R.layout.tihuo_service, null);
 		tihuoTextView = (EditText) tihuoView
 				.findViewById(R.id.product_ordsubmit_count);
+		
+		tihuoTextView.addTextChangedListener(textwatcher_tihuo);
 		tihuoAdd = (ImageView) tihuoView
 				.findViewById(R.id.product_ordsubmit_count_add);
 		tihuoreduce = (ImageView) tihuoView
@@ -1112,10 +1116,13 @@ public class TradeServiceActivity extends BaseActivity {
 				.findViewById(R.id.product_ordsubmit_count);
 		zhi_price = (TextView) saleView.findViewById(R.id.zhi_price);
 		zhi_price.setText(df.format(tradeprice / 100));
-
+		
+		 product_ordsubmit_count2.addTextChangedListener(textwatcher_sale);
+		    
 		// 卖出价
 		salePrice = (EditText) saleView
 				.findViewById(R.id.product_ordsubmit_price);
+		salePrice.addTextChangedListener(textwatcher_sale);
 		// 加号
 		add = (ImageView) saleView
 				.findViewById(R.id.product_ordsubmit_count_add);
@@ -1341,6 +1348,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// 买入价格
 		product_ordsubmit_price = (EditText) view
 				.findViewById(R.id.product_ordsubmit_price);
+		
 		product_ordsubmit_count.addTextChangedListener(textWatcher);
 		product_ordsubmit_price.addTextChangedListener(textWatcher);
 
@@ -1530,6 +1538,96 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
+	//转让监听
+TextWatcher textwatcher_tihuo=new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+			
+			/*transTextView.setSelection(product_ordsubmit_count
+					.getText().toString().trim().length());*/
+			
+			String text = s.toString();
+			if (text.startsWith("0")) {
+			s.clear();
+			}
+		}
+	};
+	
+	
+	//提货监听
+   TextWatcher textwatcher_trans=new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+			
+			
+			
+			String text = s.toString();
+			if (text.startsWith("0")) {
+			s.clear();
+			}
+		}
+	};
+	
+	
+	//卖出时候监听
+	TextWatcher textwatcher_sale=new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+			
+			String text = s.toString();
+			
+			if (text.startsWith("0")) {
+			s.clear();
+			}
+		}
+	};
+	
+	
 	// 买入价监听
 	private TextWatcher textWatcher = new TextWatcher() {
 		private CharSequence charSequence;
@@ -1565,9 +1663,14 @@ public class TradeServiceActivity extends BaseActivity {
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-			product_ordsubmit_count.setSelection(product_ordsubmit_count
-					.getText().toString().trim().length());
-
+			/*product_ordsubmit_count.setSelection(product_ordsubmit_count
+					.getText().toString().trim().length());*/
+			String text = s.toString();
+			if (text.startsWith("0")) {
+			s.clear();
+			}
+			
+			
 		}
 	};
 

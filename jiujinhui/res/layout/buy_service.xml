@@ -38,7 +38,7 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:inputType="number"
-            android:text="1"
+            
             
             android:numeric="decimal"
             android:textColor="#ff323232"

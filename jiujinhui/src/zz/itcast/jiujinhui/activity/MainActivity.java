@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
+		preferences = getSharedPreferences(
+				"first_pref", MODE_PRIVATE);
 		fragments = new ArrayList<BaseFragment>();
 		fragments.add(new TradeFragment());
 		fragments.add(new personFragment());
@@ -74,8 +76,8 @@ public class MainActivity extends BaseActivity {
 		PackageManager pm = getApplicationContext().getPackageManager();
 		try {
 			PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-		versionCode = packageInfo.versionCode;
-		versionName = packageInfo.versionName;
+			versionCode = packageInfo.versionCode;
+			versionName = packageInfo.versionName;
 
 			// 设置textview
 			// String tv_versionName.setText(versionName);
@@ -86,28 +88,32 @@ public class MainActivity extends BaseActivity {
 		// 如果正常的从服务器获取应调用下面的timeInitialization()
 		// ToDo检查更新版本
 		checkVerion();
-		
-		
-		
+
 	}
 
 	private void checkVerion() {
 		// TODO Auto-generated method stub
 		// 检测新版本
 		// 获取服务器版本号
-		int servercode = 3;
+		int servercode = 2;
 		if (servercode == versionCode) {
 
-			//不做提示
+			// 不做提示
 
 		} else {
 			// 弹出提示更新的提示框
-			showUpdateDialog();
+			boolean isFIrst_cancel=preferences.getBoolean("first_up_cancel", true);
+			if (isFIrst_cancel) {
+				showUpdateDialog();
+				
+			}else {
+				preferences.edit().putBoolean("first_up_cancel", false).commit();
+			}
+			
 		}
-		
-		
-	}
 
+	}
+	
 	private void showUpdateDialog() {
 		dialog = new AlertDialog.Builder(this).create();
 		dialog.setCancelable(false);
@@ -120,11 +126,10 @@ public class MainActivity extends BaseActivity {
 		TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
 		pb_download = (ProgressBar) window
 				.findViewById(R.id.pb_splash_download);
-		    pb_download.setVisibility(View.GONE);// 隐藏进度条
+		pb_download.setVisibility(View.GONE);// 隐藏进度条
 		TextView tv_content = (TextView) window.findViewById(R.id.tv_content);
-		
-		tv_content
-				.setText("1.修复了部分bug 2.优化了用户体验");
+
+		tv_content.setText("1.修复了部分bug 2.优化了用户体验");
 		final TextView tv_sure = (TextView) window.findViewById(R.id.tv_sure);
 		final TextView tv_cancle = (TextView) window
 				.findViewById(R.id.tv_cancle);
@@ -133,7 +138,10 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				dialog.cancel();
+				dialog.dismiss();
+				preferences.edit().putBoolean("first_up_cancel", false).commit();
+				
+
 			}
 		});
 		tv_sure.setText("更新");
@@ -142,12 +150,13 @@ public class MainActivity extends BaseActivity {
 				downLoadNewApk();// 下载新版本
 				tv_cancle.setEnabled(false);
 				tv_sure.setEnabled(false);
-				//dialog.cancel();
-				//loadMainActivity();
-				    pb_download.setVisibility(View.VISIBLE);
+				// dialog.cancel();
+				// loadMainActivity();
+				pb_download.setVisibility(View.VISIBLE);
 			}
 		});
 	}
+
 	/**
 	 * 新版本的下载安装
 	 */
@@ -157,9 +166,9 @@ public class MainActivity extends BaseActivity {
 		// target 本地路径
 		// System.out.println(parseJson.getUrl());
 		File file = new File("/mnt/sdcard/测试.apk");
-		//如果此文件已存在先删除
+		// 如果此文件已存在先删除
 		file.delete();// 删除文件
-		
+
 		utils.download(
 				"http://www.gamept.cn/d/file/game/qipai/20140627/HappyLordZZ_1.0.19_20140325_300002877528_2200139763.apk",
 				"/mnt/sdcard/测试.apk", new RequestCallBack<File>() {
@@ -172,9 +181,9 @@ public class MainActivity extends BaseActivity {
 						int progress = (int) current;
 						pb_download.setMax(max);// 设置进度条的最大值
 						pb_download.setProgress(progress);// 设置当前进度
-						
+
 						// showNotification(max,progree);
-						
+
 						super.onLoading(total, current, isUploading);
 					}
 
@@ -192,9 +201,10 @@ public class MainActivity extends BaseActivity {
 					@Override
 					public void onFailure(HttpException arg0, String arg1) {
 						// 下载失败
-						Toast.makeText(getApplicationContext(), "下载新版本失败,请检查网络设置", 1)
-								.show();
+						Toast.makeText(getApplicationContext(),
+								"下载新版本失败,请检查网络设置", 1).show();
 						pb_download.setVisibility(View.GONE);// 隐藏进度条
+						dialog.dismiss();
 					}
 				});
 	}
@@ -214,7 +224,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// 如果用户取消更新apk，那么直接进入主界面
-		dialog.cancel();
+		dialog.dismiss();
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -225,8 +235,7 @@ public class MainActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		fm = getSupportFragmentManager();
-		
-		
+
 	}
 
 	private SharedPreferences sp;
@@ -260,19 +269,17 @@ public class MainActivity extends BaseActivity {
 					sp = getSharedPreferences("user", MODE_PRIVATE);
 					boolean isLogined = sp.getBoolean("isLogined", false);
 					if (isLogined == false) {
-						
+
 						Intent intent = new Intent(OurApplication.getContext(),
 								LoginActivity.class);
 						startActivity(intent);
-						
+
 						radiogroup.check(R.id.rb_trade);
 						fm.beginTransaction()
 								.replace(R.id.fl, fragments.get(0)).commit();
-						 
-						
-						
+
 						return;
-					}else {
+					} else {
 						radiogroup.check(R.id.rb_person);
 						fm.beginTransaction()
 								.replace(R.id.fl, fragments.get(1)).commit();
@@ -289,18 +296,16 @@ public class MainActivity extends BaseActivity {
 
 	}
 
-/*	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		// 判断请求码，结果码来确定要执行的代码
-		if (resultCode==200) {
-			// 在这里设置要显示的fragment
-			radiogroup.check(R.id.rb_trade);
-		
-                   
-	}
-	}*/
+	/*
+	 * @Override protected void onActivityResult(int requestCode, int
+	 * resultCode, Intent data) { // TODO Auto-generated method stub
+	 * super.onActivityResult(requestCode, resultCode, data); //
+	 * 判断请求码，结果码来确定要执行的代码 if (resultCode==200) { // 在这里设置要显示的fragment
+	 * radiogroup.check(R.id.rb_trade);
+	 * 
+	 * 
+	 * } }
+	 */
 
 	private boolean isSecondBackPressed;
 	private long secondTime;
@@ -309,7 +314,8 @@ public class MainActivity extends BaseActivity {
 	private String versionName;
 	private Dialog dialog;
 	private ProgressBar pb_download;
-	
+	private SharedPreferences preferences;
+
 	/**
 	 * 点击两次返回键退出应用
 	 */
@@ -319,9 +325,7 @@ public class MainActivity extends BaseActivity {
 			currentItem = 0;
 
 			radiogroup.check(R.id.rb_trade);
-			fm.beginTransaction()
-			.replace(R.id.fl, fragments.get(0)).commit();
-	 
+			fm.beginTransaction().replace(R.id.fl, fragments.get(0)).commit();
 
 		} else {
 
@@ -344,8 +348,6 @@ public class MainActivity extends BaseActivity {
 			}
 
 		}
-
-		
 
 	}
 }
