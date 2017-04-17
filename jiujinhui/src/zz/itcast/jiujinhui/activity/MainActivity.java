@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,16 +12,31 @@ import zz.itcast.jiujinhui.fragment.personFragment;
 import zz.itcast.jiujinhui.res.ActivityCollector;
 import zz.itcast.jiujinhui.res.OurApplication;
 import zz.itcast.jiujinhui.res.ToastUtil;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class MainActivity extends BaseActivity {
@@ -53,7 +69,153 @@ public class MainActivity extends BaseActivity {
 		fragments.add(new helpFragment());
 		// Ĭ��ѡ�е���Ŀ
 		radiogroup.check(R.id.rb_trade);
+		// 获取自己的版本信息
 
+		PackageManager pm = getApplicationContext().getPackageManager();
+		try {
+			PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
+		versionCode = packageInfo.versionCode;
+		versionName = packageInfo.versionName;
+
+			// 设置textview
+			// String tv_versionName.setText(versionName);
+		} catch (NameNotFoundException e) {
+			// can not reach 异常不会发生
+		}
+
+		// 如果正常的从服务器获取应调用下面的timeInitialization()
+		// ToDo检查更新版本
+		checkVerion();
+		
+		
+		
+	}
+
+	private void checkVerion() {
+		// TODO Auto-generated method stub
+		// 检测新版本
+		// 获取服务器版本号
+		int servercode = 3;
+		if (servercode == versionCode) {
+
+			//不做提示
+
+		} else {
+			// 弹出提示更新的提示框
+			showUpdateDialog();
+		}
+		
+		
+	}
+
+	private void showUpdateDialog() {
+		dialog = new AlertDialog.Builder(this).create();
+		dialog.setCancelable(false);
+		dialog.show();
+		Window window = dialog.getWindow();
+		window.setContentView(R.layout.prompt_alertdialog);
+		LinearLayout ll_title = (LinearLayout) window
+				.findViewById(R.id.ll_title);
+		ll_title.setVisibility(View.VISIBLE);
+		TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
+		pb_download = (ProgressBar) window
+				.findViewById(R.id.pb_splash_download);
+		    pb_download.setVisibility(View.GONE);// 隐藏进度条
+		TextView tv_content = (TextView) window.findViewById(R.id.tv_content);
+		
+		tv_content
+				.setText("1.修复了部分bug 2.优化了用户体验");
+		final TextView tv_sure = (TextView) window.findViewById(R.id.tv_sure);
+		final TextView tv_cancle = (TextView) window
+				.findViewById(R.id.tv_cancle);
+		tv_cancle.setText("取消");
+		tv_cancle.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dialog.cancel();
+			}
+		});
+		tv_sure.setText("更新");
+		tv_sure.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				downLoadNewApk();// 下载新版本
+				tv_cancle.setEnabled(false);
+				tv_sure.setEnabled(false);
+				//dialog.cancel();
+				//loadMainActivity();
+				    pb_download.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+	/**
+	 * 新版本的下载安装
+	 */
+	protected void downLoadNewApk() {
+		HttpUtils utils = new HttpUtils();
+		// parseJson.getUrl() 下载的url
+		// target 本地路径
+		// System.out.println(parseJson.getUrl());
+		File file = new File("/mnt/sdcard/测试.apk");
+		//如果此文件已存在先删除
+		file.delete();// 删除文件
+		
+		utils.download(
+				"http://www.gamept.cn/d/file/game/qipai/20140627/HappyLordZZ_1.0.19_20140325_300002877528_2200139763.apk",
+				"/mnt/sdcard/测试.apk", new RequestCallBack<File>() {
+
+					@Override
+					public void onLoading(final long total, final long current,
+							boolean isUploading) {
+						pb_download.setVisibility(View.VISIBLE);// 设置进度的显示
+						int max = (int) total;
+						int progress = (int) current;
+						pb_download.setMax(max);// 设置进度条的最大值
+						pb_download.setProgress(progress);// 设置当前进度
+						
+						// showNotification(max,progree);
+						
+						super.onLoading(total, current, isUploading);
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<File> arg0) {
+						// 下载成功
+						// 在主线程中执行
+						Toast.makeText(getApplicationContext(), "下载新版本成功", 1)
+								.show();
+						// 安装apk
+						installApk();// 安装apk
+						pb_download.setVisibility(View.GONE);// 隐藏进度条
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						// 下载失败
+						Toast.makeText(getApplicationContext(), "下载新版本失败,请检查网络设置", 1)
+								.show();
+						pb_download.setVisibility(View.GONE);// 隐藏进度条
+					}
+				});
+	}
+
+	/**
+	 * 安装下载的新版本
+	 */
+	protected void installApk() {
+		Intent intent = new Intent("android.intent.action.VIEW");
+		intent.addCategory("android.intent.category.DEFAULT");
+		String type = "application/vnd.android.package-archive";
+		Uri data = Uri.fromFile(new File("/mnt/sdcard/测试.apk"));
+		intent.setDataAndType(data, type);
+		startActivityForResult(intent, 0);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// 如果用户取消更新apk，那么直接进入主界面
+		dialog.cancel();
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	int currentItem;
@@ -143,6 +305,10 @@ public class MainActivity extends BaseActivity {
 	private boolean isSecondBackPressed;
 	private long secondTime;
 	private long firstTime;
+	private int versionCode;
+	private String versionName;
+	private Dialog dialog;
+	private ProgressBar pb_download;
 	
 	/**
 	 * 点击两次返回键退出应用

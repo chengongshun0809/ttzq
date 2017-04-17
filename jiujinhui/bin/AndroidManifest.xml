@@ -111,6 +111,10 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+        
+        <service android:name="zz.itcast.jiujinhui.service.UpApkService"></service>
+        
+        
     </application>
 
 </manifest>
