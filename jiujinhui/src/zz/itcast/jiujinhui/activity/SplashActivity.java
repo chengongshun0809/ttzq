@@ -6,6 +6,7 @@ import zz.itcast.jiujinhui.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -44,12 +45,23 @@ public class SplashActivity extends BaseActivity {
 
 	@Override
 	public void initListener() {
-		// TODO Auto-generated method stub
-
+		
 	}
+
+	// 计算启动次数
+	
+	private SharedPreferences sp;
 
 	private void loadMainActivity() {
 		// TODO Auto-generated method stub
+		sp = getSharedPreferences("start", MODE_PRIVATE);
+		int num = sp.getInt("start", 1);
+		num++;
+		sp.edit().putInt("start", num).commit();
+
+		
+		
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override

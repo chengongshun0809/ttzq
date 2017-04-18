@@ -45,6 +45,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -1332,6 +1333,15 @@ public class TradeServiceActivity extends BaseActivity {
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = (View) inflater.inflate(R.layout.buy_service, null);
+		
+		
+		
+	/*	dialog_buy = new AlertDialog.Builder(this).create();
+		dialog_buy.setCancelable(false);
+		dialog_buy.show();
+		Window view = dialog_buy.getWindow();
+		view.setContentView(R.layout.buy_service);*/
+		
 		// 增加
 		product_ordsubmit_count_sub = (ImageView) view
 				.findViewById(R.id.product_ordsubmit_count_sub);
@@ -1746,6 +1756,8 @@ TextWatcher textwatcher_tihuo=new TextWatcher() {
 	private static long firstTime;
 
 	private static long datime;
+
+	private Dialog dialogbuy;
 
 	@Override
 	protected void onDestroy() {

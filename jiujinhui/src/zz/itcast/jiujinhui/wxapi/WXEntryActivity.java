@@ -45,7 +45,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		// 重写方法拿到code
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK: // 发送成功
-			 finish();
+			
 			String code1 = ((SendAuth.Resp) resp).code; // 即为所需的code
 			// Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
 			// 拿到code,加上appid和secret拼接网址,请求数据得到包含token和openid来继续请求拿到用户数据
@@ -128,6 +128,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																						"isLogined",
 																						true)
 																				.commit();
+																				 finish();
 																				try {
 																					JSONObject json = new JSONObject(
 																							responseInfo.result

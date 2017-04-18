@@ -87,7 +87,8 @@ public class personFragment extends BaseFragment {
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
-			 //loading_dialog.dismiss();
+			 conn.disconnect();
+			 loading_dialog.dismiss();
 			 person_jiubi.setText(df.format(income/100));
 			break;
 
@@ -101,6 +102,8 @@ public class personFragment extends BaseFragment {
   private Dialog dialog_NO;
 private String phonenum;
 private DecimalFormat df;
+private HttpsURLConnection conn;
+
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -126,14 +129,14 @@ private DecimalFormat df;
 	   new Thread(new Runnable() {
 
 			private InputStream is;
-
+			
 			@Override
 			public void run() {
 				
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 								+ unionString + "&dgid=DG161027140008895";
-						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
+						conn = NetUtils.httpsconnNoparm(
 								urlpath, "GET");
 						// 若连接服务器成功，返回数据
 						int code = conn.getResponseCode();
@@ -143,6 +146,8 @@ private DecimalFormat df;
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
+						}else {
+							conn.disconnect();
 						}
 
 					} catch (Exception e) {
@@ -174,24 +179,27 @@ private DecimalFormat df;
 	protected void parsonJson(String json) {
 		// TODO Auto-generated method stub
 		try {
-			df = new DecimalFormat("#0.00");
-			JSONObject jsonObject = new JSONObject(json);
-			income = jsonObject.getDouble("income");
-			
-			sp.edit().putString("income", income+"").commit();
-			phonenum = jsonObject.getString("mobile");
-			sp.edit().putString("mobile", phonenum).commit();
-			Message message=Message.obtain();
-			handler.sendEmptyMessage(1);
+			if (json!=null) {
+				df = new DecimalFormat("#0.00");
+				JSONObject jsonObject = new JSONObject(json);
+				income = jsonObject.getDouble("income");
+				
+				sp.edit().putString("income", income+"").commit();
+				phonenum = jsonObject.getString("mobile");
+				sp.edit().putString("mobile", phonenum).commit();
+				Message message=Message.obtain();
+				handler.sendEmptyMessage(1);
+			}
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	//private Dialog loading_dialog = null;
+	private Dialog loading_dialog = null;
 	@Override
 	public void initData() {
-		//loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
 		
 		
 	}
@@ -406,6 +414,8 @@ private DecimalFormat df;
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		handler.removeMessages(1);
+        conn.disconnect();
+          
 	}
 	
 	

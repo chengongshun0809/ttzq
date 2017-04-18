@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="39dp"
-       
+         android:background="#FFFFFF"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
         android:paddingTop="2dp" >
@@ -18,13 +18,13 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="7dp"
             android:text="提货量(瓶):"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/reduce_tihuo"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginLeft="55dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_reduce" />
@@ -38,13 +38,13 @@
             android:background="@null"
             android:inputType="number"
             android:text="1"
-            android:textColor="#ff323232"
-            android:textSize="15sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/add_tihuo"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_add" />
     </LinearLayout>
@@ -55,22 +55,20 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
         
-        android:layout_marginTop="5dp"
-        android:background="#00000000"
+        android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/dialog_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:background="#00000000"
+            android:layout_margin="10dp"
             android:text="取消"
+            android:background="@drawable/btn_gem_green"
             android:textSize="18sp" />
 
         <View
@@ -81,9 +79,10 @@
         <Button
             android:id="@+id/dialog_ok"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:background="#00000000"
+              android:layout_margin="10dp"
+            android:background="@drawable/btn_gem_green"
             android:text="确定"
             android:textColor="#ff3030"
             android:textSize="18sp" />

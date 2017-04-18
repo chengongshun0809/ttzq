@@ -60,11 +60,14 @@ public class MainActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		return R.layout.activity_main;
 	}
-
+	private SharedPreferences sp_start;
 	@Override
 	public void initData() {
 		preferences = getSharedPreferences(
 				"first_pref", MODE_PRIVATE);
+		
+		sp_start=getSharedPreferences("start", MODE_PRIVATE);
+		
 		fragments = new ArrayList<BaseFragment>();
 		fragments.add(new TradeFragment());
 		fragments.add(new personFragment());
@@ -88,20 +91,33 @@ public class MainActivity extends BaseActivity {
 		// 如果正常的从服务器获取应调用下面的timeInitialization()
 		// ToDo检查更新版本
 		checkVerion();
-
+		int num_start=sp_start.getInt("start", 1);
+		if (num_start>3) {
+			preferences.edit().putBoolean("first_up_cancel", true).commit();
+			sp_start.edit().putInt("start", 1).commit();
+			
+		}else {
+			
+		}
+		
+		
+		
+		
+		
 	}
 
 	private void checkVerion() {
 		// TODO Auto-generated method stub
 		// 检测新版本
 		// 获取服务器版本号
-		int servercode = 2;
+		int servercode = 3;
 		if (servercode == versionCode) {
 
 			// 不做提示
 
 		} else {
 			// 弹出提示更新的提示框
+			
 			boolean isFIrst_cancel=preferences.getBoolean("first_up_cancel", true);
 			if (isFIrst_cancel) {
 				showUpdateDialog();

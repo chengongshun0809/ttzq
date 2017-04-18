@@ -144,6 +144,7 @@ public class LoginActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		
 	}
 
 }

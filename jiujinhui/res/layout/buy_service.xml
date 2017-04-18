@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
-
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+      
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="39dp"
-       
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="#FFFFFF"
         android:paddingBottom="2dp"
         android:paddingTop="2dp" >
 
@@ -19,15 +26,17 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="7dp"
             android:text="购买数量:"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/product_ordsubmit_count_sub"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginLeft="55dp"
-            android:layout_marginTop="5dp"
+            android:background="#FFFFFF"
+            android:layout_marginTop="7dp"
             android:src="@drawable/ic_reduce" />
 
         <EditText
@@ -38,25 +47,24 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:inputType="number"
-            
-            
             android:numeric="decimal"
-            android:textColor="#ff323232"
-            android:textSize="15sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/product_ordsubmit_count_add"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="#FFFFFF"
+            android:layout_marginTop="7dp"
             android:src="@drawable/ic_add" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
-       
         android:focusable="true"
+        android:background="#FFFFFF"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
         android:paddingBottom="2dp"
@@ -67,8 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="买入价 (元):"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/product_ordsubmit_price"
@@ -78,16 +86,16 @@
             android:background="@drawable/service_shape_corners"
             android:hint="   点击输入"
             android:numeric="decimal"
-            android:textColor="#ff323232"
-            android:textSize="15sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
-       
         android:orientation="horizontal"
         android:paddingBottom="2dp"
+        android:background="#FFFFFF"
         android:paddingTop="2dp" >
 
         <TextView
@@ -95,8 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="总金额 (元):"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/product_total_price"
@@ -107,10 +115,11 @@
             android:textColor="#ff323232"
             android:textSize="15sp" />
     </LinearLayout>
-<LinearLayout
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-       
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:orientation="horizontal" >
 
         <TextView
@@ -118,8 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:text=" 1、交易指导价"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/zhidaojia"
@@ -128,15 +137,16 @@
             android:layout_marginLeft="2dp"
             android:text="327.00"
             android:textColor="#ff3030"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="元"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
     </LinearLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -144,8 +154,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-       
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal" >
 
@@ -154,8 +163,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:text=" 2、五日之内未成交,系统自动退款"
-            android:textColor="#ff323232"
-            android:textSize="18sp" />
+            android:textColor="#353535"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -165,22 +174,20 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
         
-        android:layout_marginTop="5dp"
-        android:background="#00000000"
+        android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/dialog_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:background="#00000000"
+            android:layout_margin="10dp"
             android:text="取消"
+            android:background="@drawable/btn_gem_green"
             android:textSize="18sp" />
 
         <View
@@ -191,12 +198,13 @@
         <Button
             android:id="@+id/dialog_ok"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:background="#00000000"
+              android:layout_margin="10dp"
+            android:background="@drawable/btn_gem_green"
             android:text="确定"
             android:textColor="#ff3030"
             android:textSize="18sp" />
     </LinearLayout>
-
+ </LinearLayout>
 </LinearLayout>
