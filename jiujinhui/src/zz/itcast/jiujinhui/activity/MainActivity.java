@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
 		// ToDo检查更新版本
 		checkVerion();
 		int num_start=sp_start.getInt("start", 1);
-		if (num_start>3) {
+		if (num_start>3000) {
 			preferences.edit().putBoolean("first_up_cancel", true).commit();
 			sp_start.edit().putInt("start", 1).commit();
 			
@@ -351,7 +351,7 @@ public class MainActivity extends BaseActivity {
 					// 两次点击时间间隔小于2s
 					ActivityCollector.finishAll();
 					finish();
-				} else {
+			 	} else {
 					// 两次点击时间间隔大于2s
 					firstTime = System.currentTimeMillis();
 					ToastUtil.showTextToast(this, "再点一次退出");

@@ -83,7 +83,7 @@
        <activity android:name="zz.itcast.jiujinhui.activity.BuySuccessActivity"></activity>
        <activity android:name="zz.itcast.jiujinhui.activity.SaleSuccessActivity"></activity>
        <activity android:name="zz.itcast.jiujinhui.activity.TransSuccessActivity"></activity>
-       
+       <activity android:name="zz.itcast.jiujinhui.activity.TihuoSuccessActivity"></activity>
        
         <!-- 微信回调activity -->
         <activity
