@@ -60,14 +60,15 @@ public class MainActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		return R.layout.activity_main;
 	}
+
 	private SharedPreferences sp_start;
+
 	@Override
 	public void initData() {
-		preferences = getSharedPreferences(
-				"first_pref", MODE_PRIVATE);
-		
-		sp_start=getSharedPreferences("start", MODE_PRIVATE);
-		
+		preferences = getSharedPreferences("first_pref", MODE_PRIVATE);
+
+		sp_start = getSharedPreferences("start", MODE_PRIVATE);
+
 		fragments = new ArrayList<BaseFragment>();
 		fragments.add(new TradeFragment());
 		fragments.add(new personFragment());
@@ -91,19 +92,15 @@ public class MainActivity extends BaseActivity {
 		// 如果正常的从服务器获取应调用下面的timeInitialization()
 		// ToDo检查更新版本
 		checkVerion();
-		int num_start=sp_start.getInt("start", 1);
-		if (num_start>3000) {
+		int num_start = sp_start.getInt("start", 1);
+		if (num_start > 3000) {
 			preferences.edit().putBoolean("first_up_cancel", true).commit();
 			sp_start.edit().putInt("start", 1).commit();
-			
-		}else {
-			
+
+		} else {
+
 		}
-		
-		
-		
-		
-		
+
 	}
 
 	private void checkVerion() {
@@ -117,19 +114,21 @@ public class MainActivity extends BaseActivity {
 
 		} else {
 			// 弹出提示更新的提示框
-			
-			boolean isFIrst_cancel=preferences.getBoolean("first_up_cancel", true);
+
+			boolean isFIrst_cancel = preferences.getBoolean("first_up_cancel",
+					true);
 			if (isFIrst_cancel) {
 				showUpdateDialog();
-				
-			}else {
-				preferences.edit().putBoolean("first_up_cancel", false).commit();
+
+			} else {
+				preferences.edit().putBoolean("first_up_cancel", false)
+						.commit();
 			}
-			
+
 		}
 
 	}
-	
+
 	private void showUpdateDialog() {
 		dialog = new AlertDialog.Builder(this).create();
 		dialog.setCancelable(false);
@@ -155,8 +154,8 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View arg0) {
 				dialog.dismiss();
-				preferences.edit().putBoolean("first_up_cancel", false).commit();
-				
+				preferences.edit().putBoolean("first_up_cancel", false)
+						.commit();
 
 			}
 		});
@@ -259,6 +258,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
+		sp = getSharedPreferences("user", MODE_PRIVATE);
 		radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -282,7 +282,6 @@ public class MainActivity extends BaseActivity {
 
 				if (currentItem == 1) {
 
-					sp = getSharedPreferences("user", MODE_PRIVATE);
 					boolean isLogined = sp.getBoolean("isLogined", false);
 					if (isLogined == false) {
 
@@ -351,7 +350,7 @@ public class MainActivity extends BaseActivity {
 					// 两次点击时间间隔小于2s
 					ActivityCollector.finishAll();
 					finish();
-			 	} else {
+				} else {
 					// 两次点击时间间隔大于2s
 					firstTime = System.currentTimeMillis();
 					ToastUtil.showTextToast(this, "再点一次退出");
@@ -364,6 +363,7 @@ public class MainActivity extends BaseActivity {
 			}
 
 		}
-
+		//super.onBackPressed();
 	}
+	
 }

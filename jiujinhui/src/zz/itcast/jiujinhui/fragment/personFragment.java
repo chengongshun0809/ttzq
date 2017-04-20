@@ -87,9 +87,14 @@ public class personFragment extends BaseFragment {
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
-			 conn.disconnect();
-			 loading_dialog.dismiss();
-			 person_jiubi.setText(df.format(income/100));
+			 
+			 if (phonenum!=null) {
+				 conn.disconnect();
+				 loading_dialog.dismiss();
+				 person_jiubi.setText(df.format(income/100));
+			}
+			 
+			
 			break;
 
 		default:
@@ -400,8 +405,9 @@ private HttpsURLConnection conn;
 		case R.id.personInfo:// 进入个人信息页面
 
 			Intent intent = new Intent(OurApplication.getContext(), PerInfoActivity.class);
-			intent.putExtra("shun", "shun");
-			startActivityForResult(intent, 0);
+			/*intent.putExtra("shun", "shun");
+			startActivityForResult(intent, 2);*/
+			startActivity(intent);
 			break;
 		
 		default:

@@ -63,7 +63,9 @@
         </activity>
         <activity android:name="zz.itcast.jiujinhui.activity.MyTiXianActivity" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.PerInfoActivity" >
+        <activity android:name="zz.itcast.jiujinhui.activity.PerInfoActivity" 
+             android:launchMode="standard"
+            >
         </activity>
         <activity android:name="zz.itcast.jiujinhui.activity.PhoneNumberLoginActivity" >
         </activity>

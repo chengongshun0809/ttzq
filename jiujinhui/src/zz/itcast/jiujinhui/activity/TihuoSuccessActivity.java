@@ -37,7 +37,7 @@ public class TihuoSuccessActivity extends BaseActivity {
     	super.onClick(v);
     	switch (v.getId()) {
 		case R.id.wancheng:
-			Toast.makeText(getApplicationContext(), "恭喜您，提货成功", 0).show();
+			//Toast.makeText(getApplicationContext(), "恭喜您，提货成功", 0).show();
 			finish();
 			break;
 

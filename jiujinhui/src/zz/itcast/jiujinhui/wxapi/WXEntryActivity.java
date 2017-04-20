@@ -123,12 +123,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																				// Auto-generated
 																				// method
 																				// stub
-																				sp.edit()
+																			/*	sp.edit()
 																				.putBoolean(
 																						"isLogined",
 																						true)
-																				.commit();
-																				 finish();
+																				.commit();*/
+																				
 																				try {
 																					JSONObject json = new JSONObject(
 																							responseInfo.result
@@ -155,10 +155,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																					String headimgurl = json
 																							.getString("headimgurl");// 头像
 
-																				/*	Log.e("ms",
+																				Log.e("ms",
 																							nickname
-																									+ "  "
-																									+ headimgurl);*/
+																									+ "  wxhahh"
+																									+ headimgurl);
 
 																					sp.edit()
 																							.putBoolean(
@@ -177,9 +177,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																									"nickname",
 																									nickname)
 																							.commit();
-																					    
+																					 
 																						Intent intent=new Intent(WXEntryActivity.this,MainActivity.class);
 																						startActivity(intent);
+																						 finish(); 
 																						Toast.makeText(
 																								WXEntryActivity.this,
 																								"登录成功",
@@ -202,7 +203,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																												HttpException arg0,
 																												String arg1) {
 																											// TODO
-
+																											             
 																										}
 
 																										@Override
@@ -214,7 +215,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																																.toString());
 																												// Log.e("个人信息",json.toString()
 																												// );
-                                                     
+																												
 																											} catch (JSONException e) {
 																												// TODO
 																												// Auto-generated
@@ -282,6 +283,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 						}
 
 					});
+			
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
 			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();

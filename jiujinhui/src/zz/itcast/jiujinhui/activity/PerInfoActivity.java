@@ -8,6 +8,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract.CommonDataKinds.Nickname;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,12 +34,12 @@ public class PerInfoActivity extends BaseActivity {
 	private TextView tv__title;
 	@ViewInject(R.id.et_phonenumber)
 	private TextView et_phonenumber;
-	@ViewInject(R.id.et_register_username_id)
-	private TextView et_register_username_id;
+	@ViewInject(R.id.et_register_username)
+	private TextView et_register_username;
 
 	// 圆形图片
-	@ViewInject(R.id.circleImabeView)
-	private zz.itcast.jiujinhui.view.CircleImageView circleImabeView;
+	@ViewInject(R.id.circleview)
+	private zz.itcast.jiujinhui.view.CircleImageView circleview;
 
 	@Override
 	public int getLayoutResID() {
@@ -45,7 +47,7 @@ public class PerInfoActivity extends BaseActivity {
 		return R.layout.perinfo_activity;
 	}
 
-	private String isshun;
+	// private String isshun;
 
 	private Button btnOK;
 	private Button btnCancel;
@@ -53,10 +55,9 @@ public class PerInfoActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		sp = getSharedPreferences("user", 0);
-		isshun = getIntent().getStringExtra("shun");
 		
-		
+		// isshun = getIntent().getStringExtra("shun");
+
 	}
 
 	@Override
@@ -73,16 +74,31 @@ public class PerInfoActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("个人信息");
 		// 微信头像
-		sp = getSharedPreferences("user", 0);
+		sp = getSharedPreferences("user", MODE_PRIVATE);
 		String headimgurl = sp.getString("headimg", null);
-		Picasso.with(this).load(headimgurl).into(circleImabeView);
+		
+		
+		if (headimgurl != null) {
+			Log.e("headimgurl", headimgurl);
+			Picasso.with(this).load(headimgurl).into(circleview);
+		}
+
 		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
-		et_register_username_id.setText(nickNameString);
 		
-		//个人手机号
-		String number=sp.getString("mobile", null);
-		et_phonenumber.setText(number);
+		if (nickNameString != null) {
+			Log.e("nickNameString", nickNameString);
+			et_register_username.setText(nickNameString);
+		}
+		
+		// 个人手机号
+		String number = sp.getString("mobile", null);
+		
+		if (number!=null) {
+			Log.e("number", number);
+			et_phonenumber.setText(number);
+		}
+		
 	}
 
 	@Override
@@ -96,7 +112,7 @@ public class PerInfoActivity extends BaseActivity {
 			btnOK = (Button) view.findViewById(R.id.dialog_ok);
 			btnCancel = (Button) view.findViewById(R.id.dialog_cancel);
 			final AlertDialog builder = new AlertDialog.Builder(this).create();
-			builder.setView(view,0,0,0, 0);
+			builder.setView(view, 0, 0, 0, 0);
 			builder.setCancelable(false);
 			builder.show();
 			btnOK.setOnClickListener(new OnClickListener() {
@@ -105,19 +121,17 @@ public class PerInfoActivity extends BaseActivity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 
-					/*if ("shun".equals(isshun)) {
-						setResult(200);
-					}*/
+					/*
+					 * if ("shun".equals(isshun)) { setResult(200); }
+					 */
 					sp.edit().putBoolean("isLogined", false).commit();
 					builder.dismiss();
 					finish();
 
-					Toast.makeText(
-							PerInfoActivity.this,
-							"退出成功",
-							Toast.LENGTH_SHORT)
-							.show();
-					Intent intent=new Intent(PerInfoActivity.this,MainActivity.class);
+					Toast.makeText(PerInfoActivity.this, "退出成功",
+							Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(PerInfoActivity.this,
+							MainActivity.class);
 					startActivity(intent);
 
 				}
