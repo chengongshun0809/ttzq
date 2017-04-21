@@ -74,12 +74,19 @@ public class MyTiXianActivity extends BaseActivity {
 	public void initData() {
 		Bundle bundle = getIntent().getExtras();
 
-		incomeString = bundle.getString("money");
-		mobileString = bundle.getString("mobile");
+		incomeString = sp.getString("income", null);
+		 
+	
+		
+		mobileString = 	sp.getString("mobile", null);
 		unionString = sp.getString("unionid", null);
 		mobile.setText(mobileString);
-		jiubi_total = Double.parseDouble(incomeString);
-		wine_money.setText(incomeString);
+	
+		if (incomeString!=null) {
+			jiubi_total = Double.parseDouble(incomeString);
+			wine_money.setText(incomeString);
+		}
+		
 
 	}
 	private Dialog loading_dialog = null;

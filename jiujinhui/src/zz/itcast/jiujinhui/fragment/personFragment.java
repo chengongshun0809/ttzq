@@ -118,10 +118,18 @@ private HttpsURLConnection conn;
 		// 微信头像
 		sp =OurApplication.getContext().getSharedPreferences("user", 0);
 		String headimgurl = sp.getString("headimg", null);
-		Picasso.with(OurApplication.getContext()).load(headimgurl).into(circleImabeView);
+		
+		if (headimgurl!=null) {
+			Picasso.with(OurApplication.getContext()).load(headimgurl).into(circleImabeView);
+		}
+		
+		
 		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
-		NickName.setText(nickNameString);
+		if (nickNameString!=null) {
+			NickName.setText(nickNameString);
+		}
+		
 		final String unionString=sp.getString("unionid", null);
 		//酒币
 	  /* String jiubinum=sp.getString("jiubi", null);
@@ -188,8 +196,8 @@ private HttpsURLConnection conn;
 				df = new DecimalFormat("#0.00");
 				JSONObject jsonObject = new JSONObject(json);
 				income = jsonObject.getDouble("income");
-				
-				sp.edit().putString("income", income+"").commit();
+			
+				sp.edit().putString("income", df.format(income/100)).commit();
 				phonenum = jsonObject.getString("mobile");
 				sp.edit().putString("mobile", phonenum).commit();
 				Message message=Message.obtain();
@@ -333,10 +341,7 @@ private HttpsURLConnection conn;
 					// 符合交易时间
 					Intent intent4 = new Intent(OurApplication.getContext(),
 							MyTiXianActivity.class);
-					Bundle bundle=new Bundle();
-					bundle.putString("mobile", phonenum);
-					bundle.putString("money", df.format(income/100));
-					intent4.putExtras(bundle);
+					
 					startActivity(intent4);
 
 				} else {

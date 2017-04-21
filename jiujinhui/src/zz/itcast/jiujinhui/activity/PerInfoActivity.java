@@ -82,8 +82,8 @@ public class PerInfoActivity extends BaseActivity {
 			Log.e("headimgurl", headimgurl);
 			Picasso.with(this).load(headimgurl).into(circleview);
 		}
-
-		// 微信昵称
+		
+		// 微信昵称 
 		String nickNameString = sp.getString("nickname", null);
 		
 		if (nickNameString != null) {
