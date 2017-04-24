@@ -5,6 +5,7 @@ import zz.itcast.jiujinhui.res.Constants;
 import zz.itcast.jiujinhui.view.LoadingDialog;
 import zz.itcast.jiujinhui.wxapi.WXEntryActivity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -65,7 +66,7 @@ public class LoginActivity extends BaseActivity {
 		return R.layout.activity_login;
 	}
 
-	private String ishappy;
+	//private String ishappy;
 
 	
 
@@ -77,7 +78,7 @@ public class LoginActivity extends BaseActivity {
 	public void initData() {
 		// TODO Auto-generated method stub
 
-		ishappy = getIntent().getStringExtra("happy");
+		//ishappy = getIntent().getStringExtra("happy");
    
 		api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, true);
 		api.registerApp(Constants.APP_ID);
@@ -111,11 +112,16 @@ public class LoginActivity extends BaseActivity {
 						Toast.LENGTH_SHORT).show();
 			} else {
 				//微信登录
+				
+				
+				
 				com.tencent.mm.sdk.modelmsg.SendAuth.Req req=new com.tencent.mm.sdk.modelmsg.SendAuth.Req();
 				req.scope="snsapi_userinfo";
 				req.state="none";
 				api.sendReq(req);
 				//sp.edit().putBoolean("isLogined", true).commit();
+				
+				
 				finish();
 			
 			}

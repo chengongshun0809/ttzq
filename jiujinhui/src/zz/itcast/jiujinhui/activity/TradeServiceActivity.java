@@ -24,6 +24,7 @@ import zz.itcast.jiujinhui.fragment.SaleChartFragment;
 import zz.itcast.jiujinhui.res.Arith;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
+import zz.itcast.jiujinhui.res.OurApplication;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -612,7 +613,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取网络当前时间
-			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 			if (info != null && info.isAvailable()) {
@@ -664,7 +665,7 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 		case R.id.rb_sale_service:
 
-			ConnectivityManager connectivityManager_sale = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager_sale=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info_sale = connectivityManager_sale
 					.getActiveNetworkInfo();
@@ -731,7 +732,7 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
-			ConnectivityManager connectivityManager_trans = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager_trans=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info_trans = connectivityManager_trans
 					.getActiveNetworkInfo();

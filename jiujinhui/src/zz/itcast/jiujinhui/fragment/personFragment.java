@@ -190,6 +190,7 @@ private HttpsURLConnection conn;
 	}
 	
 	protected void parsonJson(String json) {
+		
 		// TODO Auto-generated method stub
 		try {
 			if (json!=null) {
@@ -199,7 +200,11 @@ private HttpsURLConnection conn;
 			
 				sp.edit().putString("income", df.format(income/100)).commit();
 				phonenum = jsonObject.getString("mobile");
-				sp.edit().putString("mobile", phonenum).commit();
+				if (phonenum!=null) {
+					sp.edit().putString("mobile", phonenum).commit();
+				}
+				
+				  
 				Message message=Message.obtain();
 				handler.sendEmptyMessage(1);
 			}

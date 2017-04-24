@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BaseFragment;
 import zz.itcast.jiujinhui.fragment.TradeFragment;
@@ -21,7 +24,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -37,6 +42,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class MainActivity extends BaseActivity {
@@ -83,6 +89,8 @@ public class MainActivity extends BaseActivity {
 			versionCode = packageInfo.versionCode;
 			versionName = packageInfo.versionName;
 
+			Log.e("versionCode", versionCode + "");
+
 			// 设置textview
 			// String tv_versionName.setText(versionName);
 		} catch (NameNotFoundException e) {
@@ -93,7 +101,7 @@ public class MainActivity extends BaseActivity {
 		// ToDo检查更新版本
 		checkVerion();
 		int num_start = sp_start.getInt("start", 1);
-		if (num_start > 3000) {
+		if (num_start > 2) {
 			preferences.edit().putBoolean("first_up_cancel", true).commit();
 			sp_start.edit().putInt("start", 1).commit();
 
@@ -103,29 +111,80 @@ public class MainActivity extends BaseActivity {
 
 	}
 
+	private int serverVersion;
+	private String url_app;
+
+	Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+             switch (msg.what) {
+			case 0:
+				// 弹出提示更新的提示框
+
+				boolean isFIrst_cancel = preferences.getBoolean("first_up_cancel",
+						true);
+				if (isFIrst_cancel) {
+					showUpdateDialog();
+
+				} else {
+					preferences.edit().putBoolean("first_up_cancel", false)
+							.commit();
+				}
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+
 	private void checkVerion() {
 		// TODO Auto-generated method stub
 		// 检测新版本
 		// 获取服务器版本号
-		int servercode = 3;
-		if (servercode == versionCode) {
+		String updateurl = "https://www.4001149114.com/NLJJ/ddapp/updateapp";
+		HttpUtils httpUtils = new HttpUtils();
+		httpUtils.send(HttpRequest.HttpMethod.GET, updateurl,
+				new RequestCallBack<String>() {
+
+					@Override
+					public void onSuccess(ResponseInfo<String> responseInfo) {
+						// TODO Auto-generated method stub
+						try {
+							JSONObject object = new JSONObject(
+									responseInfo.result.toString());
+
+							serverVersion = object.getInt("serverVersion");
+							Log.e("serverVersion", serverVersion + "");
+							url_app = object.getString("updateurl");
+							Log.e("url_app  :  ", url_app + "");
+
+							if (serverVersion != versionCode) {
+                                      handler.sendEmptyMessage(0);
+							}
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+
+		/*if (serverVersion == versionCode) {
 
 			// 不做提示
 
 		} else {
-			// 弹出提示更新的提示框
+			
 
-			boolean isFIrst_cancel = preferences.getBoolean("first_up_cancel",
-					true);
-			if (isFIrst_cancel) {
-				showUpdateDialog();
-
-			} else {
-				preferences.edit().putBoolean("first_up_cancel", false)
-						.commit();
-			}
-
-		}
+		}*/
 
 	}
 
@@ -180,13 +239,12 @@ public class MainActivity extends BaseActivity {
 		// parseJson.getUrl() 下载的url
 		// target 本地路径
 		// System.out.println(parseJson.getUrl());
-		File file = new File("/mnt/sdcard/测试.apk");
+		File file = new File("/mnt/sdcard/升级年轮酒窖.apk");
 		// 如果此文件已存在先删除
 		file.delete();// 删除文件
 
-		utils.download(
-				"http://www.gamept.cn/d/file/game/qipai/20140627/HappyLordZZ_1.0.19_20140325_300002877528_2200139763.apk",
-				"/mnt/sdcard/测试.apk", new RequestCallBack<File>() {
+		utils.download(url_app, "/mnt/sdcard/升级年轮酒窖.apk",
+				new RequestCallBack<File>() {
 
 					@Override
 					public void onLoading(final long total, final long current,
@@ -219,7 +277,7 @@ public class MainActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(),
 								"下载新版本失败,请检查网络设置", 1).show();
 						pb_download.setVisibility(View.GONE);// 隐藏进度条
-						dialog.dismiss();
+						dialog.dismiss();  
 					}
 				});
 	}
@@ -231,7 +289,7 @@ public class MainActivity extends BaseActivity {
 		Intent intent = new Intent("android.intent.action.VIEW");
 		intent.addCategory("android.intent.category.DEFAULT");
 		String type = "application/vnd.android.package-archive";
-		Uri data = Uri.fromFile(new File("/mnt/sdcard/测试.apk"));
+		Uri data = Uri.fromFile(new File("/mnt/sdcard/升级年轮酒窖.apk"));
 		intent.setDataAndType(data, type);
 		startActivityForResult(intent, 0);
 	}
@@ -363,7 +421,7 @@ public class MainActivity extends BaseActivity {
 			}
 
 		}
-		//super.onBackPressed();
+		// super.onBackPressed();
 	}
-	
+
 }
