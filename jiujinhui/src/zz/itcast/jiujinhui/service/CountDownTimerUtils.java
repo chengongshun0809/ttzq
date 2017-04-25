@@ -53,7 +53,7 @@ public class CountDownTimerUtils extends CountDownTimer {
 	   */
 	  @Override
 	  public void onFinish() { 
-	    mTextView.setText("重新获取验证码"); 
+	    mTextView.setText("重新获取"); 
 	    mTextView.setClickable(true);//重新获得点击 
 	    mTextView.setBackgroundResource(R.drawable.shape_verify_btn_normal); //还原背景色
 	  } 

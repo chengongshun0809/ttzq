@@ -65,6 +65,7 @@
             android:layout_marginTop="5dp"
             android:background="@null"
             android:textSize="15sp"
+            android:inputType="number"
             android:hint="请输入验证码" />
 
           <TextView

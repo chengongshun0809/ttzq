@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,9 +95,11 @@ public class PerInfoActivity extends BaseActivity {
 		// 个人手机号
 		String number = sp.getString("mobile", null);
 		
-		if (number!=null) {
+		if (!TextUtils.isEmpty(number)) {
 			Log.e("number", number);
 			et_phonenumber.setText(number);
+		}else {
+			et_phonenumber.setText("未绑定");
 		}
 		
 	}

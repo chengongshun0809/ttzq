@@ -76,7 +76,7 @@ public class SmsNumberActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("绑定手机号");
 		tv__title.setTextSize(22);
-		
+
 	}
 
 	private String message;
@@ -88,18 +88,41 @@ public class SmsNumberActivity extends BaseActivity {
 			switch (msg.what) {
 
 			case 0:
-				  
+
 				// 发送成功进入倒计时
-				CountDownTimerUtils	countDownTimer = new CountDownTimerUtils(smscod, 60000, 1000);
+				CountDownTimerUtils countDownTimer = new CountDownTimerUtils(
+						smscod, 60000, 1000);
 				countDownTimer.start();
-				
 
 				break;
 
 			case 1:
 				Toast.makeText(getApplicationContext(), datainfo, 0).show();
-                  
+
 				break;
+			case 2:
+				//验证失败
+				Toast.makeText(getApplicationContext(), "验证失败", 0).show();
+
+				break;
+			case 3:
+				//验证成功
+				Toast.makeText(getApplicationContext(), "验证成功", 0).show();
+				String extra = getIntent().getStringExtra("sms");
+				if (extra.equals("tixian")) {
+					Intent intent = new Intent(SmsNumberActivity.this,
+							MyTiXianActivity.class);
+					startActivity(intent);
+
+				} else if (extra.equals("recharge")) {
+					Intent intent1 = new Intent(SmsNumberActivity.this,
+							ReChargeActivity.class);
+					startActivity(intent1);
+				}
+			
+               finish();
+				break;
+				
 
 			default:
 				break;
@@ -108,6 +131,7 @@ public class SmsNumberActivity extends BaseActivity {
 		};
 	};
 	private String num_phone;
+	private String code;
 
 	@Override
 	public void onClick(View v) {
@@ -122,11 +146,12 @@ public class SmsNumberActivity extends BaseActivity {
 				HttpUtils httpUtils = new HttpUtils();
 				httpUtils.send(HttpRequest.HttpMethod.GET,
 						"https://www.4001149114.com/NLJJ/ddapp/sendsms?unionid="
-								+ unionString + "&mobile="+num_phone,
+								+ unionString + "&mobile=" + num_phone,
 						new RequestCallBack<String>() {
 
 							@Override
-							public void onSuccess(ResponseInfo<String> responseInfo) {
+							public void onSuccess(
+									ResponseInfo<String> responseInfo) {
 								// TODO Auto-generated method stub
 								try {
 									JSONObject jsonObject = new JSONObject(
@@ -153,32 +178,78 @@ public class SmsNumberActivity extends BaseActivity {
 							}
 
 							@Override
-							public void onFailure(HttpException arg0, String arg1) {
+							public void onFailure(HttpException arg0,
+									String arg1) {
 								// TODO Auto-generated method stub
 
 							}
 
 						});
-			}else {
+			} else {
 				Toast.makeText(getApplicationContext(), "请输入您的手机号", 0).show();
 			}
-			
 
 			break;
 
 		case R.id.SmsSubmit:
-			String extra = getIntent().getStringExtra("sms");
-			if (extra.equals("tixian")) {
-				Intent intent = new Intent(SmsNumberActivity.this,
-						MyTiXianActivity.class);
-				startActivity(intent);
+			code = sms_code.getText().toString().trim();
+			num_phone = phone_num.getText().toString().trim();
+			if (!TextUtils.isEmpty(num_phone)) {
+				if (!TextUtils.isEmpty(code)) {
+					HttpUtils httpUtils = new HttpUtils();
+					httpUtils.send(HttpRequest.HttpMethod.GET,
+							"https://www.4001149114.com/NLJJ/ddapp/sendsmsverify?unionid="
+									+ unionString + "&mobile=" + num_phone
+									+ "&smscode=" + code,
+							new RequestCallBack<String>() {
 
-			} else if (extra.equals("recharge")) {
-				Intent intent1 = new Intent(SmsNumberActivity.this,
-						ReChargeActivity.class);
-				startActivity(intent1);
+								@Override
+								public void onSuccess(
+										ResponseInfo<String> responseInfo) {
+									// TODO Auto-generated method stub
+									try {
+										JSONObject jsonObject = new JSONObject(
+												responseInfo.result.toString());
+										message = jsonObject
+												.getString("message");
+
+										
+										if ("error".equals(message)) {
+											//验证失败
+											handler.sendEmptyMessage(2);
+                                          
+										} else {
+											// 手机号填写错误
+											//验证成功
+											handler.sendEmptyMessage(3);
+
+										}
+
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+								}
+
+								@Override
+								public void onFailure(HttpException arg0,
+										String arg1) {
+									// TODO Auto-generated method stub
+
+								}
+
+							});
+				} else {
+					Toast.makeText(getApplicationContext(), "请输入验证码", 0).show();
+				}
+
+			} else {
+				Toast.makeText(getApplicationContext(), "请输入您的手机号", 0).show();
 			}
-			finish();
+
+		
+			
 			break;
 		case R.id.tv_back:
 			finish();
