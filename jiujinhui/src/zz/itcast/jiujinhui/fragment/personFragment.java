@@ -10,6 +10,7 @@ import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ import zz.itcast.jiujinhui.activity.DrinkRecordActivity;
 import zz.itcast.jiujinhui.activity.MyTiXianActivity;
 import zz.itcast.jiujinhui.activity.PerInfoActivity;
 import zz.itcast.jiujinhui.activity.ReChargeActivity;
+import zz.itcast.jiujinhui.activity.SmsNumberActivity;
 import zz.itcast.jiujinhui.activity.TiXianRecordActivity;
 import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
@@ -44,7 +46,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.squareup.picasso.Picasso;
 
@@ -96,6 +103,7 @@ public class personFragment extends BaseFragment {
 			 
 			
 			break;
+		
 
 		default:
 			break;
@@ -108,7 +116,7 @@ public class personFragment extends BaseFragment {
 private String phonenum;
 private DecimalFormat df;
 private HttpsURLConnection conn;
-
+private String yesno;
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -130,14 +138,7 @@ private HttpsURLConnection conn;
 			NickName.setText(nickNameString);
 		}
 		
-		final String unionString=sp.getString("unionid", null);
-		//酒币
-	  /* String jiubinum=sp.getString("jiubi", null);
-	   if (jiubinum==null) {
-		rl_jiubi.setVisibility(view.GONE);
-	}else {
- 		person_jiubi.setText(jiubinum+"");
-	}*/
+		unionString = sp.getString("unionid", null);
 		
 	   new Thread(new Runnable() {
 
@@ -217,7 +218,47 @@ private HttpsURLConnection conn;
 	private Dialog loading_dialog = null;
 	@Override
 	public void initData() {
+		
+		
+		
+		
 		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		HttpUtils httpUtils=new HttpUtils();
+		httpUtils.send(HttpRequest.HttpMethod.GET, "https://www.4001149114.com/NLJJ/ddapp/sendsmsyesno?unionid="+unionString, new RequestCallBack<String>() {
+
+			
+			
+			
+
+			@Override
+			public void onSuccess(ResponseInfo<String> responseInfo) {
+				// TODO Auto-generated method stub
+				         try {
+							JSONObject jsonObject=new JSONObject(responseInfo.result
+										.toString());
+						       yesno = jsonObject.getString("yesno");  
+						       
+				       
+						       
+				         
+				         } catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}          
+				
+				
+			}
+		
+			@Override
+			public void onFailure(HttpException arg0, String arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+		
+		});
+		
+		
 		
 		
 	}
@@ -247,6 +288,7 @@ private HttpsURLConnection conn;
 
 	}
 	     boolean isaliv=true;
+		private String unionString;
 		
               @Override
             public void onResume() {
@@ -344,10 +386,22 @@ private HttpsURLConnection conn;
 				boolean flag3 = dateTest.isNowDate(datet, cal);
 				if (flag3 == true) {
 					// 符合交易时间
-					Intent intent4 = new Intent(OurApplication.getContext(),
-							MyTiXianActivity.class);
+					if (!"0".equals(yesno)) {
+						Intent intent7 = new Intent(OurApplication.getContext(),
+								
+								SmsNumberActivity.class);
+						intent7.putExtra("sms", "tixian");
+						
+						startActivity(intent7);
+					}else {
+						Intent intent4 = new Intent(OurApplication.getContext(),
+								MyTiXianActivity.class);
+						
+						startActivity(intent4);
+					}
 					
-					startActivity(intent4);
+					
+					
 
 				} else {
 					LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -408,9 +462,29 @@ private HttpsURLConnection conn;
 						ReChargeActivity.class);
 				startActivity(intent5);
 			}*/
-			Intent intent5 = new Intent(OurApplication.getContext(),
-					ReChargeActivity.class);
-			startActivity(intent5);
+		        
+			
+			if (!"0".equals(yesno)) {
+				Intent intent7 = new Intent(OurApplication.getContext(),
+						
+						SmsNumberActivity.class);
+				intent7.putExtra("sms", "recharge");
+				
+				startActivity(intent7);
+				
+				
+			}else {
+				
+				Intent intent5 = new Intent(OurApplication.getContext(),
+						ReChargeActivity.class);
+				startActivity(intent5);
+				
+			}
+			
+			
+			
+			
+			
 			break;
 		case R.id.personInfo:// 进入个人信息页面
 
@@ -425,6 +499,12 @@ private HttpsURLConnection conn;
 		}
 
 	}
+
+	
+	
+	
+	
+	
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="短信验证码"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <View style="@style/PersonalLine" />
@@ -34,11 +34,13 @@
             android:textSize="18sp" />
 
         <EditText
+            android:id="@+id/phone_num"
             android:layout_width="180dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:background="@null"
+              android:textSize="15sp"
             android:hint="请输入手机号" />
     </LinearLayout>
     <View style="@style/PersonalLine" />
@@ -57,28 +59,26 @@
 
         <EditText
             android:id="@+id/sms_code"
-            android:layout_width="130dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="27dp"
             android:layout_marginTop="5dp"
             android:background="@null"
+            android:textSize="15sp"
             android:hint="请输入验证码" />
 
-          <RelativeLayout
-              android:id="@+id/sms_btn"
-              android:layout_width="80dp"
-              android:layout_height="30dp"
-              android:layout_marginLeft="10dp"
-              android:layout_marginTop="10dp"
-              android:background="@drawable/detile_shape_corners" >
-
-              <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_centerInParent="true"
-                  android:text="验证码"
-                  android:textColor="#cc0000" />
-          </RelativeLayout>
+          <TextView
+      android:id="@+id/smscod"
+      android:layout_width="100dp"
+      android:layout_height="match_parent"
+      android:text="验证码"
+      android:textSize="13sp"
+      android:textColor="@color/red"
+      android:gravity="center"
+      android:layout_marginLeft="10dp"
+       android:background="@drawable/shape_corners"/>
+ 
+         
 
     </LinearLayout>
      <View style="@style/PersonalLine" />
@@ -88,7 +88,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="22dp"
         android:layout_marginRight="22dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/btn_sms_shape_corners" >
 
         <TextView

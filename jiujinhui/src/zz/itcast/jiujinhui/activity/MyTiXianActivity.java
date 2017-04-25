@@ -80,7 +80,10 @@ public class MyTiXianActivity extends BaseActivity {
 		
 		mobileString = 	sp.getString("mobile", null);
 		unionString = sp.getString("unionid", null);
-		mobile.setText(mobileString);
+		if (mobileString!=null) {
+			mobile.setText(mobileString);
+		}
+		
 	
 		if (incomeString!=null) {
 			jiubi_total = Double.parseDouble(incomeString);
