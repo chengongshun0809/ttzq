@@ -3,9 +3,11 @@ package zz.itcast.jiujinhui.activity;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.res.OurApplication;
 import zz.itcast.jiujinhui.res.Util;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -70,16 +72,22 @@ public class ReChargeActivity extends BaseActivity {
 
 	private SharedPreferences sp;
 
-	// 圆形图片
-	@ViewInject(R.id.circleImabeView)
-	private zz.itcast.jiujinhui.view.CircleImageView circleImabeView;
+	/*
+	 * // 圆形图片
+	 * 
+	 * @ViewInject(R.id.circleImabeView) private
+	 * zz.itcast.jiujinhui.view.CircleImageView circleImabeView;
+	 */
+
+	@ViewInject(R.id.re_bangding)
+	private TextView re_bangding;
 
 	@Override
 	public int getLayoutResID() {
 		// TODO Auto-generated method stub
 		return R.layout.recharge_activity;
 	}
-	
+
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
@@ -89,11 +97,16 @@ public class ReChargeActivity extends BaseActivity {
 		sp = getSharedPreferences("user", 0);
 		// 此方法不完善，等绑定手机号后自动获取绑定的手机号
 		String pnumber = sp.getString("mobile", null);
-		phonenumber.setText(pnumber);
-		
-		sp = getSharedPreferences("user", 0);
-		String headimgurl = sp.getString("headimg", null);
-		Picasso.with(this).load(headimgurl).into(circleImabeView);
+		if (!TextUtils.isEmpty(pnumber)) {
+			phonenumber.setText(pnumber);
+		}
+
+		/*
+		 * String headimgurl = sp.getString("headimg", null); if
+		 * (!TextUtils.isEmpty(headimgurl)) {
+		 * Picasso.with(this).load(headimgurl).into(circleImabeView); }
+		 */
+
 		openidString = sp.getString("openid", null);
 		unionidString = sp.getString("unionid", null);
 
@@ -114,6 +127,7 @@ public class ReChargeActivity extends BaseActivity {
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
+		re_bangding.setOnClickListener(this);
 		chongzhi.setOnClickListener(this);
 		wubai.setOnClickListener(this);
 		yiqian.setOnClickListener(this);
@@ -182,35 +196,42 @@ public class ReChargeActivity extends BaseActivity {
 	private String unionidString;
 
 	private double totaldouble;
-	
-	  boolean isaliv=true;
-      @Override
-    public void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-   
-    	
-		//判断当前页面是否联网
-		ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		NetworkInfo info=connectivityManager.getActiveNetworkInfo();
-		if(info!=null&&info.isAvailable()){
-			isaliv=true;
-			
-			
-		}else{
-			isaliv=false;
-			
-			
+
+	boolean isaliv = true;
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		// 判断当前页面是否联网
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (info != null && info.isAvailable()) {
+			isaliv = true;
+
+		} else {
+			isaliv = false;
+
 		}
-			
-      
-      
-      }
+
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.re_bangding:
+			Intent intent7 = new Intent(OurApplication.getContext(),
+
+			SmsNumberActivity.class);
+			intent7.putExtra("sms", "rebangding");
+
+			startActivity(intent7);
+
+			break;
+
 		case R.id.wubai:
 			iv_drink_checked_wubai.setVisibility(v.VISIBLE);
 			iv_drink_checked_yiqian.setVisibility(v.GONE);
@@ -282,7 +303,7 @@ public class ReChargeActivity extends BaseActivity {
 			break;
 
 		case R.id.chongzhi:// 微信充值
-			
+
 			// 判断当前页面是否联网
 			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -292,7 +313,6 @@ public class ReChargeActivity extends BaseActivity {
 
 			} else {
 				isaliv = false;
-				
 
 			}
 			if (isaliv == true) {
@@ -432,4 +452,5 @@ public class ReChargeActivity extends BaseActivity {
 		}
 
 	}
+
 }

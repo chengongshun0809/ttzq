@@ -370,7 +370,7 @@ public class TradeServiceActivity extends BaseActivity {
                 	scrollview.requestDisallowInterceptTouchEvent(false);  
                 }else{  
                 	scrollview.requestDisallowInterceptTouchEvent(true);//屏蔽父控件的拦截事件  
-                }  
+                }   
                 return false;  
             }  
         });  

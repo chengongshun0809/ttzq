@@ -36,6 +36,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,7 +55,6 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.squareup.picasso.Picasso;
-
 
 public class personFragment extends BaseFragment {
 	@ViewInject(R.id.tv_back)
@@ -89,185 +89,159 @@ public class personFragment extends BaseFragment {
 	private Boolean firstClick_recharge;
 	private double income;
 
-  Handler handler=new Handler(){
-	  
-	  public void handleMessage(android.os.Message msg) {
-		switch (msg.what) {
-		case 1:
-			 
-			 if (phonenum!=null) {
-				 conn.disconnect();
-				 loading_dialog.dismiss();
-				 person_jiubi.setText(df.format(income/100));
-			}
-			 
-			
-			break;
-		
+	Handler handler = new Handler() {
 
-		default:
-			break;
-		}
-		 
-		  
-	  };
-  };
-  private Dialog dialog_NO;
-private String phonenum;
-private DecimalFormat df;
-private HttpsURLConnection conn;
-private String yesno;
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (phonenum != null) {
+					conn.disconnect();
+					loading_dialog.dismiss();
+					person_jiubi.setText(df.format(income / 100));
+				}
+
+				break;
+
+			default:
+				break;
+			}
+
+		};
+	};
+	private Dialog dialog_NO;
+	private String phonenum;
+	private DecimalFormat df;
+	private HttpsURLConnection conn;
+	private String yesno;
+
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
 		ViewUtils.inject(this, view);
 		tv_back.setVisibility(view.GONE);
 		tv__title.setText("个人中心");
 		// 微信头像
-		sp =OurApplication.getContext().getSharedPreferences("user", 0);
+		sp = OurApplication.getContext().getSharedPreferences("user", 0);
 		String headimgurl = sp.getString("headimg", null);
-		
-		if (headimgurl!=null) {
-			Picasso.with(OurApplication.getContext()).load(headimgurl).into(circleImabeView);
+
+		if (headimgurl != null) {
+			Picasso.with(OurApplication.getContext()).load(headimgurl)
+					.into(circleImabeView);
 		}
-		
-		
+
 		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
-		if (nickNameString!=null) {
+		if (nickNameString != null) {
 			NickName.setText(nickNameString);
 		}
-		
+
 		unionString = sp.getString("unionid", null);
-		
-	   new Thread(new Runnable() {
+
+		new Thread(new Runnable() {
 
 			private InputStream is;
-			
+
 			@Override
 			public void run() {
-				
-					try {
-						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-								+ unionString + "&dgid=DG161027140008895";
-						conn = NetUtils.httpsconnNoparm(
-								urlpath, "GET");
-						// 若连接服务器成功，返回数据
-						int code = conn.getResponseCode();
-						if (code == 200) {
 
-							is = conn.getInputStream();
-							String json = NetUtils.readString(is);
-							// 解析json
-							parsonJson(json);
-						}else {
-							conn.disconnect();
-						}
+				try {
+					String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+							+ unionString + "&dgid=DG161027140008895";
+					conn = NetUtils.httpsconnNoparm(urlpath, "GET");
+					// 若连接服务器成功，返回数据
+					int code = conn.getResponseCode();
+					if (code == 200) {
 
-					} catch (Exception e) {
-						// TODO: handle exception
-					} finally{
-						if (is!=null) {
-							try {
-								is.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
+						is = conn.getInputStream();
+						String json = NetUtils.readString(is);
+						// 解析json
+						parsonJson(json);
+					} else {
+						conn.disconnect();
+					}
+
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					if (is != null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
-				
 				}
-			
-			
+
+			}
+
 		}).start();
-	   
-	   
-	   
-	   
-	   
-	   
-	  
+
 	}
-	
+
 	protected void parsonJson(String json) {
-		
+
 		// TODO Auto-generated method stub
 		try {
-			if (json!=null) {
+			if (json != null) {
 				df = new DecimalFormat("#0.00");
 				JSONObject jsonObject = new JSONObject(json);
 				income = jsonObject.getDouble("income");
-			
-				sp.edit().putString("income", df.format(income/100)).commit();
+
+				sp.edit().putString("income", df.format(income / 100)).commit();
 				phonenum = jsonObject.getString("mobile");
-				if (phonenum!=null) {
+				if (phonenum != null) {
 					sp.edit().putString("mobile", phonenum).commit();
 				}
-				
-				  
-				Message message=Message.obtain();
+
+				Message message = Message.obtain();
 				handler.sendEmptyMessage(1);
 			}
-		
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 	private Dialog loading_dialog = null;
-	@Override
-	public void initData() {
-		
-		
-		
-		
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
-		HttpUtils httpUtils=new HttpUtils();
-		httpUtils.send(HttpRequest.HttpMethod.GET, "https://www.4001149114.com/NLJJ/ddapp/sendsmsyesno?unionid="+unionString, new RequestCallBack<String>() {
 
-			
-			
-			
+	
+	public void initDatas() {
 
-			@Override
-			public void onSuccess(ResponseInfo<String> responseInfo) {
-				// TODO Auto-generated method stub
-				         try {
-							JSONObject jsonObject=new JSONObject(responseInfo.result
-										.toString());
-						       yesno = jsonObject.getString("yesno");  
-						       
-				       
-						       
-				         
-				         } catch (JSONException e) {
+		
+		HttpUtils httpUtils = new HttpUtils();
+		httpUtils.send(HttpRequest.HttpMethod.GET,
+				"https://www.4001149114.com/NLJJ/ddapp/sendsmsyesno?unionid="
+						+ unionString, new RequestCallBack<String>() {
+
+					@Override
+					public void onSuccess(ResponseInfo<String> responseInfo) {
+						// TODO Auto-generated method stub
+						try {
+							JSONObject jsonObject = new JSONObject(
+									responseInfo.result.toString());
+							yesno = jsonObject.getString("yesno");
+                           Log.e("yesno", yesno);
+						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}          
-				
-				
-			}
-		
-			@Override
-			public void onFailure(HttpException arg0, String arg1) {
-				// TODO Auto-generated method stub
-				
-			}
+						}
 
-		
-		});
-		
-		
-		
-		
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+
 	}
-
-
-	
-
-
-	
 
 	@Override
 	public int getLayoutResID() {
@@ -284,46 +258,45 @@ private String yesno;
 		tixian.setOnClickListener(this);
 		recharge.setOnClickListener(this);
 		personInfo.setOnClickListener(this);
-		
 
 	}
-	     boolean isaliv=true;
-		private String unionString;
-		
-              @Override
-            public void onResume() {
-            	// TODO Auto-generated method stub
-            	super.onResume();
-           
-            	
-				//判断当前页面是否联网
-				ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
-				
-				NetworkInfo info=connectivityManager.getActiveNetworkInfo();
-				if(info!=null&&info.isAvailable()){
-					isaliv=true;
-					
-					
-				}else{
-					isaliv=false;
-					Toast.makeText(OurApplication.getContext(),"无网络连接",Toast.LENGTH_SHORT).show();
-					
-				}
-					
-              
-              
-              }
-              
-              
-              
-	
+
+	boolean isaliv = true;
+	private String unionString;
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		// 判断当前页面是否联网
+		ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication
+				.getContext().getSystemService(
+						OurApplication.getContext().CONNECTIVITY_SERVICE);
+
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (info != null && info.isAvailable()) {
+			isaliv = true;
+			
+			initDatas();
+			
+
+		} else {
+			isaliv = false;
+			Toast.makeText(OurApplication.getContext(), "无网络连接",
+					Toast.LENGTH_SHORT).show();
+               
+		}
+
+	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.zongzichan:// 总资产
-			Intent intent0 = new Intent(OurApplication.getContext(), ZongZiChanActivity.class);
+			Intent intent0 = new Intent(OurApplication.getContext(),
+					ZongZiChanActivity.class);
 			startActivity(intent0);
 			break;
 		case R.id.drink_record:// 酒币记录
@@ -340,75 +313,65 @@ private String yesno;
 		case R.id.tixianRecord:// 提现记录
 			Intent intent3 = new Intent(OurApplication.getContext(),
 					TiXianRecordActivity.class);
-			
-			
+
 			startActivity(intent3);
 			break;
 		case R.id.tixian:// 点击提现
-		/*	firstClick_recharge = true;
-			sp.edit().putBoolean("recharge", firstClick_recharge).commit();
-		 Boolean	firstClick = sp.getBoolean("recharge", false);
-			if (firstClick) {
-				Intent intent8 = new Intent(getActivity(),
-						SmsNumberActivity.class);
-				intent8.putExtra("sms", "tixian");
-				startActivity(intent8);
-				// 短信验证成功则跳转到提现页面
-				firstClick_recharge = false;
-				sp.edit().putBoolean("recharge", firstClick_recharge).commit();
+			/*
+			 * firstClick_recharge = true; sp.edit().putBoolean("recharge",
+			 * firstClick_recharge).commit(); Boolean firstClick =
+			 * sp.getBoolean("recharge", false); if (firstClick) { Intent
+			 * intent8 = new Intent(getActivity(), SmsNumberActivity.class);
+			 * intent8.putExtra("sms", "tixian"); startActivity(intent8); //
+			 * 短信验证成功则跳转到提现页面 firstClick_recharge = false;
+			 * sp.edit().putBoolean("recharge", firstClick_recharge).commit(); }
+			 * else { Intent intent4 = new Intent(getActivity(),
+			 * MyTiXianActivity.class); startActivity(intent4); }
+			 */
+			ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication
+					.getContext().getSystemService(
+							OurApplication.getContext().CONNECTIVITY_SERVICE);
+
+			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+			if (info != null && info.isAvailable()) {
+				isaliv = true;
+
 			} else {
-				Intent intent4 = new Intent(getActivity(),
-						MyTiXianActivity.class);
-				startActivity(intent4);
-			}*/
-			ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
-			
-			NetworkInfo info=connectivityManager.getActiveNetworkInfo();
-			if(info!=null&&info.isAvailable()){
-				isaliv=true;
-				
-				
-			}else{
-				isaliv=false;
-				
-				
+				isaliv = false;
+
 			}
-				
-			
-			
-			
-			if(isaliv==true){
+
+			if (isaliv == true) {
 				DateTest dateTest = new DateTest();
 				Calendar cal = Calendar.getInstance();
-				long datet=new Date().getTime();
+				long datet = new Date().getTime();
 
-				
 				boolean flag3 = dateTest.isNowDate(datet, cal);
 				if (flag3 == true) {
 					// 符合交易时间
 					if (!"0".equals(yesno)) {
-						Intent intent7 = new Intent(OurApplication.getContext(),
-								
+						Intent intent7 = new Intent(
+								OurApplication.getContext(),
+
 								SmsNumberActivity.class);
 						intent7.putExtra("sms", "tixian");
-						
+
 						startActivity(intent7);
-					}else {
-						Intent intent4 = new Intent(OurApplication.getContext(),
+					} else {
+						Intent intent4 = new Intent(
+								OurApplication.getContext(),
 								MyTiXianActivity.class);
-						
+
 						startActivity(intent4);
 					}
-					
-					
-					
 
 				} else {
-					LayoutInflater inflater = LayoutInflater.from(getActivity());
+					LayoutInflater inflater = LayoutInflater
+							.from(getActivity());
 					View view = (View) inflater.inflate(
 							R.layout.timeout_tixiantime, null);
-					final AlertDialog builder = new AlertDialog.Builder(getActivity())
-							.create();
+					final AlertDialog builder = new AlertDialog.Builder(
+							getActivity()).create();
 					builder.setView(view, 0, 0, 0, 0);
 					builder.setCancelable(false);
 					builder.show();
@@ -424,103 +387,78 @@ private String yesno;
 					});
 
 				}
-				
-				
-				
-			}else{
-				
+
+			} else {
+
 				Toast.makeText(OurApplication.getContext(), "无网络连接", 0).show();
-				
+
 			}
-			
-			
-			
-		
-			
-			
-			
+
 			break;
 
 		case R.id.recharge:// 点击充值
 			// TODO
-		/*	//如果第一次进入则进短信验证页面
-			firstClick_recharge = true;
-			sp.edit().putBoolean("recharge", firstClick_recharge).commit();
-			Boolean	firstClick1 = sp.getBoolean("recharge", false);
-			if (firstClick1) {
-				// 进入短信验证页面
-				Intent intent7 = new Intent(getActivity(),
-						SmsNumberActivity.class);
-				intent7.putExtra("sms", "recharge");
-				startActivity(intent7);
-				// 短信验证成功则跳转到充值页面
-				firstClick_recharge = false;
-				sp.edit().putBoolean("recharge", firstClick_recharge).commit();
+			/*
+			 * //如果第一次进入则进短信验证页面 firstClick_recharge = true;
+			 * sp.edit().putBoolean("recharge", firstClick_recharge).commit();
+			 * Boolean firstClick1 = sp.getBoolean("recharge", false); if
+			 * (firstClick1) { // 进入短信验证页面 Intent intent7 = new
+			 * Intent(getActivity(), SmsNumberActivity.class);
+			 * intent7.putExtra("sms", "recharge"); startActivity(intent7); //
+			 * 短信验证成功则跳转到充值页面 firstClick_recharge = false;
+			 * sp.edit().putBoolean("recharge", firstClick_recharge).commit();
+			 * 
+			 * } else { Intent intent5 = new Intent(getActivity(),
+			 * ReChargeActivity.class); startActivity(intent5); }
+			 */
 
-			} else {
-				Intent intent5 = new Intent(getActivity(),
-						ReChargeActivity.class);
-				startActivity(intent5);
-			}*/
-		        
-			
 			if (!"0".equals(yesno)) {
 				Intent intent7 = new Intent(OurApplication.getContext(),
-						
-						SmsNumberActivity.class);
+
+				SmsNumberActivity.class);
 				intent7.putExtra("sms", "recharge");
-				
+
 				startActivity(intent7);
-				
-				
-			}else {
-				
+
+			} else {
+
 				Intent intent5 = new Intent(OurApplication.getContext(),
 						ReChargeActivity.class);
 				startActivity(intent5);
-				
+
 			}
-			
-			
-			
-			
-			
+
 			break;
 		case R.id.personInfo:// 进入个人信息页面
 
-			Intent intent = new Intent(OurApplication.getContext(), PerInfoActivity.class);
-			/*intent.putExtra("shun", "shun");
-			startActivityForResult(intent, 2);*/
+			Intent intent = new Intent(OurApplication.getContext(),
+					PerInfoActivity.class);
+			/*
+			 * intent.putExtra("shun", "shun"); startActivityForResult(intent,
+			 * 2);
+			 */
 			startActivity(intent);
 			break;
-		
+
 		default:
 			break;
 		}
 
 	}
 
-	
-	
-	
-	
-	
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		handler.removeMessages(1);
-        conn.disconnect();
-          
+		conn.disconnect();
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

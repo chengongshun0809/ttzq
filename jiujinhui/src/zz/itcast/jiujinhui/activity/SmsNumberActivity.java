@@ -107,7 +107,10 @@ public class SmsNumberActivity extends BaseActivity {
 				break;
 			case 3:
 				//验证成功
-				Toast.makeText(getApplicationContext(), "验证成功", 0).show();
+				Toast.makeText(getApplicationContext(), "验证绑定成功", 0).show();
+				
+			
+				
 				String extra = getIntent().getStringExtra("sms");
 				if (extra.equals("tixian")) {
 					Intent intent = new Intent(SmsNumberActivity.this,
@@ -118,6 +121,10 @@ public class SmsNumberActivity extends BaseActivity {
 					Intent intent1 = new Intent(SmsNumberActivity.this,
 							ReChargeActivity.class);
 					startActivity(intent1);
+				}else if (extra.equals("rebangding")) {
+					Intent intent2 = new Intent(SmsNumberActivity.this,
+							ReChargeActivity.class);
+					startActivity(intent2);
 				}
 			
                finish();
@@ -219,8 +226,9 @@ public class SmsNumberActivity extends BaseActivity {
 											handler.sendEmptyMessage(2);
                                           
 										} else {
-											// 手机号填写错误
+											// 手机号
 											//验证成功
+											sp.edit().putString("mobile", num_phone).commit();
 											handler.sendEmptyMessage(3);
 
 										}

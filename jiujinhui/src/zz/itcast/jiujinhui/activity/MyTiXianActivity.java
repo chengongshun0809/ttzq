@@ -70,8 +70,8 @@ public class MyTiXianActivity extends BaseActivity {
 	@ViewInject(R.id.name)
 	public EditText nameEditText;
 
-	@Override
-	public void initData() {
+	
+	public void initDatas() {
 		Bundle bundle = getIntent().getExtras();
 
 		incomeString = sp.getString("income", null);
@@ -174,7 +174,7 @@ public class MyTiXianActivity extends BaseActivity {
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
 			isaliv = true;
-
+			initDatas();
 		} else {
 			isaliv = false;
 
@@ -356,5 +356,11 @@ public class MyTiXianActivity extends BaseActivity {
 		super.onDestroy();
 		handler.removeMessages(1);
 
+	}
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		
 	}
 }
