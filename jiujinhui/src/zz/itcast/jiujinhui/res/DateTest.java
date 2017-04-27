@@ -29,10 +29,10 @@ public class DateTest {
 		String nyr = now_time.substring(0, 11);
 
 		String start1 = nyr + "09:00";
-		String timeEnd1 = nyr + "12:30";
+		String timeEnd1 = nyr + "11:30";
 
-		String start2 = nyr + "13:00";
-		String timeEnd2 = nyr + "18:00";
+		String start2 = nyr + "13:30";
+		String timeEnd2 = nyr + "15:00";
 
 		try {
 			long start11 = sdf.parse(start1).getTime();
@@ -87,7 +87,7 @@ public class DateTest {
 		String now_time = sdf.format(date);
 		String nyr = now_time.substring(0, 11);
 
-		String start1 = nyr + "09:00:10";
+		String start1 = nyr + "09:00:01";
 		String timeEnd1 = nyr + "11:30:00";
 
 		String start2 = nyr + "13:30:00";

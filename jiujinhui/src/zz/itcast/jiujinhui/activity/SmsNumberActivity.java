@@ -74,7 +74,7 @@ public class SmsNumberActivity extends BaseActivity {
 	public void initView() {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
-		tv__title.setText("绑定手机号");
+		tv__title.setText("短信验证");
 		tv__title.setTextSize(22);
 
 	}
