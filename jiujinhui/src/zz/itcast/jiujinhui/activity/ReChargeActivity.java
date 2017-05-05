@@ -229,9 +229,7 @@ public class ReChargeActivity extends BaseActivity {
 			intent7.putExtra("sms", "rebangding");
 
 			startActivity(intent7);
-
 			break;
-
 		case R.id.wubai:
 			iv_drink_checked_wubai.setVisibility(v.VISIBLE);
 			iv_drink_checked_yiqian.setVisibility(v.GONE);
@@ -239,7 +237,7 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
-			total = "500";
+			 total = "500";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 

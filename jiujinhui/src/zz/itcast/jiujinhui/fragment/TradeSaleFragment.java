@@ -329,6 +329,7 @@ public class TradeSaleFragment extends BaseFragment {
 
 		ViewHolder holder = null;
 		private long dingdantime;
+		private String undonenum;
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -370,8 +371,7 @@ public class TradeSaleFragment extends BaseFragment {
 			holder.total.setText(list.get(position).get("total") + "");
 			holder.tv_num.setText(list.get(position).get("number_total") + "");
 			String typString = (String) list.get(position).get("type");
-			// 未成交
-			String undonenum = (String) list.get(position).get("undonenum");
+			undonenum = (String) list.get(position).get("undonenum");
 			// 判断type
 			int type_int = Integer.parseInt(typString);
 			int undonenum_int = Integer.parseInt(undonenum);

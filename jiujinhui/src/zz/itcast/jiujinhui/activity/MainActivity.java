@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
 		// ToDo检查更新版本
 		checkVerion();
 		int num_start = sp_start.getInt("start", 1);
-		if (num_start > 2) {
+		if (num_start >15) {
 			preferences.edit().putBoolean("first_up_cancel", true).commit();
 			sp_start.edit().putInt("start", 1).commit();
 
