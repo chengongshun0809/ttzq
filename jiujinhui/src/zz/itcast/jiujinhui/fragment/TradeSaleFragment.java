@@ -52,8 +52,9 @@ import android.widget.AbsListView.OnScrollListener;
 
 public class TradeSaleFragment extends BaseFragment {
 
-/*	@ViewInject(R.id.Rl_jindu_sale)
-	private RelativeLayout Rl_jindu;*/
+	/*
+	 * @ViewInject(R.id.Rl_jindu_sale) private RelativeLayout Rl_jindu;
+	 */
 	@ViewInject(R.id.cominglistview_sale)
 	private ListView listview;
 
@@ -73,7 +74,7 @@ public class TradeSaleFragment extends BaseFragment {
 			switch (msg.what) {
 			case 1:
 
-				//Rl_jindu.setVisibility(View.GONE);
+				// Rl_jindu.setVisibility(View.GONE);
 				loading_dialog.dismiss();
 				adapter = new ListViewAdapter(list);
 				adapter.appendData(orderlist);// 追加数据
@@ -141,9 +142,9 @@ public class TradeSaleFragment extends BaseFragment {
 				});
 				break;
 			case 2:
-				//Rl_jindu.setVisibility(View.GONE);
+				// Rl_jindu.setVisibility(View.GONE);
 				loading_dialog.dismiss();
-				
+
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
@@ -197,11 +198,11 @@ public class TradeSaleFragment extends BaseFragment {
 			private InputStream iStream;
 
 			@Override
-			public void run() {
-
+			 public void run() {
+   
 				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/mydeallist?unionid="
 						+ unionIDString + "&type=3" + "&page=" + pageString;
-
+    
 				try {
 					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
 							url_serviceinfo, "POST");
@@ -406,9 +407,9 @@ public class TradeSaleFragment extends BaseFragment {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					
+
 					long now = new Date().getTime();
-					Log.e("maichu", (now - dingdantime)+"");
+					//Log.e("maichu", (now - dingdantime) + "");
 					if ((now - dingdantime) > 432000000) {
 						// 系统自动撤单
 						holder.tv_dan_state.setText("卖出完成");
@@ -431,7 +432,7 @@ public class TradeSaleFragment extends BaseFragment {
 						danhaos_chedan = list.get(position).get("danhao") + "";
 
 						holder.bt_chedan
-								.setOnClickListener(new OnClickListener() {
+					 			.setOnClickListener(new OnClickListener() {
 
 									@Override
 									public void onClick(View v) {
@@ -446,13 +447,19 @@ public class TradeSaleFragment extends BaseFragment {
 
 												Date date = new Date();
 												long newTime = date.getTime();
+												try {
+													dingdantime = sdf.parse(time).getTime();
+												} catch (ParseException e2) {
+													// TODO Auto-generated catch block
+													e2.printStackTrace();
+												}
 												if ((newTime - dingdantime) > 900000) {
 													holder.rl_chedanLayout
-															.setVisibility(View.VISIBLE);
+															.setVisibility(View.GONE);
 													list.remove(pos);
 													adapter.notifyDataSetChanged();
 													new Thread(new Runnable() {
-
+ 
 														private InputStream iStream;
 
 														@Override
@@ -560,15 +567,17 @@ public class TradeSaleFragment extends BaseFragment {
 
 	// private View loadmoreview;
 	private Dialog loading_dialog = null;
+
 	@Override
 	public void initView(View view) {
 		// TODO Afuto-generated method stub
 		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
-		
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
-		//Rl_jindu.setVisibility(View.VISIBLE);
+
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
+		// Rl_jindu.setVisibility(View.VISIBLE);
 		tv_null.setVisibility(View.GONE);
 		orderlist = new ArrayList<Map<String, Object>>();
 		list = new ArrayList<Map<String, Object>>();

@@ -164,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text=" 2、五日之内未成交,系统自动退款"
+            android:text=" 2、十五分钟后，可进个人资产撤单"
             android:textColor="#353535"
             android:textSize="14sp" />
     </LinearLayout>

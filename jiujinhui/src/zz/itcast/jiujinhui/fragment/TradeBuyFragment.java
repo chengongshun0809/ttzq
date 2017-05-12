@@ -3,7 +3,10 @@ package zz.itcast.jiujinhui.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.activity.TradeServiceActivity;
 import zz.itcast.jiujinhui.fragment.TraderengouFragment.ListViewAdapter;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.R.integer;
@@ -36,14 +40,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class TradeBuyFragment extends BaseFragment {
 
-	/*@ViewInject(R.id.Rl_jindu_buy)
-	private RelativeLayout Rl_jindu;*/
+	/*
+	 * @ViewInject(R.id.Rl_jindu_buy) private RelativeLayout Rl_jindu;
+	 */
 	@ViewInject(R.id.cominglistview_buy)
 	private ListView listview;
 	@ViewInject(R.id.tv_null_buy)
@@ -61,7 +67,7 @@ public class TradeBuyFragment extends BaseFragment {
 
 			switch (msg.what) {
 			case 1:
-				//Rl_jindu.setVisibility(View.GONE);
+				// Rl_jindu.setVisibility(View.GONE);
 				loading_dialog.dismiss();
 				adapter = new ListViewAdapter(list);
 				adapter.appendData(orderlist);// 追加数据
@@ -74,18 +80,20 @@ public class TradeBuyFragment extends BaseFragment {
 				listview.setAdapter(adapter);
 				listview.setSelection(sclectId);
 				bt_Msg.setText("加载更多");
-				if (orderlist.size() <30) {
+				if (orderlist.size() < 30) {
 					bt_Msg.setText("没有数据了");
 					bt_Msg.setEnabled(false);
 				}
 				listview.setOnScrollListener(new OnScrollListener() {
 
 					@Override
-					public void onScrollStateChanged(AbsListView view, int scrollState) {
+					public void onScrollStateChanged(AbsListView view,
+							int scrollState) {
 						// TODO Auto-generated method stub
 						if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
 							// 滚动停止
-							if (view.getLastVisiblePosition() == view.getCount() - 1) {
+							if (view.getLastVisiblePosition() == view
+									.getCount() - 1) {
 								footer.setVisibility(View.VISIBLE);
 								bt_Msg.setOnClickListener(new OnClickListener() {
 
@@ -102,9 +110,9 @@ public class TradeBuyFragment extends BaseFragment {
 												listview.removeFooterView(footer);
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
-												
-												//bt_Msg.setText("加载更多");
-						 						Log.e("kobe", "lebron");
+
+												// bt_Msg.setText("加载更多");
+												Log.e("kobe", "lebron");
 
 											}
 										}, 2000);
@@ -119,17 +127,18 @@ public class TradeBuyFragment extends BaseFragment {
 					}
 
 					@Override
-					public void onScroll(AbsListView view, int firstVisibleItem,
-							int visibleItemCount, int totalItemCount) {
+					public void onScroll(AbsListView view,
+							int firstVisibleItem, int visibleItemCount,
+							int totalItemCount) {
 						sclectId = firstVisibleItem;
 					}
 				});
 
 				break;
 			case 2:
-				//Rl_jindu.setVisibility(View.GONE);
+				// Rl_jindu.setVisibility(View.GONE);
 				loading_dialog.dismiss();
-				
+
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
@@ -145,24 +154,21 @@ public class TradeBuyFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
-		
+
 	}
-	
-      @Override
-    public void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-    	if (orderlist.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
-    		orderlist.clear();
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if (orderlist.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
+			orderlist.clear();
 		}
-    	CurrentpageNum=1;
-    	visitService(CurrentpageNum);
-    	listview.setSelection(0);
-    }
-      
-     
-      
+		CurrentpageNum = 1;
+		visitService(CurrentpageNum);
+		listview.setSelection(0);
+	}
+
 	int CurrentpageNum = 1;
 
 	private void visitService(int page) {
@@ -191,7 +197,7 @@ public class TradeBuyFragment extends BaseFragment {
 						iStream = connection.getInputStream();
 						String infojson = NetUtils.readString(iStream);
 						JSONObject jsonObject = new JSONObject(infojson);
-						
+
 						parseJson(jsonObject);
 
 						++CurrentpageNum;
@@ -274,6 +280,11 @@ public class TradeBuyFragment extends BaseFragment {
 
 	public class ListViewAdapter extends BaseAdapter {
 		private List<Map<String, Object>> list = null;
+		private String undonenum;
+		private String danhaos_chedan;
+		private String time;
+		private SimpleDateFormat sdf;
+		private long dingdantime;
 
 		// 需要显示的数据，不应该使用new初始化,向上回滚的时候会出问题
 		public ListViewAdapter(List<Map<String, Object>> list) {
@@ -310,7 +321,7 @@ public class TradeBuyFragment extends BaseFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 
-			ViewHolder holder;
+			final ViewHolder holder;
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.trade_record_detail,
@@ -330,7 +341,10 @@ public class TradeBuyFragment extends BaseFragment {
 						.findViewById(R.id.tv_weichengjiao);
 				holder.tv_weichengjiao_num = (TextView) convertView
 						.findViewById(R.id.tv_weichengjiao_num);
-
+				holder.rl_chedanLayout = (RelativeLayout) convertView
+						.findViewById(R.id.Rl_chedan);
+				holder.bt_chedan = (Button) convertView
+						.findViewById(R.id.bt_chedan);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -343,8 +357,7 @@ public class TradeBuyFragment extends BaseFragment {
 			holder.total.setText(list.get(position).get("total") + "");
 			holder.tv_num.setText(list.get(position).get("number_total") + "");
 			String typString = (String) list.get(position).get("type");
-			// 未成交
-			String undonenum = (String) list.get(position).get("undonenum");
+			undonenum = (String) list.get(position).get("undonenum");
 
 			int undonenum_int = Integer.parseInt(undonenum);
 			// 判断type
@@ -358,12 +371,144 @@ public class TradeBuyFragment extends BaseFragment {
 					holder.tv_weichengjiao.setVisibility(View.GONE);
 					holder.tv_weichengjiao_num.setVisibility(View.GONE);
 					holder.msg_chengjiao.setText("全部成交");
+					holder.rl_chedanLayout.setVisibility(View.GONE);
 				} else {
-					holder.tv_dan_state.setText("买入中");
-					holder.msg_chengjiao.setVisibility(View.GONE);
-					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setText(undonenum);
+					/*
+					 * holder.tv_dan_state.setText("买入中");
+					 * holder.msg_chengjiao.setVisibility(View.GONE);
+					 * holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+					 * holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+					 * holder.tv_weichengjiao_num.setText(undonenum);
+					 */
+
+					time = list.get(position).get("date") + "";
+					sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+					holder.bt_chedan.setTag(position);
+
+					try {
+						dingdantime = sdf.parse(time).getTime();
+					} catch (ParseException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+
+					long now = new Date().getTime();
+					// Log.e("maichu", (now - dingdantime) + "");
+					if ((now - dingdantime) > 432000000) {
+						// 系统自动撤单
+						holder.tv_dan_state.setText("买入完成");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao.setText("逾期系统撤回x");
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.GONE);
+						// danhaos_chedan = list.get(position).get("danhao") +
+						// "";
+
+					} else {
+						holder.tv_dan_state.setText("买入中");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.VISIBLE);
+						danhaos_chedan = list.get(position).get("danhao") + "";
+
+						holder.bt_chedan
+								.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										if (TradeServiceActivity.isSingle()) {
+											Toast.makeText(getActivity(),
+													"操作频繁", 0).show();
+										} else {
+											int pos = Integer.parseInt(v
+													.getTag().toString());
+											try {
+
+												Date date = new Date();
+												long newTime = date.getTime();
+												if ((newTime - dingdantime) > 900000) {
+													holder.rl_chedanLayout
+															.setVisibility(View.GONE);
+													list.remove(pos);
+													adapter.notifyDataSetChanged();
+													new Thread(new Runnable() {
+
+														private InputStream iStream;
+
+														@Override 
+														public void run() {
+
+															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
+																	+ danhaos_chedan;
+
+															try {   
+																HttpsURLConnection connection = NetUtils
+																		.httpsconnNoparm(
+																				url_chedan,
+																				"POST");
+
+																int code = connection
+																		.getResponseCode();
+																if (code == 200) {
+																	iStream = connection
+																			.getInputStream();
+																	String infojson = NetUtils
+																			.readString(iStream);
+																	handler.sendEmptyMessage(3);
+																	// parsechedan(infojson);
+
+																}
+
+															} catch (Exception e) {
+																// TODO
+																// Auto-generated
+																// catch
+																// block
+																e.printStackTrace();
+															} finally {
+																if (iStream != null) {
+																	try {
+																		iStream.close();
+																	} catch (IOException e) {
+																		// TODO
+																		// Auto-generated
+																		// catch
+																		// block
+																		e.printStackTrace();
+																	}
+																}
+
+															}
+
+														}
+
+													}).start();
+
+												} else {
+													Toast.makeText(
+															getActivity(),
+															"买入15分钟之后,才能撤单!", 0)
+															.show();
+												}
+
+											} catch (Exception e1) {
+												// TODO Auto-generated catch
+												// block
+												e1.printStackTrace();
+											}
+
+										}
+
+									}
+								});
+					}
+
 				}
 
 				break;
@@ -376,6 +521,8 @@ public class TradeBuyFragment extends BaseFragment {
 		}
 
 		public class ViewHolder {
+			public Button bt_chedan;
+			public RelativeLayout rl_chedanLayout;
 			TextView tv_danhao;
 			TextView tv_dan_state;
 			TextView name_pro;
@@ -393,16 +540,19 @@ public class TradeBuyFragment extends BaseFragment {
 	public void initListener() {
 		// TODO Auto-generated method stub
 	}
+
 	private Dialog loading_dialog = null;
+
 	@Override
 	public void initView(View view) {
 		// TODO Afuto-generated method stub
 		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
-		//Rl_jindu.setVisibility(View.VISIBLE);
-		
-		loading_dialog=zz.itcast.jiujinhui.res.DialogUtil.createLoadingDialog(getActivity(), "加载中...");
+		// Rl_jindu.setVisibility(View.VISIBLE);
+
+		loading_dialog = zz.itcast.jiujinhui.res.DialogUtil
+				.createLoadingDialog(getActivity(), "加载中...");
 		orderlist = new ArrayList<Map<String, Object>>();
 		list = new ArrayList<Map<String, Object>>();
 		inflater = getActivity().getLayoutInflater();
@@ -421,23 +571,23 @@ public class TradeBuyFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		
+
 		/*
 		 * data.clear(); handler.removeMessages(2); handler.removeMessages(1);
 		 */
-	
-	
+
 		handler.removeMessages(2);
-        handler.removeMessages(1);
-        list.clear();
-        listview.setSelection(0);
+		handler.removeMessages(1);
+		list.clear();
+		listview.setSelection(0);
 	}
-    @Override
-    public void onDetach() {
-    	// TODO Auto-generated method stub
-    	super.onDetach();
-    	 list.clear();
-    	 listview.setSelection(0);
-    }
+
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		super.onDetach();
+		list.clear();
+		listview.setSelection(0);
+	}
 
 }

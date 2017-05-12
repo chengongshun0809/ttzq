@@ -174,7 +174,7 @@ public class NowTradeRecoedFragment<ILineDataSet> extends BaseFragment {
 
 		// d1.setFillColor(getResources().getColor(R.color.minute_shadow));
 		// Log.e("d1", d1+"");
-		d1.setDrawFilled(true);
+		d1.setDrawFilled(false);
 		d1.setAxisDependency(YAxis.AxisDependency.LEFT);
 		List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 		dataSets.add((ILineDataSet) d1);

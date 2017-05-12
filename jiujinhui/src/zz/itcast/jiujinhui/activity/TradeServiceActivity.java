@@ -363,20 +363,18 @@ public class TradeServiceActivity extends BaseActivity {
 		tabs_buysale.setViewPager(buy_sale_pager);
 		tabs.setShouldExpand(true);
 		tabs_buysale.setShouldExpand(true);
-		buy_sale_pager.setOnTouchListener(new View.OnTouchListener() {  
-            @Override  
-            public boolean onTouch(View v, MotionEvent event) {  
-                if(event.getAction() == MotionEvent.ACTION_UP){  
-                	scrollview.requestDisallowInterceptTouchEvent(false);  
-                }else{  
-                	scrollview.requestDisallowInterceptTouchEvent(true);//屏蔽父控件的拦截事件  
-                }   
-                return false;  
-            }  
-        });  
-		
-		
-		
+		buy_sale_pager.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					scrollview.requestDisallowInterceptTouchEvent(false);
+				} else {
+					scrollview.requestDisallowInterceptTouchEvent(true);// 屏蔽父控件的拦截事件
+				}
+				return false;
+			}
+		});
+
 		// 获取数据
 
 		new Thread(new Runnable() {
@@ -613,7 +611,9 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取网络当前时间
-			ConnectivityManager connectivityManager=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication
+					.getContext().getSystemService(
+							OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 			if (info != null && info.isAvailable()) {
@@ -665,7 +665,9 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 		case R.id.rb_sale_service:
 
-			ConnectivityManager connectivityManager_sale=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager_sale = (ConnectivityManager) OurApplication
+					.getContext().getSystemService(
+							OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info_sale = connectivityManager_sale
 					.getActiveNetworkInfo();
@@ -732,7 +734,9 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
-			ConnectivityManager connectivityManager_trans=(ConnectivityManager)OurApplication.getContext().getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+			ConnectivityManager connectivityManager_trans = (ConnectivityManager) OurApplication
+					.getContext().getSystemService(
+							OurApplication.getContext().CONNECTIVITY_SERVICE);
 
 			NetworkInfo info_trans = connectivityManager_trans
 					.getActiveNetworkInfo();
@@ -809,7 +813,7 @@ public class TradeServiceActivity extends BaseActivity {
 		View transView = (View) inflater.inflate(R.layout.trans_service, null);
 		transTextView = (EditText) transView
 				.findViewById(R.id.product_ordsubmit_count);
-		
+
 		transTextView.addTextChangedListener(textwatcher_trans);
 		transOk = (Button) transView.findViewById(R.id.dialog_ok);
 		transCancel = (Button) transView.findViewById(R.id.dialog_cancel);
@@ -874,7 +878,7 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				String num = transTextView.getText().toString().trim();
-				
+
 				if (!TextUtils.isEmpty(num)) {
 					trans_num = Integer.parseInt(num);
 					double total_price = trans_num * buybackprice;
@@ -899,13 +903,15 @@ public class TradeServiceActivity extends BaseActivity {
 											+ ddid
 											+ "&num="
 											+ trans_num
-											+ "&price=" + buybackprice;
+											+ "&price="
+											+ buybackprice;
 									try {
 										HttpsURLConnection connection = NetUtils
 												.httpsconnNoparm(url, "POST");
 										int code = connection.getResponseCode();
 										if (code == 200) {
-											iStream = connection.getInputStream();
+											iStream = connection
+													.getInputStream();
 											String infojson = NetUtils
 													.readString(iStream);
 											// JSONObject jsonObject = new
@@ -925,7 +931,8 @@ public class TradeServiceActivity extends BaseActivity {
 											try {
 												iStream.close();
 											} catch (IOException e) {
-												// TODO Auto-generated catch block
+												// TODO Auto-generated catch
+												// block
 												e.printStackTrace();
 											}
 										}
@@ -961,21 +968,15 @@ public class TradeServiceActivity extends BaseActivity {
 						}
 
 					} else {
-						Toast.makeText(getApplicationContext(), "可转让的资产不能大于剩余资产", 0)
-								.show();
-						
-						
+						Toast.makeText(getApplicationContext(),
+								"可转让的资产不能大于剩余资产", 0).show();
+
 					}
-						
-						
-					}else {
-						Toast.makeText(getApplicationContext(), "请输入可转让的资产!", 0)
-						.show();
-					}
-					
-					
-					
-					
+
+				} else {
+					Toast.makeText(getApplicationContext(), "请输入可转让的资产!", 0)
+							.show();
+				}
 
 			}
 		});
@@ -999,7 +1000,7 @@ public class TradeServiceActivity extends BaseActivity {
 		View tihuoView = (View) inflater.inflate(R.layout.tihuo_service, null);
 		tihuoTextView = (EditText) tihuoView
 				.findViewById(R.id.product_ordsubmit_count);
-		
+
 		tihuoTextView.addTextChangedListener(textwatcher_tihuo);
 		tihuoAdd = (ImageView) tihuoView
 				.findViewById(R.id.product_ordsubmit_count_add);
@@ -1118,9 +1119,9 @@ public class TradeServiceActivity extends BaseActivity {
 				.findViewById(R.id.product_ordsubmit_count);
 		zhi_price = (TextView) saleView.findViewById(R.id.zhi_price);
 		zhi_price.setText(df.format(tradeprice / 100));
-		
-		 product_ordsubmit_count2.addTextChangedListener(textwatcher_sale);
-		    
+
+		product_ordsubmit_count2.addTextChangedListener(textwatcher_sale);
+
 		// 卖出价
 		salePrice = (EditText) saleView
 				.findViewById(R.id.product_ordsubmit_price);
@@ -1155,109 +1156,120 @@ public class TradeServiceActivity extends BaseActivity {
 				pricesale = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
 
-				if (!TextUtils.isEmpty(pricesale) && !TextUtils.isEmpty(count)) {
-					count_sale = Integer.parseInt(count);
-					double sale_price = Double.parseDouble(pricesale);
-					double total_price = sale_price * count_sale;
-					totalp = total_price + "";
-					if (sale_price < ((tradeprice / 100) * 0.9)) {
-						Toast.makeText(getApplicationContext(),
-								"卖出价不能小于:" + (tradeprice / 100) * 0.9, 0)
-								.show();
-					} else if (sale_price > ((tradeprice / 100) * 1.1)) {
-						Toast.makeText(getApplicationContext(),
-								"卖出价不能大于:" + (tradeprice / 100) * 1.1, 0)
-								.show();
-					} else {
-						if (leftgoodassets >= count_sale) {
-							if (TradeServiceActivity.isSingle()) {
-								Toast.makeText(getApplicationContext(), "操作频繁",
-										0).show();
-							} else {
-								dialog.dismiss();
-								loading_dialog.show();
-								new Thread(new Runnable() {
+				if (!TextUtils.isEmpty(pricesale)) {
 
-									private InputStream iStream;
+					if (!TextUtils.isEmpty(count)) {
 
-									@Override
-									public void run() {
-
-										String url = "https://www.4001149114.com/NLJJ/ddapp/dealput?"
-												+ "&ddid="
-												+ ddid
-												+ "&num="
-												+ count_sale
-												+ "&price="
-												+ pricesale;
-										try {
-											HttpsURLConnection connection = NetUtils
-													.httpsconnNoparm(url,
-															"POST");
-											int code = connection
-													.getResponseCode();
-											if (code == 200) {
-												iStream = connection
-														.getInputStream();
-												String infojson = NetUtils
-														.readString(iStream);
-												parseJson_sale(infojson);
-
-											}
-
-										} catch (Exception e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										} finally {
-											if (iStream != null) {
-												try {
-													iStream.close();
-												} catch (IOException e) {
-													// TODO Auto-generated catch
-													// block
-													e.printStackTrace();
-												}
-											}
-
-										}
-
-									}
-
-									private void parseJson_sale(String infojson) {
-										// TODO Auto-generated method stub
-										try {
-											JSONObject jsonObject = new JSONObject(
-													infojson);
-											String s = jsonObject
-													.getString("message");
-
-											if ("success".equals(s)) {
-												// 卖出成功
-												handler.sendEmptyMessage(7);
-											}
-											if ("error".equals(s)) {
-												handler.sendEmptyMessage(8);
-											}
-
-										} catch (JSONException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-
-									}
-								}).start();
-
-							}
-						} else {
+						count_sale = Integer.parseInt(count);
+						double sale_price = Double.parseDouble(pricesale);
+						double total_price = sale_price * count_sale;
+						totalp = total_price + "";
+						if (sale_price < ((tradeprice / 100) * 0.9)) {
 							Toast.makeText(getApplicationContext(),
-									"卖出资产不能大于剩余资产", 0).show();
+									"卖出价不能小于:" + (tradeprice / 100) * 0.9, 0)
+									.show();
+						} else if (sale_price > ((tradeprice / 100) * 1.1)) {
+							Toast.makeText(getApplicationContext(),
+									"卖出价不能大于:" + (tradeprice / 100) * 1.1, 0)
+									.show();
+						} else {
+							if (leftgoodassets >= count_sale) {
+								if (TradeServiceActivity.isSingle()) {
+									Toast.makeText(getApplicationContext(),
+											"操作频繁", 0).show();
+								} else {
+									dialog.dismiss();
+									loading_dialog.show();
+									new Thread(new Runnable() {
+
+										private InputStream iStream;
+
+										@Override
+										public void run() {
+
+											String url = "https://www.4001149114.com/NLJJ/ddapp/dealput?"
+													+ "&ddid="
+													+ ddid
+													+ "&num="
+													+ count_sale
+													+ "&price="
+													+ pricesale;
+											try {
+												HttpsURLConnection connection = NetUtils
+														.httpsconnNoparm(url,
+																"POST");
+												int code = connection
+														.getResponseCode();
+												if (code == 200) {
+													iStream = connection
+															.getInputStream();
+													String infojson = NetUtils
+															.readString(iStream);
+													parseJson_sale(infojson);
+
+												}
+
+											} catch (Exception e) {
+												// TODO Auto-generated catch
+												// block
+												e.printStackTrace();
+											} finally {
+												if (iStream != null) {
+													try {
+														iStream.close();
+													} catch (IOException e) {
+														// TODO Auto-generated
+														// catch
+														// block
+														e.printStackTrace();
+													}
+												}
+
+											}
+
+										}
+
+										private void parseJson_sale(
+												String infojson) {
+											// TODO Auto-generated method stub
+											try {
+												JSONObject jsonObject = new JSONObject(
+														infojson);
+												String s = jsonObject
+														.getString("message");
+
+												if ("success".equals(s)) {
+													// 卖出成功
+													handler.sendEmptyMessage(7);
+												}
+												if ("error".equals(s)) {
+													handler.sendEmptyMessage(8);
+												}
+
+											} catch (JSONException e) {
+												// TODO Auto-generated catch
+												// block
+												e.printStackTrace();
+											}
+
+										}
+									}).start();
+
+								}
+							} else {
+								Toast.makeText(getApplicationContext(),
+										"卖出资产不能大于剩余资产", 0).show();
+							}
+
 						}
 
+					} else {
+
+						Toast.makeText(getApplicationContext(), "卖出量不能为空！", 0)
+								.show();
 					}
-
 				} else {
-
-					Toast.makeText(getApplicationContext(), "卖出价或者卖出量不能为空！", 0)
+					Toast.makeText(getApplicationContext(), "卖出价不能为空！", 0)
 							.show();
 				}
 
@@ -1334,15 +1346,13 @@ public class TradeServiceActivity extends BaseActivity {
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = (View) inflater.inflate(R.layout.buy_service, null);
-		
-		
-		
-	/*	dialog_buy = new AlertDialog.Builder(this).create();
-		dialog_buy.setCancelable(false);
-		dialog_buy.show();
-		Window view = dialog_buy.getWindow();
-		view.setContentView(R.layout.buy_service);*/
-		
+
+		/*
+		 * dialog_buy = new AlertDialog.Builder(this).create();
+		 * dialog_buy.setCancelable(false); dialog_buy.show(); Window view =
+		 * dialog_buy.getWindow(); view.setContentView(R.layout.buy_service);
+		 */
+
 		// 增加
 		product_ordsubmit_count_sub = (ImageView) view
 				.findViewById(R.id.product_ordsubmit_count_sub);
@@ -1359,7 +1369,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// 买入价格
 		product_ordsubmit_price = (EditText) view
 				.findViewById(R.id.product_ordsubmit_price);
-		
+
 		product_ordsubmit_count.addTextChangedListener(textWatcher);
 		product_ordsubmit_price.addTextChangedListener(textWatcher);
 
@@ -1398,91 +1408,103 @@ public class TradeServiceActivity extends BaseActivity {
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
-				  		.trim();
+						.trim();
 				double total_price_double = Double.parseDouble(total_price);
 
-				if (!TextUtils.isEmpty(buy_priceString)
-						&& !TextUtils.isEmpty(num_buy)) {
-					double buyprice = Double.parseDouble(buy_priceString);
-					if (buyprice >= (buybackprice / 100)) {
+				if (!TextUtils.isEmpty(num_buy)) {
 
-						if ((income / 100) >= total_price_double) {
+					if (!TextUtils.isEmpty(buy_priceString)) {
 
-							if (TradeServiceActivity.isSingle()) {
-								Toast.makeText(getApplicationContext(), "操作频繁",
-										0).show();
-							} else {
-								dialog_buy.dismiss();
-								loading_dialog.show();
-								new Thread(new Runnable() {
+						double buyprice = Double.parseDouble(buy_priceString);
+						if (buyprice >= (buybackprice / 100)) {
 
-									private InputStream iStream;
+							if ((income / 100) >= total_price_double) {
 
-									@Override
-									public void run() {
+								if (TradeServiceActivity.isSingle()) {
+									Toast.makeText(getApplicationContext(),
+											"操作频繁", 0).show();
+								} else {
+									dialog_buy.dismiss();
+									loading_dialog.show();
+									new Thread(new Runnable() {
 
-										String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuy?"
-												+ "&ddid="
-												+ ddid
-												+ "&num="
-												+ num_buy
-												+ "&price="
-												+ buy_priceString;
-										try {
-											HttpsURLConnection connection = NetUtils
-													.httpsconnNoparm(url,
-															"POST");
-											int code = connection
-													.getResponseCode();
-											if (code == 200) {
-												iStream = connection
-														.getInputStream();
-												String infojson = NetUtils
-														.readString(iStream);
-												// JSONObject jsonObject = new
-												// JSONObject(infojson);
-												// Log.e("我靠快快快快快快快", infojson);
-												handler.sendEmptyMessage(3);
-												// Log.e("hahahhahh", infojson);
-												// parseJson_buy(infojson);
+										private InputStream iStream;
 
-												// Log.e("sssssssssss",
-												// "hahah");
-											}
+										@Override
+										public void run() {
 
-										} catch (Exception e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										} finally {
-											if (iStream != null) {
-												try {
-													iStream.close();
-												} catch (IOException e) {
-													// TODO Auto-generated catch
-													// block
-													e.printStackTrace();
+											String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuy?"
+													+ "&ddid="
+													+ ddid
+													+ "&num="
+													+ num_buy
+													+ "&price="
+													+ buy_priceString;
+											try {
+												HttpsURLConnection connection = NetUtils
+														.httpsconnNoparm(url,
+																"POST");
+												int code = connection
+														.getResponseCode();
+												if (code == 200) {
+													iStream = connection
+															.getInputStream();
+													String infojson = NetUtils
+															.readString(iStream);
+													// JSONObject jsonObject =
+													// new
+													// JSONObject(infojson);
+													// Log.e("我靠快快快快快快快",
+													// infojson);
+													handler.sendEmptyMessage(3);
+													// Log.e("hahahhahh",
+													// infojson);
+													// parseJson_buy(infojson);
+
+													// Log.e("sssssssssss",
+													// "hahah");
 												}
+
+											} catch (Exception e) {
+												// TODO Auto-generated catch
+												// block
+												e.printStackTrace();
+											} finally {
+												if (iStream != null) {
+													try {
+														iStream.close();
+													} catch (IOException e) {
+														// TODO Auto-generated
+														// catch
+														// block
+														e.printStackTrace();
+													}
+												}
+
 											}
 
 										}
 
-									}
+									}).start();
 
-								}).start();
+								}
 
+							} else {
+								// 酒币不够
+								Toast.makeText(getApplicationContext(),
+										"酒币不够，请充值", 0).show();
 							}
-
 						} else {
-							// 酒币不够
-							Toast.makeText(getApplicationContext(), "酒币不够，请充值",
-									0).show();
+							Toast.makeText(getApplicationContext(),
+									"买入价不能低于回购价:" + buybackprice / 100, 0)
+									.show();
 						}
 					} else {
-						Toast.makeText(getApplicationContext(),
-								"买入价不能低于回购价:" + buybackprice / 100, 0).show();
+						Toast.makeText(getApplicationContext(), "买入价不能为空！", 0)
+								.show();
 					}
 				} else {
-					Toast.makeText(getApplicationContext(), "买入价或者买入量不能为空！", 0)
+					Toast.makeText(getApplicationContext(), "买入量不能为空！", 0)
 							.show();
 				}
 			}
@@ -1549,96 +1571,96 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
-	//转让监听
-TextWatcher textwatcher_tihuo=new TextWatcher() {
-		
+	// 转让监听
+	TextWatcher textwatcher_tihuo = new TextWatcher() {
+
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterTextChanged(Editable s) {
-			// TODO Auto-generated method stub
-			
-			/*transTextView.setSelection(product_ordsubmit_count
-					.getText().toString().trim().length());*/
-			
-			String text = s.toString();
-			if (text.startsWith("0")) {
-			s.clear();
-			}
-		}
-	};
-	
-	
-	//提货监听
-   TextWatcher textwatcher_trans=new TextWatcher() {
-		
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-			
-			
-			
+
+			/*
+			 * transTextView.setSelection(product_ordsubmit_count
+			 * .getText().toString().trim().length());
+			 */
+
 			String text = s.toString();
 			if (text.startsWith("0")) {
-			s.clear();
+				s.clear();
 			}
 		}
 	};
-	
-	
-	//卖出时候监听
-	TextWatcher textwatcher_sale=new TextWatcher() {
-		
+
+	// 提货监听
+	TextWatcher textwatcher_trans = new TextWatcher() {
+
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-			
+
 			String text = s.toString();
-			
 			if (text.startsWith("0")) {
-			s.clear();
+				s.clear();
 			}
 		}
 	};
-	
-	
+
+	// 卖出时候监听
+	TextWatcher textwatcher_sale = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+
+			String text = s.toString();
+
+			if (text.startsWith("0")) {
+				s.clear();
+			}
+		}
+	};
+
 	// 买入价监听
 	private TextWatcher textWatcher = new TextWatcher() {
 		private CharSequence charSequence;
@@ -1674,14 +1696,15 @@ TextWatcher textwatcher_tihuo=new TextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-			/*product_ordsubmit_count.setSelection(product_ordsubmit_count
-					.getText().toString().trim().length());*/
+			/*
+			 * product_ordsubmit_count.setSelection(product_ordsubmit_count
+			 * .getText().toString().trim().length());
+			 */
 			String text = s.toString();
 			if (text.startsWith("0")) {
-			s.clear();
+				s.clear();
 			}
-			
-			
+
 		}
 	};
 
