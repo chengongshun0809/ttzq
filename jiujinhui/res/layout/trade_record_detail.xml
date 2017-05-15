@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:text="已付款"
             android:textColor="#3366cc" />
     </RelativeLayout>
@@ -74,32 +74,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
             android:text="全部成交"
-            android:textColor="#666999" />
+            android:textColor="#666999"
+            
+             />
 
         <TextView
             android:id="@+id/tv_weichengjiao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="12dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="15dp"
             android:text="未成交x"
             android:textColor="#666999"
-            android:visibility="gone" />
+              android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/tv_weichengjiao_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
             android:text="1"
             android:textColor="#666999"
-            android:visibility="gone" />
+              android:visibility="gone"
+             />
     </RelativeLayout>
 
     <View
