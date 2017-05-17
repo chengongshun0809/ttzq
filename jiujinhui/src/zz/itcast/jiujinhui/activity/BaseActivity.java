@@ -2,6 +2,7 @@ package zz.itcast.jiujinhui.activity;
 
 import zz.itcast.jiujinhui.res.ActivityCollector;
 import zz.itcast.jiujinhui.res.Tools;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -19,7 +20,7 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 		initData();
 		ActivityCollector.addActivity(this);  
 		
-		
+		 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 	}
   //��ȡ��ǰ����id

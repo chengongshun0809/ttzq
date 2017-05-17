@@ -8,6 +8,7 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="17" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -21,89 +22,153 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-       <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <application
+        android:name="zz.itcast.jiujinhui.res.OurApplication"
         android:allowBackup="true"
         android:icon="@drawable/jiujinhui"
         android:label="@string/app_name"
-         android:name="zz.itcast.jiujinhui.res.OurApplication"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <activity
             android:name="zz.itcast.jiujinhui.activity.SplashActivity"
             android:label="@string/app_name"
-         
-             >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.MainActivity"></activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.RegisterActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.MainActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.ForgetPwdActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.RegisterActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.PersonCenterActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.ForgetPwdActivity"
+           android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.LoginActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.PersonCenterActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.LoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="zz.itcast.jiujinhui.activity.TradeServiceActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SampleTheme.Light" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.DrinkRecordActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.DrinkRecordActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.TradeRecordActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.TradeRecordActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.TiXianRecordActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.TiXianRecordActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.ZongZiChanActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.ZongZiChanActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.ReChargeActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.ReChargeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.MyTiXianActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.MyTiXianActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.PerInfoActivity" 
-             android:launchMode="standard"
-            >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.PerInfoActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="standard" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.PhoneNumberLoginActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.PhoneNumberLoginActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.SmsNumberActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.SmsNumberActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.KnowDetailActivity" >
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.KnowDetailActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="net.sourceforge.simcpux.wxapi.WXEntryActivity" >
+        <activity
+            android:name="net.sourceforge.simcpux.wxapi.WXEntryActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.MyTixiandetailActivity"></activity>
-      <activity android:name="zz.itcast.jiujinhui.activity.TixianSuccessActivity"></activity>
-        <activity android:name="zz.itcast.jiujinhui.activity.WoyaorengouActivity"></activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.RengouSuccessActivity"></activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.Rengou_detai_tihuolActivity"></activity> 
-       <activity android:name="zz.itcast.jiujinhui.activity.ChedanSuccessActivity"></activity>
-       
-       <activity android:name="zz.itcast.jiujinhui.activity.BuySuccessActivity"></activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.SaleSuccessActivity"></activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.TransSuccessActivity"></activity>
-       <activity android:name="zz.itcast.jiujinhui.activity.TihuoSuccessActivity"></activity>
-       
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.MyTixiandetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.TixianSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.WoyaorengouActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.RengouSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.Rengou_detai_tihuolActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.ChedanSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.BuySuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.SaleSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.TransSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zz.itcast.jiujinhui.activity.TihuoSuccessActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+
         <!-- 微信回调activity -->
         <activity
             android:name=".wxapi.WXEntryActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoDisplay"> 
-            
-             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="wxdb59e14854a747c8"/>
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wxdb59e14854a747c8" />
             </intent-filter>
-            
         </activity>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTop" />
 
@@ -114,10 +179,9 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
-        
-        <service android:name="zz.itcast.jiujinhui.service.UpApkService"></service>
-        
-        
+
+        <service android:name="zz.itcast.jiujinhui.service.UpApkService" >
+        </service>
     </application>
 
 </manifest>
