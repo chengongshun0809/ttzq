@@ -142,6 +142,20 @@ public class TradeBuyFragment extends BaseFragment {
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
+			case 3:
+				// Intent intent=new
+				// Intent(getActivity(),ChedanSuccessActivity.class);
+				// startActivity(intent);
+				// visitService(1);
+				Toast.makeText(getActivity(), "撤单成功", 0).show();
+
+				break;
+
+			case 4:
+				Toast.makeText(getActivity(), "撤单失败,请稍后重试", 0).show();
+				break;
+				
+				
 			default:
 				break;
 			}
@@ -444,7 +458,7 @@ public class TradeBuyFragment extends BaseFragment {
 														@Override 
 														public void run() {
 
-															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
+															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealbuycancel?oid="
 																	+ danhaos_chedan;
 
 															try {   
@@ -460,8 +474,13 @@ public class TradeBuyFragment extends BaseFragment {
 																			.getInputStream();
 																	String infojson = NetUtils
 																			.readString(iStream);
-																	handler.sendEmptyMessage(3);
-																	// parsechedan(infojson);
+																	JSONObject jsonObject = new JSONObject(infojson);
+																	String success=jsonObject.getString("message");
+																	if ("success".equals(success)) {
+																		handler.sendEmptyMessage(3);
+																	}else {
+																		handler.sendEmptyMessage(4);
+																	}
 
 																}
 

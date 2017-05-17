@@ -490,8 +490,13 @@ public class TradeAllFragment extends BaseFragment {
 																			.getInputStream();
 																	String infojson = NetUtils
 																			.readString(iStream);
-																	handler.sendEmptyMessage(3);
-																	// parsechedan(infojson);
+																	JSONObject jsonObject = new JSONObject(infojson);
+																	String success=jsonObject.getString("message");
+																	if ("success".equals(success)) {
+																		handler.sendEmptyMessage(3);
+																	}else {
+																		handler.sendEmptyMessage(4);
+																	}
 
 																}
 
@@ -560,7 +565,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 			case 8:
-				holder.tv_dan_state.setText("转让撤回");
+				holder.tv_dan_state.setText("买入撤回");
 				holder.msg_chengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
@@ -664,7 +669,7 @@ public class TradeAllFragment extends BaseFragment {
 														@Override
 														public void run() {
 
-															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
+															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealbuycancel?oid="
 																	+ danhaos_chedan;
 
 															try {
@@ -680,9 +685,13 @@ public class TradeAllFragment extends BaseFragment {
 																			.getInputStream();
 																	String infojson = NetUtils
 																			.readString(iStream);
-																	handler.sendEmptyMessage(3);
-																	// parsechedan(infojson);
-
+																	JSONObject jsonObject = new JSONObject(infojson);
+																	String success=jsonObject.getString("message");
+																	if ("success".equals(success)) {
+																		handler.sendEmptyMessage(3);
+																	}else {
+																		handler.sendEmptyMessage(4);
+																	}
 																}
 
 															} catch (Exception e) {

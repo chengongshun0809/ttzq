@@ -481,7 +481,15 @@ public class TradeSaleFragment extends BaseFragment {
 																			.getInputStream();
 																	String infojson = NetUtils
 																			.readString(iStream);
-																	handler.sendEmptyMessage(3);
+																	JSONObject jsonObject = new JSONObject(infojson);
+																	String success=jsonObject.getString("message");
+																	if ("success".equals(success)) {
+																		handler.sendEmptyMessage(3);
+																	}else {
+																		handler.sendEmptyMessage(4);
+																	}
+																	
+																	
 																	// parsechedan(infojson);
 
 																}
