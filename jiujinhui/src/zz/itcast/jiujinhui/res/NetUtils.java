@@ -102,7 +102,7 @@ public class NetUtils {
 			conn.setConnectTimeout(300000);//设置连接主机超时（单位：毫秒）
 			conn.setReadTimeout(300000);//设置从主机读取数据超时（单位：毫秒）
 			// 设置允许输出
-			conn.setDoOutput(true);
+			conn.setDoOutput(true);   
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
 			conn.setRequestProperty("Connection", "close");
@@ -111,7 +111,7 @@ public class NetUtils {
 			conn.setRequestProperty("ser-Agent", "Fiddler");
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			// 设置contentType
-			conn.setRequestProperty("Content-Type", "application/json");
+			conn .setRequestProperty("Content-Type", "application/json");
 			
 
 		} catch (Exception e) {

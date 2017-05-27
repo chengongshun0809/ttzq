@@ -25,7 +25,7 @@ public class HomeFragPagerAdapter extends PagerAdapter {
 	public HomeFragPagerAdapter(Context ctx, List<String> data) {
 		this.data = data;
 		this.context = ctx;
-		bitmapUtils = new BitmapUtils(context);
+		bitmapUtils = new BitmapUtils(context);  
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class HomeFragPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		String imgUrl = data.get(position % data.size());
 		View view = View.inflate(context, R.layout.item_viewpager_home_frag,
-				null);
+				null); 
 		if (!TextUtils.isEmpty(imgUrl)) {
 			bitmapUtils.display(view, imgUrl);
 		}
@@ -46,7 +46,7 @@ public class HomeFragPagerAdapter extends PagerAdapter {
 		return view;
 	}
 
-	@Override
+	@Override 
 	public int getCount() {
 		return  data.size();
 	}

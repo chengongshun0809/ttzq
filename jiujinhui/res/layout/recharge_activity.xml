@@ -258,7 +258,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/igray" />
-
         <RelativeLayout
             
             android:layout_width="100dp"
@@ -274,8 +273,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@null"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:hint="其他金额"
+                android:textSize="15sp"
                 android:padding="10dp"
                 android:textColorHint="#6699ff"
                 android:textColor="#6699ff"

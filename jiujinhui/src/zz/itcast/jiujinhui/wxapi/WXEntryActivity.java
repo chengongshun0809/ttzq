@@ -41,7 +41,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
 	@Override
 	public void onResp(BaseResp resp) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated met hod stub
 		// 重写方法拿到code
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK: // 发送成功
@@ -59,7 +59,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 					new RequestCallBack<String>() {
 
 						private JSONObject jsonObject;
-
+ 
 						@Override
 						public void onSuccess(ResponseInfo<String> responseInfo) {
 							// TODO Auto-generated method stub

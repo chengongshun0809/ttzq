@@ -1,16 +1,13 @@
 package zz.itcast.jiujinhui.activity;
 
 import zz.itcast.jiujinhui.R;
-import zz.itcast.jiujinhui.res.Constants;
-import zz.itcast.jiujinhui.wxapi.WXEntryActivity;
+import zz.itcast.jiujinhui.view.FinishProjectPopupWindows;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +34,11 @@ public class PerInfoActivity extends BaseActivity {
 	private TextView et_phonenumber;
 	@ViewInject(R.id.et_register_username)
 	private TextView et_register_username;
-
+	@ViewInject(R.id.share)
+	 
+	private RelativeLayout share;
+     
+	
 	// 圆形图片
 	@ViewInject(R.id.circleview)
 	private zz.itcast.jiujinhui.view.CircleImageView circleview;
@@ -66,7 +67,7 @@ public class PerInfoActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		tuichu.setOnClickListener(this);
 		tv_back.setOnClickListener(this);
-
+		share.setOnClickListener(this);
 	}
 
 	@Override
@@ -103,10 +104,22 @@ public class PerInfoActivity extends BaseActivity {
 		}
 		
 	}
-
+	private FinishProjectPopupWindows mFinishProjectPopupWindow ;
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.share:
+			
+			 mFinishProjectPopupWindow = new FinishProjectPopupWindows(PerInfoActivity.this, itemsOnClick);  
+			    // 显示PopupWindow  
+			    mFinishProjectPopupWindow.showAtLocation(PerInfoActivity.this.findViewById(R.id.main_ll),   
+		                   Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				
+			
+			
+			break;
+		
+		
 		case R.id.tuichu:
 
 			LayoutInflater inflater = LayoutInflater.from(this);
@@ -160,5 +173,28 @@ public class PerInfoActivity extends BaseActivity {
 		}
 
 	}
+	private OnClickListener  itemsOnClick = new OnClickListener(){  
+	    @Override  
+	    public void onClick(View v) {  
+	      
+	        switch(v.getId()){  
+	        case R.id.rb_friend:  
+	           
+	        	
+	        	
+	            break;  
+	        case R.id.rb_friendcircle:  
+	        	
+	        	
+	            break;  
+	      
+	        }  
+	          
+	    }  
+	       
+	};  
+	
+	
+	
 
 }

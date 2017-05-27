@@ -22,7 +22,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 	private static final String TAG = "MicroMsg.SDKSample.WXPayEntryActivity";
 	
     private IWXAPI api;
-	
+	 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

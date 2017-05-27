@@ -13,6 +13,10 @@
 </style>
  
     
+    
+    
+    
+    
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -80,7 +84,11 @@
     </style>
 <!--  平台名称 -->
 
-   
+  <!-- popupwindow 动画 -->    
+<style name="Animation">    
+    <item name="android:windowEnterAnimation">@anim/enter_anim</item>   
+    <item name="android:windowExitAnimation">@anim/out_anim</item>    
+</style>   
     
     
     

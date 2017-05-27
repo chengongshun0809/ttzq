@@ -35,7 +35,7 @@ public class ReChargeActivity extends BaseActivity {
 	@ViewInject(R.id.chongzhi)
 	private RelativeLayout chongzhi;
 
-	@ViewInject(R.id.wubai)
+	@ViewInject(R.id.wubai) 
 	private RelativeLayout wubai;
 	@ViewInject(R.id.yiqian)
 	private RelativeLayout yiqian;
