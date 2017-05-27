@@ -43,7 +43,33 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 	public void onResp(BaseResp resp) {
 		// TODO Auto-generated met hod stub
 		// 重写方法拿到code
-		switch (resp.errCode) {
+		  //关于数值的类型，微信官方文档里有写：
+        //发送OpenAPI Auth验证 的数值为 1
+        //分享消息到微信 的数值为2
+		if (resp.getType()==2) {
+			
+			switch (resp. errCode) {
+			case BaseResp.ErrCode.ERR_OK:
+				Toast.makeText(this, "分享成功", Toast.LENGTH_SHORT).show();
+				break;
+			case BaseResp.ErrCode.ERR_USER_CANCEL:
+				Toast.makeText(this, "分享取消", Toast.LENGTH_SHORT).show();
+				break;
+				
+			case BaseResp.ErrCode.ERR_AUTH_DENIED: // 发送被拒绝
+				Toast.makeText(this, "分享失败", Toast.LENGTH_SHORT).show();	
+			break;
+			}
+			finish();
+		}
+		
+		if (resp.getType()==1) {
+			
+		
+		
+		
+		switch (resp. errCode) {
+		
 		case BaseResp.ErrCode.ERR_OK: // 发送成功
 			
 			String code1 = ((SendAuth.Resp) resp).code; // 即为所需的code
@@ -286,7 +312,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 			
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL: // 发送取消
-			Toast.makeText(this, "取消登录", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "登录取消", Toast.LENGTH_SHORT).show();
 			
 		     finish();
 			
@@ -299,7 +325,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		default:
 			break;
 		}
-		
+		}
 	}
 
 	@Override

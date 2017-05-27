@@ -1,10 +1,13 @@
 package zz.itcast.jiujinhui.activity;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.res.Constants;
 import zz.itcast.jiujinhui.view.FinishProjectPopupWindows;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +23,11 @@ import android.widget.Toast;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.squareup.picasso.Picasso;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 public class PerInfoActivity extends BaseActivity {
 
@@ -35,10 +43,8 @@ public class PerInfoActivity extends BaseActivity {
 	@ViewInject(R.id.et_register_username)
 	private TextView et_register_username;
 	@ViewInject(R.id.share)
-	 
 	private RelativeLayout share;
-     
-	
+
 	// 圆形图片
 	@ViewInject(R.id.circleview)
 	private zz.itcast.jiujinhui.view.CircleImageView circleview;
@@ -53,14 +59,18 @@ public class PerInfoActivity extends BaseActivity {
 
 	private Button btnOK;
 	private Button btnCancel;
+	private IWXAPI api;
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
+
 		// isshun = getIntent().getStringExtra("shun");
 
+		api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, true);
+		api.registerApp(Constants.APP_ID);
 	}
+	
 
 	@Override
 	public void initListener() {
@@ -78,48 +88,48 @@ public class PerInfoActivity extends BaseActivity {
 		// 微信头像
 		sp = getSharedPreferences("user", MODE_PRIVATE);
 		String headimgurl = sp.getString("headimg", null);
-		
-		
+
 		if (headimgurl != null) {
 			Log.e("headimgurl", headimgurl);
 			Picasso.with(this).load(headimgurl).into(circleview);
 		}
-		
-		// 微信昵称 
+
+		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
-		
+
 		if (nickNameString != null) {
 			Log.e("nickNameString", nickNameString);
 			et_register_username.setText(nickNameString);
 		}
-		
+
 		// 个人手机号
 		String number = sp.getString("mobile", null);
-		
+
 		if (!TextUtils.isEmpty(number)) {
 			Log.e("number", number);
 			et_phonenumber.setText(number);
-		}else {
+		} else {
 			et_phonenumber.setText("未绑定");
 		}
-		
+
 	}
-	private FinishProjectPopupWindows mFinishProjectPopupWindow ;
+
+	private FinishProjectPopupWindows mFinishProjectPopupWindow;
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.share:
-			
-			 mFinishProjectPopupWindow = new FinishProjectPopupWindows(PerInfoActivity.this, itemsOnClick);  
-			    // 显示PopupWindow  
-			    mFinishProjectPopupWindow.showAtLocation(PerInfoActivity.this.findViewById(R.id.main_ll),   
-		                   Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-				
-			
-			
+
+			mFinishProjectPopupWindow = new FinishProjectPopupWindows(
+					PerInfoActivity.this, itemsOnClick);
+			// 显示PopupWindow
+			mFinishProjectPopupWindow.showAtLocation(
+					PerInfoActivity.this.findViewById(R.id.main_ll),
+					Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
 			break;
-		
-		
+
 		case R.id.tuichu:
 
 			LayoutInflater inflater = LayoutInflater.from(this);
@@ -173,28 +183,86 @@ public class PerInfoActivity extends BaseActivity {
 		}
 
 	}
-	private OnClickListener  itemsOnClick = new OnClickListener(){  
-	    @Override  
-	    public void onClick(View v) {  
-	      
-	        switch(v.getId()){  
-	        case R.id.rb_friend:  
-	           
-	        	
-	        	
-	            break;  
-	        case R.id.rb_friendcircle:  
-	        	
-	        	
-	            break;  
-	      
-	        }  
-	          
-	    }  
-	       
-	};  
-	
-	
-	
+
+	// 判断用户是否安装微信客户端
+	private boolean isWXAppInstalledAndSupported() {
+		IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
+		msgApi.registerApp("wxdb59e14854a747c8");
+
+		boolean sIsWXAppInstalledAndSupported = msgApi.isWXAppInstalled()
+				&& msgApi.isWXAppSupportAPI();
+
+		return sIsWXAppInstalledAndSupported;
+	}
+
+	private OnClickListener itemsOnClick = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+
+			switch (v.getId()) {
+			case R.id.rb_friend:
+				if (isWXAppInstalledAndSupported() == false) {
+					Toast.makeText(PerInfoActivity.this, "未安装微信客户端，请您先安装",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					// 微信分享朋友
+
+					WXWebpageObject webpage = new WXWebpageObject();
+					webpage.webpageUrl = "http://baidu.com";
+					WXMediaMessage msg = new WXMediaMessage(webpage);
+
+					msg.title = "年轮酒窖";
+					msg.description = "健康快乐财富";
+					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+							R.drawable.weixin);
+					msg.setThumbImage(thumb);
+					SendMessageToWX.Req req = new SendMessageToWX.Req();
+				
+					req.transaction = String
+							.valueOf(System.currentTimeMillis());
+					req.message = msg;
+					req.scene = SendMessageToWX.Req.WXSceneSession;
+
+					// 调用api接口发送数据到微信
+					api.sendReq(req);
+					finish();
+				}
+
+				break;
+			case R.id.rb_friendcircle:
+
+				if (isWXAppInstalledAndSupported() == false) {
+					Toast.makeText(PerInfoActivity.this, "未安装微信客户端，请您先安装",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					// 微信分享朋友圈
+
+					WXWebpageObject webpage = new WXWebpageObject();
+					webpage.webpageUrl = "http://baidu.com";
+					WXMediaMessage msg = new WXMediaMessage(webpage);
+
+					msg.title = "年轮酒窖";
+					msg.description = "健康快乐财富";
+					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
+							R.drawable.weixin);
+					msg.setThumbImage(thumb);
+					SendMessageToWX.Req req = new SendMessageToWX.Req();
+					req.transaction = String
+							.valueOf(System.currentTimeMillis());
+					req.message = msg;
+					req.scene = SendMessageToWX.Req.WXSceneTimeline;
+
+					// 调用api接口发送数据到微信
+					api.sendReq(req);
+					finish();
+				}
+
+				break;
+
+			}
+
+		}
+
+	};
 
 }
