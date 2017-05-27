@@ -208,13 +208,13 @@ public class PerInfoActivity extends BaseActivity {
 					// 微信分享朋友
 
 					WXWebpageObject webpage = new WXWebpageObject();
-					webpage.webpageUrl = "http://baidu.com";
+					webpage.webpageUrl = "http://sports.qq.com/a/20170101/001972.htm";
 					WXMediaMessage msg = new WXMediaMessage(webpage);
 
-					msg.title = "年轮酒窖";
-					msg.description = "健康快乐财富";
+					msg.title = "年轮酒窖之NBA决战预测";
+					msg.description = "Where Amazing Happens";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.weixin);
+							R.drawable.nba);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 				
@@ -238,13 +238,13 @@ public class PerInfoActivity extends BaseActivity {
 					// 微信分享朋友圈
 
 					WXWebpageObject webpage = new WXWebpageObject();
-					webpage.webpageUrl = "http://baidu.com";
+					webpage.webpageUrl = "http://sports.qq.com/a/20170101/001972.htm";
 					WXMediaMessage msg = new WXMediaMessage(webpage);
 
-					msg.title = "年轮酒窖";
-					msg.description = "健康快乐财富";
+					msg.title = "年轮酒窖之NBA决战预测";
+					msg.description = "Where Amazing Happens";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.weixin);
+							R.drawable.nba);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 					req.transaction = String
