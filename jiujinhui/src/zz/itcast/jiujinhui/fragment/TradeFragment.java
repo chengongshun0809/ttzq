@@ -249,6 +249,8 @@ public class TradeFragment extends BaseFragment {
 	private String maindgid;
 	private TextView tv_rate2;
 	private DecimalFormat df;
+	
+	private String goodstate;
 
 	@Override
 	public void initData() {
@@ -386,6 +388,96 @@ public class TradeFragment extends BaseFragment {
 
 	
 	private void UpdateUI() {
+		//节假日停盘
+		if ("4".equals(maingoodstate)) {
+			View view = inflater.inflate(R.layout.trade_item_jiujiao, null);
+			ll_content.addView(view);
+			btn_public = (RelativeLayout) view.findViewById(R.id.btn_public);
+			
+			LinearLayout ll_tradecode=(LinearLayout) view.findViewById(R.id.ll_tradecode);
+			
+			ll_tradecode.setVisibility(View.GONE);
+			
+			LinearLayout limit=(LinearLayout) view.findViewById(R.id.limit);
+			
+			limit.setVisibility(View.GONE);
+			
+			reprice = (TextView) view.findViewById(R.id.realprice_chengjiao);
+			ll_ren = (RelativeLayout) view.findViewById(R.id.rengouqi);
+			ll_ren.setVisibility(View.GONE);
+			left = (TextView) view.findViewById(R.id.left_day);
+			tv_rate = (TextView) view.findViewById(R.id.rate);
+			tv_name = (TextView) view.findViewById(R.id.name);
+			tv_dealcode = (TextView) view.findViewById(R.id.dealcode);
+			tv_stock = (TextView) view.findViewById(R.id.stock);
+			
+			TextView tv_msg_stop=(TextView) view.findViewById(R.id.tv_msg_stop);
+			
+			tv_msg_stop.setVisibility(View.VISIBLE);
+			left.setText(maindealterm);
+			jiaoyizhong = (RelativeLayout) view.findViewById(R.id.jiaoyizhong);
+			tv_tian = (TextView) view.findViewById(R.id.term_day);
+			btn_name = (TextView) view.findViewById(R.id.btn_name);
+			tv_rate.setText(mainrate);
+			tv_name.setText(mainname);
+			tv_dealcode.setText(maindealcode);
+			tv_stock.setText(mainstock);
+			btn_name.setText("节假日停盘");
+			btn_name.setTextSize(18);
+
+			// tv_lirengou.setTextColor(R.color.red);
+			DecimalFormat df = new DecimalFormat("#0.00");
+			// Log.e("maingooddealprice", "hhhjh");
+			reprice.setText(df.format(maingooddealprice / 100));
+			reprice.setTextSize(15);
+			// tv_dealterm.setTextColor(R.color.red);
+			jiaoyizhong.setVisibility(view.GONE);
+
+			btn_public.setVisibility(View.VISIBLE);
+			// tv_tian.setTextColor(R.color.red);
+
+			btn_public.setOnClickListener(new OnClickListener() {
+
+			
+
+				@Override
+				public void onClick(View v) {
+					ConnectivityManager connectivityManager = (ConnectivityManager)OurApplication.getContext()
+							.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+
+					NetworkInfo info = connectivityManager
+							.getActiveNetworkInfo();
+					if (info != null && info.isAvailable()) {
+						isaliv = true;
+
+					} else {
+						isaliv = false;
+						Toast.makeText(OurApplication.getContext(), "无网络连接",
+								Toast.LENGTH_SHORT).show();
+
+					}
+
+					if (isaliv == true) {
+						Toast.makeText(OurApplication.getContext(), "节假日停盘",
+								Toast.LENGTH_SHORT).show();
+						
+					} else {
+
+						Toast.makeText(OurApplication.getContext(), "无网络连接",
+								Toast.LENGTH_SHORT).show();
+
+					}
+
+				}
+
+			});
+
+		}
+		
+		
+		
+		
+		
 		if ("3".equals(maingoodstate)) {
 			View view = inflater.inflate(R.layout.trade_item_jiujiao, null);
 			ll_content.addView(view);
@@ -675,53 +767,57 @@ public class TradeFragment extends BaseFragment {
 		}
 
 		for (int i = 0; i < length; i++) {
-			// 遍历JSONArray
-			View view1 = inflater.inflate(R.layout.trade_item_jiujiao, null);
-			// ll_content.addView(view1);
-			tv_name2 = (TextView) view1.findViewById(R.id.name);
-
-			tv_deaTextView = (TextView) view1
-					.findViewById(R.id.realprice_chengjiao);
-			TextView tv_newprive=(TextView) view1.findViewById(R.id.codetonewprice);
-			
-			tv_newprive.setText("最新价:¥");
-			
-           TextView price_new_tv=(TextView) view1.findViewById(R.id.price_new);
-          
-           price_new_tv.setVisibility(View.VISIBLE);
-          
 			
 			
-			
-			tv_day = (TextView) view1.findViewById(R.id.term_day);
-			tv_rate2 = (TextView) view1.findViewById(R.id.rate);
-			
-			litmit = (LinearLayout) view1.findViewById(R.id.limit);
-			litmit.setVisibility(View.GONE);
-			
-			trading = (RelativeLayout) view1.findViewById(R.id.jiaoyizhong);
-			trading.setVisibility(View.GONE);
-      
-			 TextView yuan=(TextView) view1.findViewById(R.id.yuan);
-			
-			 yuan.setVisibility(View.VISIBLE);
-			 
-			 
-			lijin = (TextView) view1.findViewById(R.id.li);
-			lijin.setText("进入交易大厅>>");
-			dealcode = (TextView) view1.findViewById(R.id.dealcode);
-			
-			dealcode.setVisibility(View.GONE);
-			tv_deaTextView.setVisibility(View.GONE);
-			tv_day.setVisibility(View.GONE);
-			RelativeLayout btn_jinru = (RelativeLayout) view1
-					.findViewById(R.id.btn_public);
-			btn_jinru.setVisibility(View.GONE);
 
 			try {
 				jsonObject3 = dealgoodslist.getJSONObject(i);
 
-				int goodstate = jsonObject3.getInt("state");
+				goodstate = jsonObject3.getString("state");
+				 
+				
+				
+
+				View view1 = inflater.inflate(R.layout.trade_item_jiujiao, null);
+				ll_content.addView(view1);
+				// ll_content.addView(view1);
+				tv_name2 = (TextView) view1.findViewById(R.id.name);
+
+				tv_deaTextView = (TextView) view1
+						.findViewById(R.id.realprice_chengjiao);
+				TextView tv_newprive=(TextView) view1.findViewById(R.id.codetonewprice);
+				
+				tv_newprive.setText("最新价:¥");
+				
+	           TextView price_new_tv=(TextView) view1.findViewById(R.id.price_new);
+	          
+	           price_new_tv.setVisibility(View.VISIBLE);
+	          
+		
+				tv_day = (TextView) view1.findViewById(R.id.term_day);
+				tv_rate2 = (TextView) view1.findViewById(R.id.rate);
+				
+				litmit = (LinearLayout) view1.findViewById(R.id.limit);
+				litmit.setVisibility(View.GONE);
+				
+				trading = (RelativeLayout) view1.findViewById(R.id.jiaoyizhong);
+				trading.setVisibility(View.GONE);
+	      
+				 TextView yuan=(TextView) view1.findViewById(R.id.yuan);
+				
+				 yuan.setVisibility(View.VISIBLE);
+				 
+				 
+				lijin = (TextView) view1.findViewById(R.id.li);
+				lijin.setText("进入交易大厅>>");
+				dealcode = (TextView) view1.findViewById(R.id.dealcode);
+				
+				dealcode.setVisibility(View.GONE);
+				tv_deaTextView.setVisibility(View.GONE);
+				tv_day.setVisibility(View.GONE);
+				RelativeLayout btn_jinru = (RelativeLayout) view1
+						.findViewById(R.id.btn_public);
+				btn_jinru.setVisibility(View.GONE);
 				
 				double realprice=jsonObject3.getDouble("realprice");
 
@@ -746,61 +842,128 @@ public class TradeFragment extends BaseFragment {
 				//Log.e("GD", dgid);
 				tv_name2.setText(dealgoodname);
 				//dealcode.setText(goodsdealcode);
+				if ("4".equals(goodstate)) {
+					
+					
+					lijin.setOnClickListener(new OnClickListener() {
 
-				lijin.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
 
-					@Override
-					public void onClick(View v) {
+							// TODO Auto-generated method stub
 
-						// TODO Auto-generated method stub
+							ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication.getContext()
+									.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
 
-						ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication.getContext()
-								.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+							NetworkInfo info = connectivityManager
+									.getActiveNetworkInfo();
+							if (info != null && info.isAvailable()) {
+								isaliv = true;
 
-						NetworkInfo info = connectivityManager
-								.getActiveNetworkInfo();
-						if (info != null && info.isAvailable()) {
-							isaliv = true;
-
-						} else {
-							isaliv = false;
-							Toast.makeText(OurApplication.getContext(), "无网络连接",
-									Toast.LENGTH_SHORT).show();
-
-						}
-						if (isaliv == true) {
-
-							Boolean isLogined = sp.getBoolean("isLogined",
-									false);
-							if (isLogined) {
-								Intent intent = new Intent(OurApplication.getContext(),
-										TradeServiceActivity.class);
-								intent.putExtra("name", dealgoodname);
-								intent.putExtra("dealdgid", dgid);
-								startActivity(intent);
 							} else {
-								Intent intent = new Intent(OurApplication.getContext(),
-										LoginActivity.class);
-								startActivity(intent);
+								isaliv = false;
+								Toast.makeText(OurApplication.getContext(), "无网络连接",
+										Toast.LENGTH_SHORT).show();
+
+							}
+							if (isaliv == true) {
+
+								Boolean isLogined = sp.getBoolean("isLogined",
+										false);
+								if (isLogined) {
+								
+										
+										Toast.makeText(OurApplication.getContext(), "节假日停盘",
+												Toast.LENGTH_SHORT).show();
+										
+										
+									
+									
+								
+								} else {
+									Intent intent = new Intent(OurApplication.getContext(),
+											LoginActivity.class);
+									startActivity(intent);
+								}
+
+							} else {
+
+								Toast.makeText(OurApplication.getContext(), "无网络连接",
+										Toast.LENGTH_SHORT).show();
+
 							}
 
-						} else {
+						}
 
-							Toast.makeText(OurApplication.getContext(), "无网络连接",
-									Toast.LENGTH_SHORT).show();
+					});
+					
+					
+					
+					
+				}
+				
+				
+				if("2".equals(goodstate)){
+					lijin.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							// TODO Auto-generated method stub
+
+							ConnectivityManager connectivityManager = (ConnectivityManager) OurApplication.getContext()
+									.getSystemService(OurApplication.getContext().CONNECTIVITY_SERVICE);
+
+							NetworkInfo info = connectivityManager
+									.getActiveNetworkInfo();
+							if (info != null && info.isAvailable()) {
+								isaliv = true;
+
+							} else {
+								isaliv = false;
+								Toast.makeText(OurApplication.getContext(), "无网络连接",
+										Toast.LENGTH_SHORT).show();
+
+							}
+							if (isaliv == true) {
+
+								Boolean isLogined = sp.getBoolean("isLogined",
+										false);
+								if (isLogined) {
+								
+										Intent intent = new Intent(OurApplication.getContext(),
+												TradeServiceActivity.class);
+										intent.putExtra("name", dealgoodname);
+										intent.putExtra("dealdgid", dgid);
+										startActivity(intent);
+									
+									
+								
+								} else {
+									Intent intent = new Intent(OurApplication.getContext(),
+											LoginActivity.class);
+									startActivity(intent);
+								}
+
+							} else {
+
+								Toast.makeText(OurApplication.getContext(), "无网络连接",
+										Toast.LENGTH_SHORT).show();
+
+							}
 
 						}
 
-					}
-
-				});
+					});
+				}
+				
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
 			// tv_jin.setId(i);
-			ll_content.addView(view1);
+			
 
 		}
 
