@@ -441,6 +441,7 @@ public class TradeAllFragment extends BaseFragment {
 						holder.tv_dan_state.setText("卖出中");
 						holder.msg_chengjiao.setVisibility(View.GONE);
 						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao.setText("未成交x");
 						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 						holder.tv_weichengjiao_num.setText(undonenum);
 						holder.rl_chedanLayout.setVisibility(View.VISIBLE);

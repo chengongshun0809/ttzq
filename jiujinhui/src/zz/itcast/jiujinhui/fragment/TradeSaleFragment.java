@@ -330,7 +330,7 @@ public class TradeSaleFragment extends BaseFragment {
 
 		ViewHolder holder = null;
 		private long dingdantime;
-		private String undonenum;
+		private String undonenum; 
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -426,6 +426,7 @@ public class TradeSaleFragment extends BaseFragment {
 						holder.tv_dan_state.setText("卖出中");
 						holder.msg_chengjiao.setVisibility(View.GONE);
 						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao.setText("未成交x");
 						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 						holder.tv_weichengjiao_num.setText(undonenum);
 						holder.rl_chedanLayout.setVisibility(View.VISIBLE);
@@ -433,6 +434,7 @@ public class TradeSaleFragment extends BaseFragment {
 
 						holder.bt_chedan
 					 			.setOnClickListener(new OnClickListener() {
+
 
 									@Override
 									public void onClick(View v) {
@@ -447,12 +449,7 @@ public class TradeSaleFragment extends BaseFragment {
 
 												Date date = new Date();
 												long newTime = date.getTime();
-												try {
-													dingdantime = sdf.parse(time).getTime();
-												} catch (ParseException e2) {
-													// TODO Auto-generated catch block
-													e2.printStackTrace();
-												}
+												
 												if ((newTime - dingdantime) > 900000) {
 													holder.rl_chedanLayout
 															.setVisibility(View.GONE);

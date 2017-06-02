@@ -65,9 +65,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		
 		if (resp.getType()==1) {
 			
-		
-		
-		
 		switch (resp. errCode) {
 		
 		case BaseResp.ErrCode.ERR_OK: // 发送成功

@@ -127,7 +127,7 @@ public class PerInfoActivity extends BaseActivity {
 			mFinishProjectPopupWindow.showAtLocation(
 					PerInfoActivity.this.findViewById(R.id.main_ll),
 					Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-
+			
 			break;
 
 		case R.id.tuichu:
@@ -153,7 +153,7 @@ public class PerInfoActivity extends BaseActivity {
 					sp.edit().putBoolean("isLogined", false).commit();
 					builder.dismiss();
 					finish();
-
+ 
 					Toast.makeText(PerInfoActivity.this, "退出成功",
 							Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(PerInfoActivity.this,
@@ -208,13 +208,13 @@ public class PerInfoActivity extends BaseActivity {
 					// 微信分享朋友
 
 					WXWebpageObject webpage = new WXWebpageObject();
-					webpage.webpageUrl = "http://sports.qq.com/a/20170101/001972.htm";
+					webpage.webpageUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=zz.itcast.jiujinhui";
 					WXMediaMessage msg = new WXMediaMessage(webpage);
 
-					msg.title = "年轮酒窖之NBA决战预测";
-					msg.description = "Where Amazing Happens";
+					msg.title = "年轮酒窖APP 1.0";
+					msg.description = "健康、快乐、财富";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.nba);
+							R.drawable.small_logo);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 				
@@ -225,7 +225,7 @@ public class PerInfoActivity extends BaseActivity {
 
 					// 调用api接口发送数据到微信
 					api.sendReq(req);
-					finish();
+					mFinishProjectPopupWindow.dismiss();
 				}
 
 				break;
@@ -238,13 +238,13 @@ public class PerInfoActivity extends BaseActivity {
 					// 微信分享朋友圈
 
 					WXWebpageObject webpage = new WXWebpageObject();
-					webpage.webpageUrl = "http://sports.qq.com/a/20170101/001972.htm";
+					webpage.webpageUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=zz.itcast.jiujinhui";
 					WXMediaMessage msg = new WXMediaMessage(webpage);
 
-					msg.title = "年轮酒窖之NBA决战预测";
-					msg.description = "Where Amazing Happens";
+					msg.title = "年轮酒窖APP 1.0";
+					msg.description = "健康快乐财富";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.nba);
+							R.drawable.small_logo);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 					req.transaction = String
@@ -254,7 +254,7 @@ public class PerInfoActivity extends BaseActivity {
 
 					// 调用api接口发送数据到微信
 					api.sendReq(req);
-					finish();
+					mFinishProjectPopupWindow.dismiss();
 				}
 
 				break;
