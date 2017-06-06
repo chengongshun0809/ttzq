@@ -214,7 +214,7 @@ public class PerInfoActivity extends BaseActivity {
 					msg.title = "年轮酒窖APP 1.0";
 					msg.description = "健康、快乐、财富";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.small_logo);
+							R.drawable.yuanjiang);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 				
@@ -244,7 +244,7 @@ public class PerInfoActivity extends BaseActivity {
 					msg.title = "年轮酒窖APP 1.0";
 					msg.description = "健康快乐财富";
 					Bitmap thumb = BitmapFactory.decodeResource(getResources(),
-							R.drawable.small_logo);
+							R.drawable.yuanjiang);
 					msg.setThumbImage(thumb);
 					SendMessageToWX.Req req = new SendMessageToWX.Req();
 					req.transaction = String

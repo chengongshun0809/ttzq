@@ -209,10 +209,8 @@ public class personFragment extends BaseFragment {
 
 	private Dialog loading_dialog = null;
 
-	
 	public void initDatas() {
 
-		
 		HttpUtils httpUtils = new HttpUtils();
 		httpUtils.send(HttpRequest.HttpMethod.GET,
 				"https://www.4001149114.com/NLJJ/ddapp/sendsmsyesno?unionid="
@@ -225,7 +223,7 @@ public class personFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(
 									responseInfo.result.toString());
 							yesno = jsonObject.getString("yesno");
-                           Log.e("yesno", yesno);
+							Log.e("yesno", yesno);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -277,15 +275,14 @@ public class personFragment extends BaseFragment {
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 		if (info != null && info.isAvailable()) {
 			isaliv = true;
-			
+
 			initDatas();
-			
 
 		} else {
 			isaliv = false;
 			Toast.makeText(OurApplication.getContext(), "无网络连接",
 					Toast.LENGTH_SHORT).show();
-               
+
 		}
 
 	}
@@ -411,21 +408,36 @@ public class personFragment extends BaseFragment {
 			 * } else { Intent intent5 = new Intent(getActivity(),
 			 * ReChargeActivity.class); startActivity(intent5); }
 			 */
+			ConnectivityManager connectivityManag = (ConnectivityManager) OurApplication
+					.getContext().getSystemService(
+							OurApplication.getContext().CONNECTIVITY_SERVICE);
 
-			if (!"0".equals(yesno)) {
-				Intent intent7 = new Intent(OurApplication.getContext(),
-
-				SmsNumberActivity.class);
-				intent7.putExtra("sms", "recharge");
-
-				startActivity(intent7);
+			NetworkInfo inf = connectivityManag.getActiveNetworkInfo();
+			if (inf != null && inf.isAvailable()) {
+				isaliv = true;
 
 			} else {
+				isaliv = false;
 
-				Intent intent5 = new Intent(OurApplication.getContext(),
-						ReChargeActivity.class);
-				startActivity(intent5);
+			}
+			if (isaliv == true) {
+				if (!"0".equals(yesno)) {
+					Intent intent7 = new Intent(OurApplication.getContext(),
 
+					SmsNumberActivity.class);
+					intent7.putExtra("sms", "recharge");
+
+					startActivity(intent7);
+
+				} else {
+
+					Intent intent5 = new Intent(OurApplication.getContext(),
+							ReChargeActivity.class);
+					startActivity(intent5);
+
+				}
+			} else {
+				Toast.makeText(OurApplication.getContext(), "无网络连接", 0).show();
 			}
 
 			break;
@@ -458,7 +470,7 @@ public class personFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
